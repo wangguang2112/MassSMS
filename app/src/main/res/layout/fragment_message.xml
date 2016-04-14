@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparency">
+    <com.wang.masssms.uiview.IMHeadView
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="#FFF"></com.wang.masssms.uiview.IMHeadView>
+    <com.baoyz.swipemenulistview.SwipeMenuListView
+        android:id="@+id/message_swipeMenuListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+</LinearLayout>

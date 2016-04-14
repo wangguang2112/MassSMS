@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent"
+    android:orientation="vertical">
+
+    <com.wang.masssms.uiview.IMHeadView
+        xmlns:headbar="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/fragment_groupcontact_headbar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="#FFF"
+        headbar:returnvisiable="false"
+        headbar:rightvisiable="true"
+        headbar:headtitle="分组"
+        headbar:rightsrc="@drawable/add"
+        />
+    <ListView
+        android:id="@+id/fragment_groupcontact_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+</LinearLayout>

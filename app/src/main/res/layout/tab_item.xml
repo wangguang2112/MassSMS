@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Tab选项组件(TabItem) -->
+
+    <LinearLayout
+        android:id="@+id/tab_item"
+        style="@style/im_no_background"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/tab_item_icon"
+            style="@style/im_no_background"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="2dp"
+            android:layout_weight="2"
+            android:scaleType="centerInside" />
+
+        <TextView
+            android:id="@+id/tab_item_text"
+            style="@style/im_no_background"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:textColor="@drawable/tab_text_color"
+            android:textSize="10dp" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/tab_unread_icon"
+        style="@style/im_no_background"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/tab_item"
+        android:layout_alignTop="@id/tab_item"
+        android:layout_marginRight="1dp"
+        android:layout_marginTop="3dp"
+        android:src="@drawable/icon_tab_unread"
+        android:visibility="gone" />
+
+    <!--    <View
+            android:id="@+id/tab_bottom_line"
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="0dip"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/tab_bottom_line_background" />-->
+
+</RelativeLayout>

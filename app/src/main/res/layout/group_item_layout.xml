@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="50dp">
+    <ImageView
+        android:layout_marginLeft="15dp"
+        android:scaleType="centerInside"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/people_head"
+        android:layout_marginRight="10dp"/>
+    <TextView
+        android:id="@+id/group_item_name"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:text="系统"
+        android:textSize="20sp"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="5dp"/>
+    <ImageView
+        android:layout_marginRight="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/right_arrow"
+        android:scaleType="centerInside"/>
+</LinearLayout>

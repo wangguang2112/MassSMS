@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Loading 弹框布局 -->
+
+  <LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="179dp"
+    android:layout_height="84dp"
+    android:background="@drawable/loading_round_background"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:orientation="vertical" >
+
+    <ProgressBar
+        android:layout_width="29dp"
+        android:layout_height="29dp"
+        android:indeterminate="false"
+        android:indeterminateDuration="1000"
+        android:indeterminateDrawable="@drawable/im_loading_bg"
+        android:layout_margin="10dp"/>
+
+    <TextView
+        android:id="@+id/im_progress_text_view"
+        android:textColor="#FFFFFF"
+        android:textSize="14dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
