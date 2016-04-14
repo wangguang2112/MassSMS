@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="headbar">
+        <attr name="returnvisiable" format="boolean"/>
+        <attr name="rightvisiable" format="boolean"/>
+        <attr name="rightsrc" format="reference"/>
+        <attr name="headtitle" format="string"/>
+        <attr name="titlesize" format="dimension"/>
+    </declare-styleable>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="main_tab_title">
+        <item>"分组"</item>
+        <item>"短信"</item>
+        <item>"设置"</item>
+    </string-array>
+</resources>
