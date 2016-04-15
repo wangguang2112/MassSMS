@@ -1,5 +1,6 @@
 package com.wang.masssms.fragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import com.wang.masssms.adapter.GroupListAdapter;
 import com.wang.masssms.model.orm.ContactGroup;
 import com.wang.masssms.proxy.GroupListProxy;
 import com.wang.masssms.proxy.ProxyEntity;
+import com.wang.masssms.uiview.AddDailog;
 import com.wang.masssms.uiview.IMHeadView;
 
 import java.security.acl.Group;
@@ -30,9 +32,11 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
     private GroupListAdapter mAdapter;
     private ArrayList<ContactGroup> mData;
     private GroupListProxy mProxy;
+    private AddDailog mAddDailog;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mProxy=new GroupListProxy(mContext,getCallbackHandler());
     }
 
     @Override
@@ -40,10 +44,11 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
        View view=inflater.inflate(R.layout.fragment_groupcontact,null);
         mHeadView= (IMHeadView) view.findViewById(R.id.fragment_groupcontact_headbar);
         mHeadView.setTitle("分组");
+        createAddDialg();
         mHeadView.setOnRightButtonClickListener(new IMHeadView.OnRightButtonClickListener() {
             @Override
             public void onRightClick(View view) {
-
+                mAddDailog.show();
             }
         });
         mGroupListView= (ListView) view.findViewById(R.id.fragment_groupcontact_listview);
@@ -51,6 +56,8 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
         mAdapter=new GroupListAdapter(getActivity(),mData);
         mGroupListView.setAdapter(mAdapter);
         mGroupListView.setOnItemClickListener(this);
+        mProxy.getGroupList();
+        setOnBusy(true);
         return view;
     }
 
@@ -68,9 +75,37 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
             mData.clear();
             mData.addAll((List<ContactGroup>) proxyEntity.data);
             mAdapter.notifyDataSetChanged();
+            setOnBusy(false);
         }else if(action.equals(GroupListProxy.GET_GROUP_LIST_FAILED)){
-
+            setOnBusy(false);
+        }else if(action.equals(GroupListProxy.ADD_GROUP_NAME_FAILED)){
+            setOnBusy(false);
+            AddDailog.showMsg(mContext,"添加失败了");
+        }else if(action.equals(GroupListProxy. ADD_GROUP_NAME_SUCCESS)){
+            mProxy.getGroupList();
         }
 
+    }
+    public void createAddDialg(){
+        mAddDailog=new AddDailog(mContext);
+        mAddDailog.setmTitle("添加分组");
+        mAddDailog.setmPsitive("添加", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(mAddDailog.getName()!=null&&mAddDailog.getName()!=""){
+                    mProxy.addGroup(mAddDailog.getName());
+                    setOnBusy(true);
+                }else{
+
+                }
+            }
+        });
+        mAddDailog.setmNegative("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        mAddDailog.create();
     }
 }

@@ -7,4 +7,5 @@
     <color name="white">#FFFFFF</color>
     <color name="yellow_button_normal_background">#FF5252</color>
     <color name="yellow_button_down_background">#D8FF5252</color>
+    <color name="normal_text_color">#333333</color>
 </resources>
