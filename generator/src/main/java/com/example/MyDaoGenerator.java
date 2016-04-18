@@ -35,7 +35,7 @@ public class MyDaoGenerator {
 //        private Date creatTime;
         Entity contactGroup=schema.addEntity("ContactGroup");
         contactGroup.addIdProperty().primaryKey().autoincrement();
-        contactGroup.addStringProperty("name");
+        contactGroup.addStringProperty("name").unique();
         contactGroup.addDateProperty("creatTime");
 //        private int id;
 //        private int sendtime;

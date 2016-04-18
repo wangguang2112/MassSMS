@@ -45,7 +45,7 @@ public class ContactGroupDao extends AbstractDao<ContactGroup, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"CONTACT_GROUP\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
-                "\"NAME\" TEXT," + // 1: name
+                "\"NAME\" TEXT UNIQUE ," + // 1: name
                 "\"CREAT_TIME\" INTEGER);"); // 2: creatTime
     }
 
