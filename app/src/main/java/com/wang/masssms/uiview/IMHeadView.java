@@ -55,10 +55,6 @@ public class IMHeadView extends FrameLayout implements View.OnClickListener {
         mHeadBar2LL = (LinearLayout) this.findViewById(R.id.headbar2);
         mHeadBar3LL = (LinearLayout) this.findViewById(R.id.headbar3);
         mReturnIB = (ImageButton) this.findViewById(R.id.head_bar_left_button);
-        if (mHeadBar1LL.getVisibility() == View.VISIBLE) {
-            mReturnIB.setOnClickListener(this);
-        }
-        mReturnIB.setVisibility(View.GONE);
         mTitleView = (TextView) findViewById(R.id.head_bar1_title);
         mRightIB = (ImageButton) findViewById(R.id.head_bar_right_button);
         initAttr(attrs);
@@ -79,13 +75,15 @@ public class IMHeadView extends FrameLayout implements View.OnClickListener {
         if (typedArray.getBoolean(R.styleable.headbar_rightvisiable, false)) {
             mRightIB.setVisibility(View.VISIBLE);
             mRightIB.setImageResource(typedArray.getResourceId(R.styleable.headbar_rightsrc, -1));
+            mRightIB.setOnClickListener(this);
         } else {
-            mRightIB.setVisibility(View.GONE);
+            mRightIB.setVisibility(View.INVISIBLE);
         }
         if (typedArray.getBoolean(R.styleable.headbar_returnvisiable, false)) {
             mReturnIB.setVisibility(View.VISIBLE);
+            mReturnIB.setOnClickListener(this);
         } else {
-            mReturnIB.setVisibility(View.GONE);
+            mReturnIB.setVisibility(View.INVISIBLE);
         }
 
 
@@ -103,7 +101,7 @@ public class IMHeadView extends FrameLayout implements View.OnClickListener {
     }
     public void setOnRightButtonClickListener(OnRightButtonClickListener onRightOnClickListener) {
         this.mRightOnClickListener = onRightOnClickListener;
-        mReturnIB.setVisibility(View.VISIBLE);
+        mRightIB.setVisibility(View.VISIBLE);
     }
 
     public void setTitle(String title) {

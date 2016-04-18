@@ -10,13 +10,13 @@
         android:orientation="horizontal">
         <ImageButton
             android:id="@+id/head_bar_left_button"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:background="@null"
             android:typeface="sans"
             android:gravity="center_vertical"
             android:scaleType="fitStart"
-            android:paddingLeft="10dp"
+            android:paddingLeft="15dp"
             android:layout_gravity="center_vertical"
            android:src="@drawable/back_icon"
            />
@@ -27,16 +27,16 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
+            android:layout_gravity="center_horizontal"
             android:text="title"
             android:singleLine="true"
             android:textSize="18sp"/>
         <ImageButton
             android:background="#00ffffff"
             android:id="@+id/head_bar_right_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/back_icon"
-            android:paddingRight="10dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:paddingRight="15dp"
             android:layout_gravity="center_vertical"
             android:scaleType="centerInside"
             android:visibility="invisible"/>

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.wang.masssms.R;
 import com.wang.masssms.activity.HandleContactActivity;
@@ -22,6 +23,7 @@ import com.wang.masssms.proxy.ProxyEntity;
 import com.wang.masssms.uiview.AddDailog;
 import com.wang.masssms.uiview.IMHeadView;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -33,9 +35,11 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
     private ListView mGroupListView;
     private GroupListAdapter mAdapter;
     private ArrayList<ContactGroup> mData;
+    private ArrayList<String> mContactName;
     private GroupListProxy mProxy;
     private ContactProxy contactProxy;
     private AddDailog mAddDailog;
+    private ArrayList<ContactGroup> TempData;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,9 +49,8 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-       View view=inflater.inflate(R.layout.fragment_groupcontact,null);
+       View view=inflater.inflate(R.layout.fragment_groupcontact,container,false);
         mHeadView= (IMHeadView) view.findViewById(R.id.fragment_groupcontact_headbar);
-        mHeadView.setTitle("分组");
         createAddDialg();
         mHeadView.setOnRightButtonClickListener(new IMHeadView.OnRightButtonClickListener() {
             @Override
@@ -57,22 +60,23 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
         });
         mGroupListView= (ListView) view.findViewById(R.id.fragment_groupcontact_listview);
         mData=new ArrayList<>();
-        mAdapter=new GroupListAdapter(getActivity(),mData,null);
+        mContactName=new ArrayList<>();
+        mAdapter=new GroupListAdapter(getActivity(),mData,mContactName);
         mAdapter.setOnAddButtonClickListener(new GroupListAdapter.OnAddButtonClickListener() {
             @Override
             public void onItemClick(int position, ContactGroup item) {
-                Intent intent=new Intent(getActivity(),HandleContactActivity.class);
-                intent.putExtra("type",HandleContactActivity.ADD_TO_GROUP);
-                intent.putExtra("gid",item.getId());
+                Intent intent = new Intent(getActivity(), HandleContactActivity.class);
+                intent.putExtra("type", HandleContactActivity.ADD_TO_GROUP);
+                intent.putExtra("gid", item.getId());
                 startActivityForResult(intent, HandleContactActivity.ADD_RESQUEST_CODE);
             }
         });
         mAdapter.setOnDeleteButtonClickListener(new GroupListAdapter.OnDeleteButtonClickListener() {
             @Override
             public void onItemClick(int position, ContactGroup item) {
-                Intent intent=new Intent(getActivity(),HandleContactActivity.class);
-                intent.putExtra("type",HandleContactActivity.DELETE_FROM_GROUP);
-                intent.putExtra("gid",item.getId());
+                Intent intent = new Intent(getActivity(), HandleContactActivity.class);
+                intent.putExtra("type", HandleContactActivity.DELETE_FROM_GROUP);
+                intent.putExtra("gid", item.getId());
                 startActivityForResult(intent, HandleContactActivity.DELETE_REQUEST_CODE);
             }
         });
@@ -97,10 +101,8 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
         super.onResponse(proxyEntity);
         String action=proxyEntity.action;
         if(action.equals(GroupListProxy.GET_GROUP_LIST_SUCCESS)){
-            mData.clear();
-            mData.addAll((List<ContactGroup>) proxyEntity.data);
-            mAdapter.notifyDataSetChanged();
-            setOnBusy(false);
+            TempData= (ArrayList<ContactGroup>) proxyEntity.data;
+            contactProxy.getContactForAllGroup(TempData);
         }else if(action.equals(GroupListProxy.GET_GROUP_LIST_FAILED)){
             setOnBusy(false);
         }else if(action.equals(GroupListProxy.ADD_GROUP_NAME_FAILED)){
@@ -108,11 +110,17 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
             AddDailog.showMsg(mContext,"添加失败了");
         }else if(action.equals(GroupListProxy. ADD_GROUP_NAME_SUCCESS)){
             mProxy.getGroupList();
+        }else if(action.equals(ContactProxy.GET_ALL_GROUP_CONTACT_LIST_SUCCESS)){
+            mData.clear();
+            mData.addAll(TempData);
+            mContactName.addAll((List<String>) proxyEntity.data);
+            mAdapter.notifyDataSetChanged();
+            setOnBusy(false);
         }
 
     }
     public void createAddDialg(){
-        mAddDailog=new AddDailog(mContext);
+        mAddDailog=new AddDailog(getActivity(),true);
         mAddDailog.setmTitle("添加分组");
         mAddDailog.setmPsitive("添加", new DialogInterface.OnClickListener() {
             @Override
@@ -121,7 +129,7 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
                     mProxy.addGroup(mAddDailog.getName());
                     setOnBusy(true);
                 }else{
-
+                    Toast.makeText(getActivity(),"为空",Toast.LENGTH_SHORT).show();
                 }
             }
         });

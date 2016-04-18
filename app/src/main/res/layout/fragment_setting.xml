@@ -8,7 +8,9 @@
     <com.wang.masssms.uiview.IMHeadView
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="#FFF"></com.wang.masssms.uiview.IMHeadView>
+        android:background="#FFF">
+
+    </com.wang.masssms.uiview.IMHeadView>
 
     <FrameLayout
 

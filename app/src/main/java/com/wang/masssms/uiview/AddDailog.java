@@ -29,8 +29,9 @@ public class AddDailog {
     AlertDialog dialog;
     private boolean isShowing=false;
 
-    public AddDailog(Context context) {
+    public AddDailog(Context context,boolean isShowAdd) {
         mContext = context;
+        this.isShowAdd=isShowAdd;
     }
     public void show(){
         if(dialog!=null){
@@ -64,7 +65,7 @@ public class AddDailog {
      * @param onClickListener
      */
     public static void showMsg(Context context,String msg,DialogInterface.OnClickListener onClickListener){
-        final AddDailog addDialog=new AddDailog(context);
+        final AddDailog addDialog=new AddDailog(context,false);
         addDialog.setmMsg(msg);
         addDialog.setmTitle("提示");
         addDialog.setmPsitive("确定", onClickListener);
@@ -86,10 +87,10 @@ public class AddDailog {
             builder.setPositiveButton(mPsitive, mPsitiveClickListener);
         }
         if (mNegative != null) {
-            builder.setPositiveButton(mNegative, mNegativeClickListener);
+            builder.setNegativeButton(mNegative, mNegativeClickListener);
         }
         if (mNature != null) {
-            builder.setPositiveButton(mNature, mNatureClickListener);
+            builder.setNeutralButton(mNature, mNatureClickListener);
         }
         if(isShowAdd) {
             View view= LayoutInflater.from(mContext).inflate(R.layout.ui_view_adddialog,null);

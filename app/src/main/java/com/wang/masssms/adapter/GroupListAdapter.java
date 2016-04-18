@@ -3,6 +3,7 @@ package com.wang.masssms.adapter;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,25 +57,29 @@ public class GroupListAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
+            Log.d("Adapter data",data.size()+"");
+            Log.d("Adapter contact",contacts.size()+"");
             convertView = mLayoutInflate.inflate(R.layout.group_item_layout, null);
             holder = new ViewHolder();
             holder.tv = (TextView) convertView.findViewById(R.id.group_item_name);
             holder.tv.setText(data.get(position).getName());
             holder.mtv = (TextView) convertView.findViewById(R.id.group_contact_names);
-            holder.mtv.setText(contacts.get(position));
+            holder.mtv.setText(contacts.get(position)==null?"":contacts.get(position));
             convertView.setTag(holder);
             final ImageView openView = (ImageView) convertView.findViewById(R.id.more_item_open_bt);
             final LinearLayout moreItemLayout = (LinearLayout) convertView.findViewById(R.id.more_item_layout);
+            moreItemLayout.setVisibility(View.GONE);
             openView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
                     if (moreItemLayout.getVisibility() == View.GONE) {
                         moreItemLayout.setVisibility(View.VISIBLE);
+                        createAndShowRotationAnimator(v, true);
                     } else {
                         moreItemLayout.setVisibility(View.GONE);
+                        createAndShowRotationAnimator(v, false);
                     }
                     //显示旋转动画
-                    createAndShowRotationAnimator(v);
                 }
             });
             holder.mAddtv = (TextView) convertView.findViewById(R.id.add_contact_group);
@@ -102,7 +107,7 @@ public class GroupListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
             holder.tv.setText(data.get(position).getName());
-            holder.mtv.setText(contacts.get(position));
+            holder.mtv.setText("联系人:"+contacts.get(position));
             holder.mAddtv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -133,8 +138,8 @@ public class GroupListAdapter extends BaseAdapter {
         TextView mDeletetv;
     }
 
-    private void createAndShowRotationAnimator(final View v) {
-        ValueAnimator rotaBT = ValueAnimator.ofFloat(0, 180);
+    private void createAndShowRotationAnimator(final View v,boolean isVisable) {
+        ValueAnimator rotaBT =isVisable?ValueAnimator.ofFloat(0, 180):ValueAnimator.ofFloat(180,360);
         rotaBT.setDuration(360);
         rotaBT.setTarget(v);
         rotaBT.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {

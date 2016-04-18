@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <com.wang.masssms.uiview.IMHeadView
         xmlns:headbar="http://schemas.android.com/apk/res-auto"
@@ -18,11 +19,14 @@
     <ListView
         android:id="@+id/fragment_groupcontact_listview"
         android:layout_width="match_parent"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:layout_height="match_parent"
         android:dividerHeight="0.5dp"
         android:divider="#888888"
-        android:listSelector="@color/buttonDown"
         android:scrollbars="none"
-        android:layout_height="match_parent"/>
+        android:descendantFocusability="blocksDescendants"
+        />
 
 
 </LinearLayout>

@@ -52,7 +52,7 @@ public class MessageFragment extends BaseFragment implements SwipeMenuListView.O
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_message,null);
+        View view=inflater.inflate(R.layout.fragment_message,container,false);
         mSwipeMenuListView= (SwipeMenuListView) view.findViewById(R.id.message_swipeMenuListView);
         mSwipeMenuListView.setMenuCreator(mCreater);
         mSwipeMenuListView.setOnMenuItemClickListener(this);

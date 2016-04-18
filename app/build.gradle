@@ -19,17 +19,17 @@ android {
     }
     buildTypes {
         debug{
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    dexOptions{
-        incremental true
-    }
+//    dexOptions{
+//        incremental true
+//    }
 }
 
 dependencies {
