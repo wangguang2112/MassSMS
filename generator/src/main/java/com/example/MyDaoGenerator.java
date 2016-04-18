@@ -5,6 +5,7 @@ import java.util.Date;
 
 import de.greenrobot.daogenerator.DaoGenerator;
 import de.greenrobot.daogenerator.Entity;
+import de.greenrobot.daogenerator.Property;
 import de.greenrobot.daogenerator.Schema;
 
 /**
@@ -27,7 +28,6 @@ public class MyDaoGenerator {
         contacts.addIdProperty().primaryKey().autoincrement();
         contacts.addIntProperty("phonenumber");
         contacts.addIntProperty("name");
-        contacts.addIntProperty("groupid");
         contacts.addDateProperty("creattime");
         contacts.addDateProperty("lastmodify");
 //        private int id;
@@ -50,14 +50,21 @@ public class MyDaoGenerator {
 
         Entity contactToGroup=schema.addEntity("ContactToGroup");
         contactToGroup.addIdProperty().autoincrement().primaryKey();
-        contactToGroup.addIntProperty("cid");
-        contactToGroup.addIntProperty("gid");
+        Property cid=contactToGroup.addLongProperty("cid").getProperty();
+        Property gid=contactToGroup.addLongProperty("gid").getProperty();
+        contactToGroup.addToOne(contacts, cid);
+        contactToGroup.addToOne(contactGroup, gid);
+        contacts.addToMany(contactToGroup, cid).setName("cid");
+        contactGroup.addToMany(contactToGroup, gid).setName("gid");
 
         Entity contactToMessage=schema.addEntity("ContactToMessage");
         contactToMessage.addIdProperty().primaryKey().autoincrement();
-        contactToMessage.addIntProperty("cid");
-        contactToMessage.addIntProperty("mid");
-
+        Property mcid=contactToMessage.addLongProperty("cid").getProperty();
+        Property mid=contactToMessage.addLongProperty("mid").getProperty();
+        contactToMessage.addToOne(contacts, mcid);
+        contactToMessage.addToOne(message, mid);
+        contacts.addToMany(contactToMessage, mcid).setName("cmid");
+        message.addToMany(contactToMessage, mid).setName("mid");
 
     }
 

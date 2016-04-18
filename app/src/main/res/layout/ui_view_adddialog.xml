@@ -7,7 +7,7 @@
         android:layout_marginLeft="7dp"
         android:layout_width="wrap_content"
         android:text="组名:"
-        android:textColor="normal_text_color"
+        android:textColor="@color/normal_text_color"
         android:textSize="18sp"
         android:layout_height="match_parent" />
     <EditText

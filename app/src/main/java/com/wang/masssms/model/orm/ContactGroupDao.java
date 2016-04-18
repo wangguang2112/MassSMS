@@ -28,6 +28,8 @@ public class ContactGroupDao extends AbstractDao<ContactGroup, Long> {
         public final static Property CreatTime = new Property(2, java.util.Date.class, "creatTime", false, "CREAT_TIME");
     };
 
+    private DaoSession daoSession;
+
 
     public ContactGroupDao(DaoConfig config) {
         super(config);
@@ -35,6 +37,7 @@ public class ContactGroupDao extends AbstractDao<ContactGroup, Long> {
     
     public ContactGroupDao(DaoConfig config, DaoSession daoSession) {
         super(config, daoSession);
+        this.daoSession = daoSession;
     }
 
     /** Creates the underlying database table. */
@@ -71,6 +74,12 @@ public class ContactGroupDao extends AbstractDao<ContactGroup, Long> {
         if (creatTime != null) {
             stmt.bindLong(3, creatTime.getTime());
         }
+    }
+
+    @Override
+    protected void attachEntity(ContactGroup entity) {
+        super.attachEntity(entity);
+        entity.__setDaoSession(daoSession);
     }
 
     /** @inheritdoc */

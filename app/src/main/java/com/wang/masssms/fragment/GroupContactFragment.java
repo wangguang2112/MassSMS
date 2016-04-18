@@ -1,6 +1,8 @@
 package com.wang.masssms.fragment;
 
+import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -9,19 +11,19 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.tencent.bugly.crashreport.CrashReport;
 import com.wang.masssms.R;
+import com.wang.masssms.activity.HandleContactActivity;
+import com.wang.masssms.activity.SendMsgActivity;
 import com.wang.masssms.adapter.GroupListAdapter;
 import com.wang.masssms.model.orm.ContactGroup;
+import com.wang.masssms.proxy.ContactProxy;
 import com.wang.masssms.proxy.GroupListProxy;
 import com.wang.masssms.proxy.ProxyEntity;
 import com.wang.masssms.uiview.AddDailog;
 import com.wang.masssms.uiview.IMHeadView;
-
-import java.security.acl.Group;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+
 
 /**
  * Created by 58 on 2016/3/9.
@@ -32,11 +34,13 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
     private GroupListAdapter mAdapter;
     private ArrayList<ContactGroup> mData;
     private GroupListProxy mProxy;
+    private ContactProxy contactProxy;
     private AddDailog mAddDailog;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mProxy=new GroupListProxy(mContext,getCallbackHandler());
+        contactProxy=new ContactProxy(mContext,getCallbackHandler());
     }
 
     @Override
@@ -53,7 +57,25 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
         });
         mGroupListView= (ListView) view.findViewById(R.id.fragment_groupcontact_listview);
         mData=new ArrayList<>();
-        mAdapter=new GroupListAdapter(getActivity(),mData);
+        mAdapter=new GroupListAdapter(getActivity(),mData,null);
+        mAdapter.setOnAddButtonClickListener(new GroupListAdapter.OnAddButtonClickListener() {
+            @Override
+            public void onItemClick(int position, ContactGroup item) {
+                Intent intent=new Intent(getActivity(),HandleContactActivity.class);
+                intent.putExtra("type",HandleContactActivity.ADD_TO_GROUP);
+                intent.putExtra("gid",item.getId());
+                startActivityForResult(intent, HandleContactActivity.ADD_RESQUEST_CODE);
+            }
+        });
+        mAdapter.setOnDeleteButtonClickListener(new GroupListAdapter.OnDeleteButtonClickListener() {
+            @Override
+            public void onItemClick(int position, ContactGroup item) {
+                Intent intent=new Intent(getActivity(),HandleContactActivity.class);
+                intent.putExtra("type",HandleContactActivity.DELETE_FROM_GROUP);
+                intent.putExtra("gid",item.getId());
+                startActivityForResult(intent, HandleContactActivity.DELETE_REQUEST_CODE);
+            }
+        });
         mGroupListView.setAdapter(mAdapter);
         mGroupListView.setOnItemClickListener(this);
         mProxy.getGroupList();
@@ -64,7 +86,10 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        mData.get(position);
+        Intent intent=new Intent(getActivity(),SendMsgActivity.class);
+        intent.putExtra("gid",id);
+        startActivity(intent);
     }
 
     @Override
@@ -107,5 +132,17 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
             }
         });
         mAddDailog.create();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode==Activity.RESULT_OK)
+            switch (requestCode) {
+            case 1:
+            case 2:
+                mProxy.getGroupList();
+                setOnBusy(true);
+                break;
+        }
     }
 }

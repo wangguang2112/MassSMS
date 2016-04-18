@@ -43,6 +43,11 @@ public class GroupListProxy extends BaseProxy{
         entity.data=qb.list();
         callback(entity);
     }
+
+    /**
+     * 添加组名
+     * @param name 组名
+     */
     public void addGroup(String name){
         ProxyEntity entity=new ProxyEntity();
         entity.action=ADD_GROUP_NAME_SUCCESS;

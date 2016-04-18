@@ -26,10 +26,11 @@ public class ContactsDao extends AbstractDao<Contacts, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Phonenumber = new Property(1, Integer.class, "phonenumber", false, "PHONENUMBER");
         public final static Property Name = new Property(2, Integer.class, "name", false, "NAME");
-        public final static Property Groupid = new Property(3, Integer.class, "groupid", false, "GROUPID");
-        public final static Property Creattime = new Property(4, java.util.Date.class, "creattime", false, "CREATTIME");
-        public final static Property Lastmodify = new Property(5, java.util.Date.class, "lastmodify", false, "LASTMODIFY");
+        public final static Property Creattime = new Property(3, java.util.Date.class, "creattime", false, "CREATTIME");
+        public final static Property Lastmodify = new Property(4, java.util.Date.class, "lastmodify", false, "LASTMODIFY");
     };
+
+    private DaoSession daoSession;
 
 
     public ContactsDao(DaoConfig config) {
@@ -38,6 +39,7 @@ public class ContactsDao extends AbstractDao<Contacts, Long> {
     
     public ContactsDao(DaoConfig config, DaoSession daoSession) {
         super(config, daoSession);
+        this.daoSession = daoSession;
     }
 
     /** Creates the underlying database table. */
@@ -47,9 +49,8 @@ public class ContactsDao extends AbstractDao<Contacts, Long> {
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "\"PHONENUMBER\" INTEGER," + // 1: phonenumber
                 "\"NAME\" INTEGER," + // 2: name
-                "\"GROUPID\" INTEGER," + // 3: groupid
-                "\"CREATTIME\" INTEGER," + // 4: creattime
-                "\"LASTMODIFY\" INTEGER);"); // 5: lastmodify
+                "\"CREATTIME\" INTEGER," + // 3: creattime
+                "\"LASTMODIFY\" INTEGER);"); // 4: lastmodify
     }
 
     /** Drops the underlying database table. */
@@ -78,20 +79,21 @@ public class ContactsDao extends AbstractDao<Contacts, Long> {
             stmt.bindLong(3, name);
         }
  
-        Integer groupid = entity.getGroupid();
-        if (groupid != null) {
-            stmt.bindLong(4, groupid);
-        }
- 
         java.util.Date creattime = entity.getCreattime();
         if (creattime != null) {
-            stmt.bindLong(5, creattime.getTime());
+            stmt.bindLong(4, creattime.getTime());
         }
  
         java.util.Date lastmodify = entity.getLastmodify();
         if (lastmodify != null) {
-            stmt.bindLong(6, lastmodify.getTime());
+            stmt.bindLong(5, lastmodify.getTime());
         }
+    }
+
+    @Override
+    protected void attachEntity(Contacts entity) {
+        super.attachEntity(entity);
+        entity.__setDaoSession(daoSession);
     }
 
     /** @inheritdoc */
@@ -107,9 +109,8 @@ public class ContactsDao extends AbstractDao<Contacts, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // phonenumber
             cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // name
-            cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // groupid
-            cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)), // creattime
-            cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)) // lastmodify
+            cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)), // creattime
+            cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)) // lastmodify
         );
         return entity;
     }
@@ -120,9 +121,8 @@ public class ContactsDao extends AbstractDao<Contacts, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setPhonenumber(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
         entity.setName(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
-        entity.setGroupid(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
-        entity.setCreattime(cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)));
-        entity.setLastmodify(cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)));
+        entity.setCreattime(cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)));
+        entity.setLastmodify(cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)));
      }
     
     /** @inheritdoc */

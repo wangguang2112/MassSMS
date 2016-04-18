@@ -1,12 +1,17 @@
 package com.wang.masssms.model.orm;
 
+import java.util.List;
+import java.util.ArrayList;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
 import de.greenrobot.dao.AbstractDao;
 import de.greenrobot.dao.Property;
+import de.greenrobot.dao.internal.SqlUtils;
 import de.greenrobot.dao.internal.DaoConfig;
+import de.greenrobot.dao.query.Query;
+import de.greenrobot.dao.query.QueryBuilder;
 
 import com.wang.masssms.model.orm.ContactToMessage;
 
@@ -24,10 +29,14 @@ public class ContactToMessageDao extends AbstractDao<ContactToMessage, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Cid = new Property(1, Integer.class, "cid", false, "CID");
-        public final static Property Mid = new Property(2, Integer.class, "mid", false, "MID");
+        public final static Property Cid = new Property(1, Long.class, "cid", false, "CID");
+        public final static Property Mid = new Property(2, Long.class, "mid", false, "MID");
     };
 
+    private DaoSession daoSession;
+
+    private Query<ContactToMessage> contacts_CmidQuery;
+    private Query<ContactToMessage> message_MidQuery;
 
     public ContactToMessageDao(DaoConfig config) {
         super(config);
@@ -35,6 +44,7 @@ public class ContactToMessageDao extends AbstractDao<ContactToMessage, Long> {
     
     public ContactToMessageDao(DaoConfig config, DaoSession daoSession) {
         super(config, daoSession);
+        this.daoSession = daoSession;
     }
 
     /** Creates the underlying database table. */
@@ -62,15 +72,21 @@ public class ContactToMessageDao extends AbstractDao<ContactToMessage, Long> {
             stmt.bindLong(1, id);
         }
  
-        Integer cid = entity.getCid();
+        Long cid = entity.getCid();
         if (cid != null) {
             stmt.bindLong(2, cid);
         }
  
-        Integer mid = entity.getMid();
+        Long mid = entity.getMid();
         if (mid != null) {
             stmt.bindLong(3, mid);
         }
+    }
+
+    @Override
+    protected void attachEntity(ContactToMessage entity) {
+        super.attachEntity(entity);
+        entity.__setDaoSession(daoSession);
     }
 
     /** @inheritdoc */
@@ -84,8 +100,8 @@ public class ContactToMessageDao extends AbstractDao<ContactToMessage, Long> {
     public ContactToMessage readEntity(Cursor cursor, int offset) {
         ContactToMessage entity = new ContactToMessage( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // cid
-            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2) // mid
+            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // cid
+            cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2) // mid
         );
         return entity;
     }
@@ -94,8 +110,8 @@ public class ContactToMessageDao extends AbstractDao<ContactToMessage, Long> {
     @Override
     public void readEntity(Cursor cursor, ContactToMessage entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setCid(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
-        entity.setMid(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
+        entity.setCid(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
+        entity.setMid(cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2));
      }
     
     /** @inheritdoc */
@@ -121,4 +137,130 @@ public class ContactToMessageDao extends AbstractDao<ContactToMessage, Long> {
         return true;
     }
     
+    /** Internal query to resolve the "cmid" to-many relationship of Contacts. */
+    public List<ContactToMessage> _queryContacts_Cmid(Long cid) {
+        synchronized (this) {
+            if (contacts_CmidQuery == null) {
+                QueryBuilder<ContactToMessage> queryBuilder = queryBuilder();
+                queryBuilder.where(Properties.Cid.eq(null));
+                contacts_CmidQuery = queryBuilder.build();
+            }
+        }
+        Query<ContactToMessage> query = contacts_CmidQuery.forCurrentThread();
+        query.setParameter(0, cid);
+        return query.list();
+    }
+
+    /** Internal query to resolve the "mid" to-many relationship of Message. */
+    public List<ContactToMessage> _queryMessage_Mid(Long mid) {
+        synchronized (this) {
+            if (message_MidQuery == null) {
+                QueryBuilder<ContactToMessage> queryBuilder = queryBuilder();
+                queryBuilder.where(Properties.Mid.eq(null));
+                message_MidQuery = queryBuilder.build();
+            }
+        }
+        Query<ContactToMessage> query = message_MidQuery.forCurrentThread();
+        query.setParameter(0, mid);
+        return query.list();
+    }
+
+    private String selectDeep;
+
+    protected String getSelectDeep() {
+        if (selectDeep == null) {
+            StringBuilder builder = new StringBuilder("SELECT ");
+            SqlUtils.appendColumns(builder, "T", getAllColumns());
+            builder.append(',');
+            SqlUtils.appendColumns(builder, "T0", daoSession.getContactsDao().getAllColumns());
+            builder.append(',');
+            SqlUtils.appendColumns(builder, "T1", daoSession.getMessageDao().getAllColumns());
+            builder.append(" FROM CONTACT_TO_MESSAGE T");
+            builder.append(" LEFT JOIN CONTACTS T0 ON T.\"CID\"=T0.\"_id\"");
+            builder.append(" LEFT JOIN MESSAGE T1 ON T.\"MID\"=T1.\"_id\"");
+            builder.append(' ');
+            selectDeep = builder.toString();
+        }
+        return selectDeep;
+    }
+    
+    protected ContactToMessage loadCurrentDeep(Cursor cursor, boolean lock) {
+        ContactToMessage entity = loadCurrent(cursor, 0, lock);
+        int offset = getAllColumns().length;
+
+        Contacts contacts = loadCurrentOther(daoSession.getContactsDao(), cursor, offset);
+        entity.setContacts(contacts);
+        offset += daoSession.getContactsDao().getAllColumns().length;
+
+        Message message = loadCurrentOther(daoSession.getMessageDao(), cursor, offset);
+        entity.setMessage(message);
+
+        return entity;    
+    }
+
+    public ContactToMessage loadDeep(Long key) {
+        assertSinglePk();
+        if (key == null) {
+            return null;
+        }
+
+        StringBuilder builder = new StringBuilder(getSelectDeep());
+        builder.append("WHERE ");
+        SqlUtils.appendColumnsEqValue(builder, "T", getPkColumns());
+        String sql = builder.toString();
+        
+        String[] keyArray = new String[] { key.toString() };
+        Cursor cursor = db.rawQuery(sql, keyArray);
+        
+        try {
+            boolean available = cursor.moveToFirst();
+            if (!available) {
+                return null;
+            } else if (!cursor.isLast()) {
+                throw new IllegalStateException("Expected unique result, but count was " + cursor.getCount());
+            }
+            return loadCurrentDeep(cursor, true);
+        } finally {
+            cursor.close();
+        }
+    }
+    
+    /** Reads all available rows from the given cursor and returns a list of new ImageTO objects. */
+    public List<ContactToMessage> loadAllDeepFromCursor(Cursor cursor) {
+        int count = cursor.getCount();
+        List<ContactToMessage> list = new ArrayList<ContactToMessage>(count);
+        
+        if (cursor.moveToFirst()) {
+            if (identityScope != null) {
+                identityScope.lock();
+                identityScope.reserveRoom(count);
+            }
+            try {
+                do {
+                    list.add(loadCurrentDeep(cursor, false));
+                } while (cursor.moveToNext());
+            } finally {
+                if (identityScope != null) {
+                    identityScope.unlock();
+                }
+            }
+        }
+        return list;
+    }
+    
+    protected List<ContactToMessage> loadDeepAllAndCloseCursor(Cursor cursor) {
+        try {
+            return loadAllDeepFromCursor(cursor);
+        } finally {
+            cursor.close();
+        }
+    }
+    
+
+    /** A raw-style query where you can pass any WHERE clause and arguments. */
+    public List<ContactToMessage> queryDeep(String where, String... selectionArg) {
+        Cursor cursor = db.rawQuery(getSelectDeep() + where, selectionArg);
+        return loadDeepAllAndCloseCursor(cursor);
+    }
+ 
 }

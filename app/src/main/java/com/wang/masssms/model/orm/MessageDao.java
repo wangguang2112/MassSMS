@@ -29,6 +29,8 @@ public class MessageDao extends AbstractDao<Message, Long> {
         public final static Property Text = new Property(3, String.class, "text", false, "TEXT");
     };
 
+    private DaoSession daoSession;
+
 
     public MessageDao(DaoConfig config) {
         super(config);
@@ -36,6 +38,7 @@ public class MessageDao extends AbstractDao<Message, Long> {
     
     public MessageDao(DaoConfig config, DaoSession daoSession) {
         super(config, daoSession);
+        this.daoSession = daoSession;
     }
 
     /** Creates the underlying database table. */
@@ -78,6 +81,12 @@ public class MessageDao extends AbstractDao<Message, Long> {
         if (text != null) {
             stmt.bindString(4, text);
         }
+    }
+
+    @Override
+    protected void attachEntity(Message entity) {
+        super.attachEntity(entity);
+        entity.__setDaoSession(daoSession);
     }
 
     /** @inheritdoc */
