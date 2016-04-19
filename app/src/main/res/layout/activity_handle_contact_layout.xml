@@ -1,27 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:orientation="vertical" android:layout_width="match_parent"
-android:layout_height="match_parent">
-<com.wang.masssms.uiview.IMHeadView
-    xmlns:headbar="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/activity_handle_contact_headbar"
     android:layout_width="match_parent"
-    android:layout_height="45dp"
-    android:background="#FFF"
-    headbar:returnvisiable="true"
-    headbar:rightvisiable="true"
-    headbar:headtitle="联系人"
-    headbar:rightsrc="@drawable/more_icon"
-    />
-    <ListView
-        android:id="@+id/activity_contact_listview"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.wang.masssms.uiview.IMHeadView xmlns:headbar="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/activity_handle_contact_headbar"
         android:layout_width="match_parent"
-        android:paddingLeft="3dp"
-        android:paddingRight="3dp"
-        android:layout_height="match_parent"
-        android:dividerHeight="0.5dp"
-        android:divider="#888888"
-        android:scrollbars="none"
-        android:descendantFocusability="blocksDescendants"
-        />
+        android:layout_height="45dp"
+        android:background="#FFF"
+        headbar:headtitle="联系人"
+        headbar:returnvisiable="true"
+        headbar:rightsrc="@drawable/more_icon"
+        headbar:rightvisiable="true" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!--添加组件-->
+        <lt.lemonlabs.android.expandablebuttonmenu.ExpandableMenuOverlay
+            android:id="@+id/activity_handle_contact_bottom_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_gravity="center_horizontal|bottom"
+            android:src="@drawable/add_button" />
+
+        <ListView
+            android:id="@+id/activity_contact_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:descendantFocusability="blocksDescendants"
+            android:divider="#888888"
+            android:dividerHeight="0.5dp"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:scrollbars="none" />
+    </FrameLayout>
 </LinearLayout>

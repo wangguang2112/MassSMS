@@ -7,10 +7,12 @@ import android.os.PersistableBundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import com.hanks.library.AnimateCheckBox;
 import com.wang.masssms.R;
 import com.wang.masssms.adapter.ContactListAdapter;
 import com.wang.masssms.adapter.GroupListAdapter;
@@ -26,7 +28,7 @@ import java.util.List;
 /**
  * Created by wangguang on 2016/4/18.
  */
-public class HandleContactActivity extends BaseActivity implements AdapterView.OnItemSelectedListener {
+public class HandleContactActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener {
     public static String ADD_TO_GROUP = "add_to_group";
     public static int ADD_RESQUEST_CODE = 1;
     public static String DELETE_FROM_GROUP = "delete_from_group";
@@ -80,7 +82,7 @@ public class HandleContactActivity extends BaseActivity implements AdapterView.O
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.contact_menu_add_from_phone:
-                        Intent intent=new Intent(HandleContactActivity.this,AllContactActivity.class);
+                        Intent intent = new Intent(HandleContactActivity.this, AllContactActivity.class);
                         startActivity(intent);
                         break;
                     case R.id.contact_menu_add_by_user:
@@ -96,7 +98,7 @@ public class HandleContactActivity extends BaseActivity implements AdapterView.O
         mContactData = new ArrayList<Contacts>();
         mAdapter = new ContactListAdapter(this, mContactData);
         mContactView.setAdapter(mAdapter);
-        mContactView.setOnItemSelectedListener(this);
+        mContactView.setOnItemClickListener(this);
     }
 
     private void initAdd() {
@@ -132,7 +134,6 @@ public class HandleContactActivity extends BaseActivity implements AdapterView.O
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
     }
 
     @Override
@@ -143,5 +144,12 @@ public class HandleContactActivity extends BaseActivity implements AdapterView.O
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        AnimateCheckBox checkBox= (AnimateCheckBox) view.findViewById(R.id.contact_item_checkbox);
+        checkBox.setChecked(!checkBox.isChecked());
     }
 }

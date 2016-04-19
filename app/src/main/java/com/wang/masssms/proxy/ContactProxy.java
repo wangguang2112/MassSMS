@@ -96,7 +96,7 @@ public class ContactProxy extends BaseProxy{
                    builder.delete(0, builder.length());
                     ctglist = groups.get(i).getGid();//gid是相应的to 写的不好
                     for (int j = 0; j < ctglist.size(); j++) {
-                       builder.append(ctglist.get(i).getContacts().getName() + ",");
+                       builder.append(ctglist.get(j).getContacts().getName() + ",");
                     }
                     index=builder.lastIndexOf(",");
                     if(index>=0) {

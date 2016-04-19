@@ -64,7 +64,7 @@ public class GroupListAdapter extends BaseAdapter {
             holder.tv = (TextView) convertView.findViewById(R.id.group_item_name);
             holder.tv.setText(data.get(position).getName());
             holder.mtv = (TextView) convertView.findViewById(R.id.group_contact_names);
-            holder.mtv.setText("联系人:"+contacts.get(position)==null?"":contacts.get(position));
+            holder.mtv.setText("联系人:"+(contacts.get(position)==null?"暂无联系人":contacts.get(position)));
             convertView.setTag(holder);
             final ImageView openView = (ImageView) convertView.findViewById(R.id.more_item_open_bt);
             final LinearLayout moreItemLayout = (LinearLayout) convertView.findViewById(R.id.more_item_layout);

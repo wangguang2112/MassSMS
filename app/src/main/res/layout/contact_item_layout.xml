@@ -9,9 +9,9 @@
         android:id="@+id/contact_item_checkbox"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:padding="15dp"
+        android:padding="10dp"
         app:animDuration="200"
-        app:checkedColor="@color/yellow_button_down_background"
+        app:checkedColor="@color/yellow_button_normal_background"
         app:lineColor="#fff"
         app:lineWidth="1.2dp"
         app:unCheckColor="#888"/>
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:textColor="#000"
         android:layout_marginLeft="5dp"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:text="万光"/>
     <TextView
         android:textSize="13sp"
@@ -36,7 +36,7 @@
         android:text="13880123297"/>
     <View
         android:layout_alignParentBottom="true"
-        android:background="#888"
+        android:background="#aaa"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"/>
 </RelativeLayout>

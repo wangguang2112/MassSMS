@@ -39,6 +39,7 @@ dependencies {
     compile 'com.android.support:support-v4:23.2.0'
     compile 'de.greenrobot:greendao:2.1.0'
     compile 'com.hanks.animatecheckbox:library:0.1'
+    compile 'co.lemonlabs:expandable-button-menu:1.0.0'
     compile project(':SwipeMenulibrary')
     compile project(":PullToRefresh")
 }
