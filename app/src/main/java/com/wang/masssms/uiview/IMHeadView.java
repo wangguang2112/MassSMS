@@ -4,12 +4,15 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.wang.masssms.R;
@@ -24,8 +27,6 @@ public class IMHeadView extends FrameLayout implements View.OnClickListener {
     private OnReturnButtonClickListener mReturnButtonClickListener;
 
     private LinearLayout mHeadBar1LL;
-    private LinearLayout mHeadBar2LL;
-    private LinearLayout mHeadBar3LL;
     private TextView mTitleView;
     private ImageButton mReturnIB;
     private ImageButton mRightIB;
@@ -52,8 +53,6 @@ public class IMHeadView extends FrameLayout implements View.OnClickListener {
         LayoutInflater.from(mContext).inflate(R.layout.ui_view_headview, this);
         // mLayoutInflater.from(context).inflate();
         mHeadBar1LL = (LinearLayout) this.findViewById(R.id.headbar1);
-        mHeadBar2LL = (LinearLayout) this.findViewById(R.id.headbar2);
-        mHeadBar3LL = (LinearLayout) this.findViewById(R.id.headbar3);
         mReturnIB = (ImageButton) this.findViewById(R.id.head_bar_left_button);
         mTitleView = (TextView) findViewById(R.id.head_bar1_title);
         mRightIB = (ImageButton) findViewById(R.id.head_bar_right_button);
@@ -129,5 +128,19 @@ public class IMHeadView extends FrameLayout implements View.OnClickListener {
     }
     public interface OnReturnButtonClickListener {
         public void onReturnClick(View view);
+    }
+    public void addPopupMenu(int menuRes,PopupMenu.OnMenuItemClickListener listener){
+        if(mRightIB.getVisibility()!=View.VISIBLE){
+            return;
+        }
+        final PopupMenu popup = new PopupMenu(mContext,mRightIB);
+        popup.setOnMenuItemClickListener(listener);
+        popup.inflate(menuRes);
+        mRightIB.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               popup.show();
+            }
+        });
     }
 }

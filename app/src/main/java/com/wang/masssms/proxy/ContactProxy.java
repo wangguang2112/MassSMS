@@ -12,6 +12,7 @@ import com.wang.masssms.model.orm.Contacts;
 import com.wang.masssms.model.orm.ContactsDao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,6 +28,8 @@ public class ContactProxy extends BaseProxy{
     public static String GET_ALL_GROUP_CONTACT_LIST_SUCCESS="get_group_contact_list_success";
     public static String GET_ALL_GROUP_CONTACT_LIST_FAILED="get_group_contact_list_failed";
 
+    public static String ADD_USER_CONTACT_SUCCESS="add_user_contact_success";
+    public static String ADD_USER_CONTACT_FAILED="add_user_contact_failed";
     ContactsDao mContactsDao;
     ContactToGroupDao mContactToGroupDao;
     /**
@@ -50,22 +53,36 @@ public class ContactProxy extends BaseProxy{
             }
         });
     }
+
+    /**
+     * 加载属于租的成员
+     * @param gid
+     */
     public void getContactForGroup(final long gid){
         Runnable runnable = new Runnable() {
             public void run() {
                 ProxyEntity entity=new ProxyEntity();
                 entity.action=GET_GROUP_CONTACT_LIST_SUCCESS;
-                List<ContactToGroup> ctglist=mContactToGroupDao._queryContactGroup_Gid(gid);
-                ArrayList<Contacts> data=new ArrayList<Contacts>(ctglist.size());
-                for(int i=0;i<ctglist.size();i++){
-                    data.add(ctglist.get(i).getContacts());
+                if(gid==-1){
+                    entity.action=GET_GROUP_CONTACT_LIST_FAILED;
+                }else {
+                    List<ContactToGroup> ctglist = mContactToGroupDao._queryContactGroup_Gid(gid);
+                    ArrayList<Contacts> data = new ArrayList<Contacts>(ctglist.size());
+                    for (int i = 0; i < ctglist.size(); i++) {
+                        data.add(ctglist.get(i).getContacts());
+                    }
+                    entity.data = data;
                 }
-                entity.data=data;
                 callback(entity);
             }
         };
         cachedThreadPool.execute(runnable);
     }
+
+    /**
+     * 夹杂所给组的成员
+     * @param groups
+     */
     public void getContactForAllGroup(final ArrayList<ContactGroup> groups){
         Runnable runnable = new Runnable() {
             public void run() {
@@ -77,7 +94,7 @@ public class ContactProxy extends BaseProxy{
                 int index=-1;
                 for(int i=0;i<groups.size();i++) {
                    builder.delete(0, builder.length());
-                    ctglist = mContactToGroupDao._queryContactGroup_Gid(groups.get(i).getId());
+                    ctglist = groups.get(i).getGid();//gid是相应的to 写的不好
                     for (int j = 0; j < ctglist.size(); j++) {
                        builder.append(ctglist.get(i).getContacts().getName() + ",");
                     }
@@ -94,5 +111,43 @@ public class ContactProxy extends BaseProxy{
         cachedThreadPool.execute(runnable);
     }
 
+    /**
+     * 添加联系人
+     * @param data
+     * @param gid
+     */
+    public void addUserContact(final String[] data, final Long gid){
+        cachedThreadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+                ProxyEntity entity=new ProxyEntity();
+                if(data!=null&&!data[0].equals("")&&!data[1].equals("")) {
+                    entity.action=ADD_USER_CONTACT_SUCCESS;
+                    Contacts contacts = new Contacts();
+                    contacts.setId(null);
+                    contacts.setCreattime(new Date(System.currentTimeMillis()));
+                    contacts.setLastmodify(new Date(System.currentTimeMillis()));
+                    contacts.setName(data[0]);
+                    contacts.setPhonenumber(data[1]);
+                    if(mContactsDao.insertOrReplace(contacts)==-1){
+                        entity.action=ADD_USER_CONTACT_FAILED;
+                    }else {
+                        List<Contacts> cids=mContactsDao.queryBuilder().where(ContactsDao.Properties.Name.eq(data[0])).list();
+                        for(Contacts c:cids) {
+                            ContactToGroup ctg = new ContactToGroup();
+                            ctg.setId(null);
+                            ctg.setCid(c.getId());
+                            ctg.setGid(gid);
+                            mContactToGroupDao.insertOrReplace(ctg);
+                        }
+                        callback(entity);
+                    }
+                }else {
+                    entity.action=ADD_USER_CONTACT_FAILED;
+                }
+                callback(entity);
+            }
+        });
+    }
 
 }

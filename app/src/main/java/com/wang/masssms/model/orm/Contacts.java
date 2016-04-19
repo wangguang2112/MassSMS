@@ -11,8 +11,8 @@ import de.greenrobot.dao.DaoException;
 public class Contacts {
 
     private Long id;
-    private Integer phonenumber;
-    private Integer name;
+    private String phonenumber;
+    private String name;
     private java.util.Date creattime;
     private java.util.Date lastmodify;
 
@@ -32,7 +32,7 @@ public class Contacts {
         this.id = id;
     }
 
-    public Contacts(Long id, Integer phonenumber, Integer name, java.util.Date creattime, java.util.Date lastmodify) {
+    public Contacts(Long id, String phonenumber, String name, java.util.Date creattime, java.util.Date lastmodify) {
         this.id = id;
         this.phonenumber = phonenumber;
         this.name = name;
@@ -54,19 +54,19 @@ public class Contacts {
         this.id = id;
     }
 
-    public Integer getPhonenumber() {
+    public String getPhonenumber() {
         return phonenumber;
     }
 
-    public void setPhonenumber(Integer phonenumber) {
+    public void setPhonenumber(String phonenumber) {
         this.phonenumber = phonenumber;
     }
 
-    public Integer getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(Integer name) {
+    public void setName(String name) {
         this.name = name;
     }
 

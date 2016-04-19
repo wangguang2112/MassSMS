@@ -113,7 +113,7 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
             setOnBusy(false);
         } else if (action.equals(GroupListProxy.ADD_GROUP_NAME_FAILED)) {
             setOnBusy(false);
-            AddDailog.showMsg(mContext, "添加失败了");
+            AddDailog.showMsg(getActivity(), "添加失败，可能名称重复了~");
         } else if (action.equals(GroupListProxy.ADD_GROUP_NAME_SUCCESS)) {
             mProxy.getGroupList();
         } else if (action.equals(ContactProxy.GET_ALL_GROUP_CONTACT_LIST_SUCCESS)) {
@@ -122,6 +122,11 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
             mContactName.addAll((List<String>) proxyEntity.data);
             mAdapter.notifyDataSetChanged();
             setOnBusy(false);
+        }else if(action.equals(GroupListProxy.ALTER_GROUP_SUCCESS)){
+            mAdapter.notifyDataSetChanged();
+        }else if(action.equals(GroupListProxy.ALTER_GROUP_FAAILED)){
+            AddDailog.showMsg(getActivity(), "添加失败，可能名称重复了~");
+            mAdapter.notifyDataSetChanged();
         }
 
     }
@@ -176,16 +181,15 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
             final int position=menuInfo.position;
             final AddDailog ma=new AddDailog(getActivity(),true);
             final ContactGroup group=mData.get(position);
-            ma.setmTitle("更改" +group.getName() + "组");
+            ma.setmTitle("更改组名： " +group.getName());
             ma.setmPsitive("更改", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    if(ma.getName()!=null&&!ma.getName().equals("")) {
+                    if (ma.getName() != null && !ma.getName().equals("")) {
                         group.setName(ma.getName());
                         mProxy.alterGroup(group);
-                        mAdapter.notifyDataSetChanged();
-                    }else {
-                        Toast.makeText(getActivity(),"请添加文字",Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), "请添加文字", Toast.LENGTH_SHORT).show();
                     }
                 }
             });

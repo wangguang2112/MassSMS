@@ -24,8 +24,8 @@ public class ContactsDao extends AbstractDao<Contacts, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Phonenumber = new Property(1, Integer.class, "phonenumber", false, "PHONENUMBER");
-        public final static Property Name = new Property(2, Integer.class, "name", false, "NAME");
+        public final static Property Phonenumber = new Property(1, String.class, "phonenumber", false, "PHONENUMBER");
+        public final static Property Name = new Property(2, String.class, "name", false, "NAME");
         public final static Property Creattime = new Property(3, java.util.Date.class, "creattime", false, "CREATTIME");
         public final static Property Lastmodify = new Property(4, java.util.Date.class, "lastmodify", false, "LASTMODIFY");
     };
@@ -47,8 +47,8 @@ public class ContactsDao extends AbstractDao<Contacts, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"CONTACTS\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
-                "\"PHONENUMBER\" INTEGER," + // 1: phonenumber
-                "\"NAME\" INTEGER," + // 2: name
+                "\"PHONENUMBER\" TEXT," + // 1: phonenumber
+                "\"NAME\" TEXT," + // 2: name
                 "\"CREATTIME\" INTEGER," + // 3: creattime
                 "\"LASTMODIFY\" INTEGER);"); // 4: lastmodify
     }
@@ -69,14 +69,14 @@ public class ContactsDao extends AbstractDao<Contacts, Long> {
             stmt.bindLong(1, id);
         }
  
-        Integer phonenumber = entity.getPhonenumber();
+        String phonenumber = entity.getPhonenumber();
         if (phonenumber != null) {
-            stmt.bindLong(2, phonenumber);
+            stmt.bindString(2, phonenumber);
         }
  
-        Integer name = entity.getName();
+        String name = entity.getName();
         if (name != null) {
-            stmt.bindLong(3, name);
+            stmt.bindString(3, name);
         }
  
         java.util.Date creattime = entity.getCreattime();
@@ -107,8 +107,8 @@ public class ContactsDao extends AbstractDao<Contacts, Long> {
     public Contacts readEntity(Cursor cursor, int offset) {
         Contacts entity = new Contacts( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // phonenumber
-            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // name
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // phonenumber
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // name
             cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)), // creattime
             cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)) // lastmodify
         );
@@ -119,8 +119,8 @@ public class ContactsDao extends AbstractDao<Contacts, Long> {
     @Override
     public void readEntity(Cursor cursor, Contacts entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setPhonenumber(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
-        entity.setName(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
+        entity.setPhonenumber(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setName(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setCreattime(cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)));
         entity.setLastmodify(cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)));
      }

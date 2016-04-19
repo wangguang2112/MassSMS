@@ -42,30 +42,6 @@
             android:scaleType="centerInside"
             android:visibility="invisible"/>
     </LinearLayout>
-    <LinearLayout
-        android:id="@+id/headbar2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:visibility="gone">
-        <TextView
-            android:id="@+id/head_bar2_title"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="title"
-            android:singleLine="true"
-            android:textSize="18sp"/>
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/headbar3"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:visibility="gone">
-    </LinearLayout>
-
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"

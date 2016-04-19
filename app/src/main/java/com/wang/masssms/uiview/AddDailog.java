@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.wang.masssms.R;
 
 /**
+ * dailog
  * Created by wangguang on 2016/4/13.
  */
 public class AddDailog {
@@ -23,12 +24,17 @@ public class AddDailog {
     private DialogInterface.OnClickListener mNatureClickListener;
     private String mNegative;
     private DialogInterface.OnClickListener mNegativeClickListener;
+    //添加分组时用的et
     private EditText mNameET;
+    //在添加联系人时使用的
+    private EditText mContactNameET;
+    private EditText mContactNumberET;
+
     private AlertDialog.Builder builder;
     private boolean isShowAdd=false;
-    AlertDialog dialog;
+    private AlertDialog dialog;
     private boolean isShowing=false;
-
+    private boolean isShowNameAndNumber=false;
     public AddDailog(Context context,boolean isShowAdd) {
         mContext = context;
         this.isShowAdd=isShowAdd;
@@ -100,12 +106,24 @@ public class AddDailog {
             mNameET= (EditText) view.findViewById(R.id.adddialog_text);
             builder.setIcon(R.drawable.group_contact_add_big);
         }
+        if(isShowNameAndNumber){
+            View view= LayoutInflater.from(mContext).inflate(R.layout.ui_view_adddialog_more,null);
+            builder.setView(view);
+            mContactNameET= (EditText) view.findViewById(R.id.dialog_name);
+            mContactNumberET= (EditText) view.findViewById(R.id.dialog_number);
+            builder.setIcon(R.drawable.group_contact_add_big);
+        }
         dialog = builder.create();
     }
     public String getName(){
         if(mNameET!=null) {
             return mNameET.getText().toString();
         }else return "";
+    }
+    public String[] getContactNameAndNumber(){
+        if(mContactNameET!=null&&mContactNumberET!=null) {
+            return new String[]{mContactNameET.getText().toString(),mContactNumberET.getText().toString()};
+        }else return null;
     }
     public void setmTitle(String mTitle) {
         this.mTitle = mTitle;
@@ -132,4 +150,5 @@ public class AddDailog {
     public void setIsShowAdd(boolean isShowAdd) {
         this.isShowAdd = isShowAdd;
     }
+    public void setIsShowNameAndNumber(boolean isShowNameAndNumber){ this.isShowNameAndNumber=isShowNameAndNumber;}
 }

@@ -26,8 +26,8 @@ public class MyDaoGenerator {
 //        private Date lastmodify;
         Entity contacts= schema.addEntity("Contacts");
         contacts.addIdProperty().primaryKey().autoincrement();
-        contacts.addIntProperty("phonenumber");
-        contacts.addIntProperty("name");
+        contacts.addStringProperty("phonenumber");
+        contacts.addStringProperty("name");
         contacts.addDateProperty("creattime");
         contacts.addDateProperty("lastmodify");
 //        private int id;
