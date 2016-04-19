@@ -41,53 +41,73 @@ public class GroupListProxy extends BaseProxy{
      * 数据库中查询组列表
      */
     public void getGroupList(){
-        ProxyEntity entity=new ProxyEntity();
-        entity.action=GET_GROUP_LIST_SUCCESS;
-        QueryBuilder<ContactGroup> qb = mContactGroupDao.queryBuilder();
-        entity.data=qb.list();
-        callback(entity);
+        Runnable runnable = new Runnable() {
+            public void run() {
+                ProxyEntity entity=new ProxyEntity();
+                entity.action=GET_GROUP_LIST_SUCCESS;
+                QueryBuilder<ContactGroup> qb = mContactGroupDao.queryBuilder();
+                entity.data=qb.list();
+                callback(entity);
+            }
+        };
+        cachedThreadPool.execute(runnable);
     }
 
     /**
      * 添加组名
      * @param name 组名
      */
-    public void addGroup(String name){
-        ProxyEntity entity=new ProxyEntity();
-        entity.action=ADD_GROUP_NAME_SUCCESS;
-        ContactGroup contactGroup=new ContactGroup();
-        contactGroup.setId(null);//自增长
-        contactGroup.setName(name);
-        contactGroup.setCreatTime(new Date(System.currentTimeMillis()));
-        if(mContactGroupDao.insert(contactGroup)!=-1){
-            entity.action=ADD_GROUP_NAME_SUCCESS;
-        }else {
-            entity.action=ADD_GROUP_NAME_FAILED;
-        }
-        callback(entity);
+    public void addGroup(final String name){
+        Runnable runnable = new Runnable() {
+            public void run() {
+                ProxyEntity entity=new ProxyEntity();
+                entity.action=ADD_GROUP_NAME_SUCCESS;
+                ContactGroup contactGroup=new ContactGroup();
+                contactGroup.setId(null);//自增长
+                contactGroup.setName(name);
+                contactGroup.setCreatTime(new Date(System.currentTimeMillis()));
+                if(mContactGroupDao.insert(contactGroup)!=-1){
+                    entity.action=ADD_GROUP_NAME_SUCCESS;
+                }else {
+                    entity.action=ADD_GROUP_NAME_FAILED;
+                }
+                callback(entity);
+            }
+        };
+        cachedThreadPool.execute(runnable);
     }
 
     /**
      * 删除分组
      * @param gid
      */
-   public void deleteGroup(Long gid){
-       ProxyEntity entity=new ProxyEntity();
-       entity.action=DELETE_GROUP_SUCCESS;
-       mContactGroupDao.deleteByKey(gid);
-       entity.action=ADD_GROUP_NAME_SUCCESS;
-       callback(entity);
+   public void deleteGroup(final Long gid){
+       Runnable runnable = new Runnable() {
+           public void run() {
+               ProxyEntity entity=new ProxyEntity();
+               entity.action=DELETE_GROUP_SUCCESS;
+               mContactGroupDao.deleteByKey(gid);
+               entity.action=ADD_GROUP_NAME_SUCCESS;
+               callback(entity);
+           }
+       };
+       cachedThreadPool.execute(runnable);
    }
 
     /**
      * 更改分组
      * @param group
      */
-    public void alterGroup(ContactGroup group){
-        ProxyEntity entity=new ProxyEntity();
-        entity.action=ALTER_GROUP_SUCCESS;
-        mContactGroupDao.update(group);
-        entity.action=ADD_GROUP_NAME_SUCCESS;
-        callback(entity);
+    public void alterGroup(final ContactGroup group){
+        Runnable runnable = new Runnable() {
+            public void run() {
+                ProxyEntity entity=new ProxyEntity();
+                entity.action=ALTER_GROUP_SUCCESS;
+                mContactGroupDao.update(group);
+                entity.action=ADD_GROUP_NAME_SUCCESS;
+                callback(entity);
+            }
+        };
+        cachedThreadPool.execute(runnable);
     }
 }

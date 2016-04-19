@@ -41,42 +41,57 @@ public class ContactProxy extends BaseProxy{
         mContactToGroupDao=App.getDaoSession(mContext).getContactToGroupDao();
     }
     public void getALLContactList(){
-        ProxyEntity entity=new ProxyEntity();
-        entity.action=GET_ALL_CONTACT_LIST_SUCCESS;
-        callback(entity);
-    }
-    public void getContactForGroup(long gid){
-        ProxyEntity entity=new ProxyEntity();
-        entity.action=GET_GROUP_CONTACT_LIST_SUCCESS;
-        List<ContactToGroup> ctglist=mContactToGroupDao._queryContactGroup_Gid(gid);
-        ArrayList<Contacts> data=new ArrayList<Contacts>(ctglist.size());
-        for(int i=0;i<ctglist.size();i++){
-            data.add(ctglist.get(i).getContacts());
-        }
-        entity.data=data;
-        callback(entity);
-    }
-    public void getContactForAllGroup(ArrayList<ContactGroup> groups){
-        ProxyEntity entity=new ProxyEntity();
-        entity.action=GET_ALL_GROUP_CONTACT_LIST_SUCCESS;
-        ArrayList<String> names = new ArrayList<String>();
-        StringBuilder builder=new StringBuilder();
-        List<ContactToGroup> ctglist;
-        int index=-1;
-        for(int i=0;i<groups.size();i++) {
-           builder.delete(0, builder.length());
-            ctglist = mContactToGroupDao._queryContactGroup_Gid(groups.get(i).getId());
-            for (int j = 0; j < ctglist.size(); j++) {
-               builder.append(ctglist.get(i).getContacts().getName() + ",");
+        cachedThreadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+                ProxyEntity entity = new ProxyEntity();
+                entity.action = GET_ALL_CONTACT_LIST_SUCCESS;
+                callback(entity);
             }
-            index=builder.lastIndexOf(",");
-            if(index>=0) {
-                builder.deleteCharAt(index);
+        });
+    }
+    public void getContactForGroup(final long gid){
+        Runnable runnable = new Runnable() {
+            public void run() {
+                ProxyEntity entity=new ProxyEntity();
+                entity.action=GET_GROUP_CONTACT_LIST_SUCCESS;
+                List<ContactToGroup> ctglist=mContactToGroupDao._queryContactGroup_Gid(gid);
+                ArrayList<Contacts> data=new ArrayList<Contacts>(ctglist.size());
+                for(int i=0;i<ctglist.size();i++){
+                    data.add(ctglist.get(i).getContacts());
+                }
+                entity.data=data;
+                callback(entity);
             }
-            names.add(builder.toString());
-        }
-       entity.data=names;
-        callback(entity);
+        };
+        cachedThreadPool.execute(runnable);
+    }
+    public void getContactForAllGroup(final ArrayList<ContactGroup> groups){
+        Runnable runnable = new Runnable() {
+            public void run() {
+                ProxyEntity entity=new ProxyEntity();
+                entity.action=GET_ALL_GROUP_CONTACT_LIST_SUCCESS;
+                ArrayList<String> names = new ArrayList<String>();
+                StringBuilder builder=new StringBuilder();
+                List<ContactToGroup> ctglist;
+                int index=-1;
+                for(int i=0;i<groups.size();i++) {
+                   builder.delete(0, builder.length());
+                    ctglist = mContactToGroupDao._queryContactGroup_Gid(groups.get(i).getId());
+                    for (int j = 0; j < ctglist.size(); j++) {
+                       builder.append(ctglist.get(i).getContacts().getName() + ",");
+                    }
+                    index=builder.lastIndexOf(",");
+                    if(index>=0) {
+                        builder.deleteCharAt(index);
+                    }
+                    names.add(builder.toString());
+                }
+                entity.data=names;
+                callback(entity);
+            }
+        };
+        cachedThreadPool.execute(runnable);
     }
 
 
