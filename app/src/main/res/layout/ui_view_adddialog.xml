@@ -4,7 +4,7 @@
     android:layout_height="50dp">
     <TextView
         android:gravity="center_vertical"
-        android:layout_marginLeft="7dp"
+        android:layout_marginLeft="32dp"
         android:layout_width="wrap_content"
         android:text="组名:"
         android:textColor="@color/normal_text_color"
@@ -17,6 +17,7 @@
         android:layout_marginRight="10dp"
         android:layout_width="match_parent"
         android:hint="在这里添加组名"
+        android:textColorHint="#aaa"
         android:maxLength="10"
         android:singleLine="true"
         android:textSize="16sp"

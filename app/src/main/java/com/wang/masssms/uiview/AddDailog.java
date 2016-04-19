@@ -82,7 +82,9 @@ public class AddDailog {
     public void create() {
         builder = new AlertDialog.Builder(mContext);
         builder.setTitle(mTitle == null ? "" : mTitle);
-        builder.setMessage(mMsg == null ? "" : mMsg);
+        if(mMsg!=null&&!mMsg.equals("")) {
+            builder.setMessage(mMsg);
+        }
         if (mPsitive != null) {
             builder.setPositiveButton(mPsitive, mPsitiveClickListener);
         }
@@ -96,6 +98,7 @@ public class AddDailog {
             View view= LayoutInflater.from(mContext).inflate(R.layout.ui_view_adddialog,null);
             builder.setView(view);
             mNameET= (EditText) view.findViewById(R.id.adddialog_text);
+            builder.setIcon(R.drawable.group_contact_add_big);
         }
         dialog = builder.create();
     }

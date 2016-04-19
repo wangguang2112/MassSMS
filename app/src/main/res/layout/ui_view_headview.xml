@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/colorPrimaryDark">
     <LinearLayout
         android:id="@+id/headbar1"
         android:layout_width="match_parent"
@@ -10,8 +10,8 @@
         android:orientation="horizontal">
         <ImageButton
             android:id="@+id/head_bar_left_button"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
             android:background="@null"
             android:typeface="sans"
             android:gravity="center_vertical"
@@ -29,6 +29,7 @@
             android:gravity="center"
             android:layout_gravity="center_horizontal"
             android:text="title"
+            android:textColor="@color/white"
             android:singleLine="true"
             android:textSize="18sp"/>
         <ImageButton

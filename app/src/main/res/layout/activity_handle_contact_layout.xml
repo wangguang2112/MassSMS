@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="vertical" android:layout_width="match_parent"
+android:layout_height="match_parent">
+<com.wang.masssms.uiview.IMHeadView
+    xmlns:headbar="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_handle_contact_headbar"
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:background="#FFF"
+    headbar:returnvisiable="true"
+    headbar:rightvisiable="false"
+    headbar:headtitle="发送短信"
+    headbar:rightsrc="@drawable/add_up"
+    />
+</LinearLayout>

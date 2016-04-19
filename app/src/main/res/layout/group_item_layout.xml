@@ -9,13 +9,13 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="20dp"
             android:layout_marginRight="10dp"
             android:scaleType="centerInside"
-            android:src="@drawable/people_head" />
+            android:src="@drawable/group_icon" />
 
         <TextView
             android:textColor="#333333"
@@ -26,15 +26,15 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="系统"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <ImageView
             android:id="@+id/more_item_open_bt"
-            android:layout_width="wrap_content"
-            android:layout_height="8dp"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="30dp"
-            android:scaleType="centerInside"
+            android:scaleType="center"
             android:src="@drawable/down_icon" />
     </LinearLayout>
 
@@ -64,16 +64,17 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-
+            android:layout_marginBottom="5dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/add_contact_group"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center_horizontal"
+                android:paddingLeft="40dp"
+                android:textColor="@color/text_press_color"
+                android:drawableLeft="@drawable/group_contact_add"
                 android:text="添加联系人" />
 
             <View
@@ -82,10 +83,12 @@
                 android:layout_height="match_parent" />
 
             <TextView
+                android:paddingLeft="40dp"
                 android:id="@+id/delete_contact_group"
-                android:layout_width="wrap_content"
-                android:gravity="center_horizontal"
+                android:layout_width="0dp"
+                android:textColor="@color/text_press_color"
                 android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/group_contact_delete"
                 android:layout_weight="1"
                 android:text="删除联系人" />
         </LinearLayout>

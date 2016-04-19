@@ -8,6 +8,8 @@
     <com.wang.masssms.uiview.IMHeadView
         android:layout_width="match_parent"
         android:layout_height="45dp"
+        xmlns:headbar="http://schemas.android.com/apk/res-auto"
+        headbar:headtitle="设置"
         android:background="#FFF">
 
     </com.wang.masssms.uiview.IMHeadView>

@@ -45,7 +45,7 @@ public class MessageFragment extends BaseFragment implements SwipeMenuListView.O
             deleteItem.setWidth(90);
             // set a icon
             deleteItem.setIcon(R.drawable.icon_message_delete);
-            // add to menu
+            // add_up to menu
             menu.addMenuItem(deleteItem);
         }
     };

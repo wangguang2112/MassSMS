@@ -14,7 +14,7 @@
         headbar:returnvisiable="false"
         headbar:rightvisiable="true"
         headbar:headtitle="分组"
-        headbar:rightsrc="@drawable/add"
+        headbar:rightsrc="@drawable/add_button"
         />
     <ListView
         android:id="@+id/fragment_groupcontact_listview"

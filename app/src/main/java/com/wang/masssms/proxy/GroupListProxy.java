@@ -21,6 +21,10 @@ public class GroupListProxy extends BaseProxy{
     public static String GET_GROUP_LIST_FAILED="get_group_list_failed";
     public static String ADD_GROUP_NAME_SUCCESS="add_group_name_success";
     public static String ADD_GROUP_NAME_FAILED="add_group_name_failed";
+    public static  String DELETE_GROUP_SUCCESS="delete_group_success";
+    public static  String DELETE_GROUP_FAAILED="delete_group_faailed";
+    public static  String ALTER_GROUP_SUCCESS="alter_group_success";
+    public static  String ALTER_GROUP_FAAILED="alter_group_faailed";
     ContactGroupDao mContactGroupDao;
     /**
      * 构造函数
@@ -60,6 +64,30 @@ public class GroupListProxy extends BaseProxy{
         }else {
             entity.action=ADD_GROUP_NAME_FAILED;
         }
+        callback(entity);
+    }
+
+    /**
+     * 删除分组
+     * @param gid
+     */
+   public void deleteGroup(Long gid){
+       ProxyEntity entity=new ProxyEntity();
+       entity.action=DELETE_GROUP_SUCCESS;
+       mContactGroupDao.deleteByKey(gid);
+       entity.action=ADD_GROUP_NAME_SUCCESS;
+       callback(entity);
+   }
+
+    /**
+     * 更改分组
+     * @param group
+     */
+    public void alterGroup(ContactGroup group){
+        ProxyEntity entity=new ProxyEntity();
+        entity.action=ALTER_GROUP_SUCCESS;
+        mContactGroupDao.update(group);
+        entity.action=ADD_GROUP_NAME_SUCCESS;
         callback(entity);
     }
 }

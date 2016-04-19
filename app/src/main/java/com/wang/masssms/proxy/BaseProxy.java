@@ -4,6 +4,9 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 
 /**
  * Created by 58 on 2016/2/29.
@@ -14,7 +17,8 @@ public class BaseProxy {
     protected Context mContext;
     //    标签
     protected String mTag;
-
+    //线程池
+    ExecutorService cachedThreadPool;
     /**
      * 构造函数
      * @param proxyCallbackHandler activity的handler传过来，用于交互
@@ -23,6 +27,7 @@ public class BaseProxy {
         this.mHandler = proxyCallbackHandler;
         mContext=context;
         mTag = this.getClass().getSimpleName();
+        cachedThreadPool = Executors.newCachedThreadPool();
     }
 
     public String getmTag() {

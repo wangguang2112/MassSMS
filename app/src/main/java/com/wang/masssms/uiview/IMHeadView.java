@@ -47,7 +47,7 @@ public class IMHeadView extends FrameLayout implements View.OnClickListener {
         init(context, attrs, defStyleAttr);
     }
 
-    private void init(Context context, AttributeSet attrs, int defStyleAttr) {
+    private void init(final Context context, AttributeSet attrs, int defStyleAttr) {
         mContext = context;
         LayoutInflater.from(mContext).inflate(R.layout.ui_view_headview, this);
         // mLayoutInflater.from(context).inflate();
