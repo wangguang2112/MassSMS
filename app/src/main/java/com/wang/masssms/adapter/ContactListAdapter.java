@@ -22,9 +22,11 @@ import java.util.List;
 public class ContactListAdapter extends BaseAdapter{
     List<Contacts> data;
     Context mContext;
-    public ContactListAdapter(Context context,ArrayList<Contacts> data){
+    List<Boolean> isChecks;
+    public ContactListAdapter(Context context,ArrayList<Contacts> data,ArrayList<Boolean> isChecks){
         mContext=context;
         this.data=data;
+        this.isChecks=isChecks;
     }
     @Override
     public int getCount() {
@@ -42,7 +44,7 @@ public class ContactListAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ContactViewHolder holder;
         if(convertView==null){
             convertView= LayoutInflater.from(mContext).inflate(R.layout.contact_item_layout,null);
@@ -52,11 +54,27 @@ public class ContactListAdapter extends BaseAdapter{
             holder.checkBox= (AnimateCheckBox) convertView.findViewById(R.id.contact_item_checkbox);
             holder.number.setText(data.get(position).getPhonenumber());
             holder.name.setText(data.get(position).getName());
+            holder.checkBox.setChecked(isChecks.get(position));
+            holder.checkBox.setEnabled(false);
+//            holder.checkBox.setOnCheckedChangeListener(new AnimateCheckBox.OnCheckedChangeListener() {
+//                @Override
+//                public void onCheckedChanged(View buttonView, boolean isChecked) {
+//                    isChecks.set(position, isChecked);
+//                }
+//            });
             convertView.setTag(holder);
         }else{
             holder= (ContactViewHolder) convertView.getTag();
             holder.number.setText(data.get(position).getPhonenumber());
             holder.name.setText(data.get(position).getName());
+            holder.checkBox.setChecked(isChecks.get(position));
+            holder.checkBox.setEnabled(false);
+//            holder.checkBox.setOnCheckedChangeListener(new AnimateCheckBox.OnCheckedChangeListener() {
+//                @Override
+//                public void onCheckedChanged(View buttonView, boolean isChecked) {
+//                    isChecks.set(position,isChecked);
+//                }
+//            });
         }
         return convertView;
     }

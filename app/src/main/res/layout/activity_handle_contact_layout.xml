@@ -1,40 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              xmlns:ebm="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent" android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <com.wang.masssms.uiview.IMHeadView xmlns:headbar="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/activity_handle_contact_headbar"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="#FFF"
-        headbar:headtitle="联系人"
-        headbar:returnvisiable="true"
-        headbar:rightsrc="@drawable/more_icon"
-        headbar:rightvisiable="true" />
+                                        android:id="@+id/activity_handle_contact_headbar"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="45dp"
+                                        android:background="#FFF"
+                                        headbar:headtitle="联系人"
+                                        headbar:returnvisiable="true"
+                                        headbar:rightsrc="@drawable/more_icon"
+                                        headbar:rightvisiable="true"/>
 
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <!--添加组件-->
-        <lt.lemonlabs.android.expandablebuttonmenu.ExpandableMenuOverlay
-            android:id="@+id/activity_handle_contact_bottom_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_gravity="center_horizontal|bottom"
-            android:src="@drawable/add_button" />
-
-        <ListView
-            android:id="@+id/activity_contact_listview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:descendantFocusability="blocksDescendants"
-            android:divider="#888888"
-            android:dividerHeight="0.5dp"
-            android:paddingLeft="3dp"
-            android:paddingRight="3dp"
-            android:scrollbars="none" />
+            android:layout_height="match_parent">
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+            <ListView
+                    android:background="@color/background"
+                    android:id="@+id/activity_contact_listview"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:divider="#cccccc"
+                    android:descendantFocusability="beforeDescendants"
+                    android:dividerHeight="0.5dp"
+                    android:paddingLeft="3dp"
+                    android:paddingRight="3dp"
+                    android:scrollbars="none"/>
+            <RelativeLayout android:layout_width="match_parent" android:layout_height="50dp"
+                            android:background="#fff"
+                            android:id="@+id/cotact_handle_bar"
+                            android:visibility="visible"
+                            android:layout_gravity="bottom">
+                <View android:layout_width="match_parent"
+                      android:layout_alignParentTop="true"
+                      android:layout_height="0.5dp" android:background="#aaa"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                          android:text="删除"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent"
+                        android:background="@color/transparency">
+            <!--添加组件-->
+            <!-- ebm:dimAmount=\"0.8\"        // Screen dim amount when menu is expanded
+ebm:mainButtonSize=\"0.25\"  // Main button size in % of screen height
+ebm:otherButtonSize=\"0.22\" // Expanded menu button size in % of screen height
+ebm:distanceY=\"0.17\"       // Distance between expanded and collapsed button in screen % of screen height
+ebm:distanceX=\"0.28\"       // Distance between expanded button in % of screen width
+ebm:bottomPad=\"0.02\"       // Button padding in % of screen height
+
+// Button drawable and text resources
+ebm:closeButtonSrc=\"@drawable/circle_close\"
+ebm:leftButtonSrc=\"@drawable/circle_1\"
+ebm:midButtonSrc=\"@drawable/circle_2\"
+ebm:rightButtonSrc=\"@drawable/circle_3\"
+ebm:leftButtonText=\"@string/action_left\"
+ebm:midButtonText=\"@string/action_mid\"
+ebm:rightButtonText=\"@string/action_right\"-->
+            <lt.lemonlabs.android.expandablebuttonmenu.ExpandableMenuOverlay
+                    android:id="@+id/activity_handle_contact_bottom_menu"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/contact_add"
+                    ebm:mainButtonSize="0.12"
+                    ebm:otherButtonSize="0.12"
+                    ebm:dimAmount="0.4"
+                    ebm:distanceY="0.1"
+                    ebm:distanceX="0.15"
+                    ebm:leftButtonText="@string/add_from_phone"
+                    ebm:rightButtonSrc="@drawable/contact_button_user"
+                    ebm:leftButtonSrc="@drawable/contact_button_phone"
+                    ebm:bottomPad="0.02"
+                    ebm:rightButtonText="@string/add_from_user"/>
+        </RelativeLayout>
     </FrameLayout>
 </LinearLayout>

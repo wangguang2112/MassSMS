@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MassSMS</string>
+    <string name="add">添加</string>
+    <string name="delete">删除</string>
+    <string name="add_from_phone">导入</string>
+    <string name="add_from_user">添加</string>
 </resources>
