@@ -113,7 +113,7 @@ public class GroupListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
             holder.tv.setText(data.get(position).getName());
-            holder.mtv.setText("联系人:" + contacts.get(position));
+            holder.mtv.setText(Html.fromHtml("联系人: " + "<font color='#54aa00'>" + (contacts.get(position) == null ? "暂无联系人" : contacts.get(position)) + "</font>"));
             holder.mAddtv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

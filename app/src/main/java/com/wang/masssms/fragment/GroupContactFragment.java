@@ -110,6 +110,7 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
             TempData = (ArrayList<ContactGroup>) proxyEntity.data;
             contactProxy.getContactForAllGroup(TempData);
         } else if (action.equals(GroupListProxy.GET_GROUP_LIST_FAILED)) {
+            AddDailog.showMsg(getActivity(),"刷新出错了啊");
             setOnBusy(false);
         } else if (action.equals(GroupListProxy.ADD_GROUP_NAME_FAILED)) {
             setOnBusy(false);
@@ -119,6 +120,7 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
         } else if (action.equals(ContactProxy.GET_ALL_GROUP_CONTACT_LIST_SUCCESS)) {
             mData.clear();
             mData.addAll(TempData);
+            mContactName.clear();
             mContactName.addAll((List<String>) proxyEntity.data);
             mAdapter.notifyDataSetChanged();
             setOnBusy(false);

@@ -108,7 +108,8 @@ public class ContactProxy extends BaseProxy {
                 int index = -1;
                 for (int i = 0; i < groups.size(); i++) {
                     builder.delete(0, builder.length());
-                    ctglist = groups.get(i).getGid();//gid是相应的to 写的不好
+                    ctglist=mContactToGroupDao._queryContactGroup_Gid(groups.get(i).getId());
+//                    ctglist = groups.get(i).getGid();//gid是相应的to 写的不好 这个方法是读取缓存的 最好别用
                     for (int j = 0; j < ctglist.size(); j++) {
                         if (ctglist.get(j).getContacts() == null) {
                             mContactToGroupDao.delete(ctglist.get(j));//处理脏数据
