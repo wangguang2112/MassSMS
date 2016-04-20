@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hanks.library.AnimateCheckBox;
@@ -37,23 +38,43 @@ import lt.lemonlabs.android.expandablebuttonmenu.ExpandableMenuOverlay;
 /**
  * Created by wangguang on 2016/4/18.
  */
-public class HandleContactActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener {
+public class HandleContactActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener, View.OnClickListener {
+
     public static String ADD_TO_GROUP = "add_to_group";
+
     public static int ADD_RESQUEST_CODE = 1;
+
     public static String DELETE_FROM_GROUP = "delete_from_group";
+
     public static int DELETE_REQUEST_CODE = 2;
+
     private ListView mContactView;
+
     private ContactListAdapter mAdapter;
+
     private ArrayList<Contacts> mContactData;
+
     private ArrayList<Boolean> isChecks;
+
     private IMHeadView mHeadView;
+
     private ContactProxy mProxy;
+
     private AddDailog mDailog;
+
     private Long mGid;
+
     private ExpandableMenuOverlay mMenuOverlay;
+
     private RelativeLayout mBottomBar;
+
+    private TextView mDeleteBT;
+
+    private TextView mDeepDeleteBT;
     private Animation mInAnim;
+
     private Animation mOutAnim;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,20 +85,20 @@ public class HandleContactActivity extends BaseActivity implements AdapterView.O
         } else if (getIntent().getStringExtra("type").equals(DELETE_FROM_GROUP)) {
             initDelete();
         }
-        mGid=getIntent().getLongExtra("gid",-1);
+        mGid = getIntent().getLongExtra("gid", -1);
         mProxy = new ContactProxy(this, getCallbackHandler());
         mProxy.getContactForGroup(mGid);
         setOnBusy(true);
     }
 
     private void initView() {
-        mDailog=new AddDailog(this,false);
+        mDailog = new AddDailog(this, false);
         mDailog.setmTitle("添加联系人");
         mDailog.setmNegative("取消", null);
         mDailog.setmPsitive("添加", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mProxy.addUserContact(mDailog.getContactNameAndNumber(), mGid);
+                mProxy.addUserContactForGroup(mDailog.getContactNameAndNumber(), mGid);
                 setOnBusy(true);
             }
         });
@@ -122,11 +143,11 @@ public class HandleContactActivity extends BaseActivity implements AdapterView.O
         });
         mContactView = (ListView) findViewById(R.id.activity_contact_listview);
         mContactData = new ArrayList<Contacts>();
-        isChecks=new ArrayList<Boolean>();
-        mAdapter = new ContactListAdapter(this, mContactData,isChecks);
+        isChecks = new ArrayList<Boolean>();
+        mAdapter = new ContactListAdapter(this, mContactData, isChecks);
         mContactView.setAdapter(mAdapter);
         mContactView.setOnItemClickListener(this);
-        mMenuOverlay= (ExpandableMenuOverlay) findViewById(R.id.activity_handle_contact_bottom_menu);
+        mMenuOverlay = (ExpandableMenuOverlay) findViewById(R.id.activity_handle_contact_bottom_menu);
         mMenuOverlay.setOnMenuButtonClickListener(new ExpandableButtonMenu.OnMenuButtonClick() {
             @Override
             public void onClick(ExpandableButtonMenu.MenuButton action) {
@@ -148,28 +169,33 @@ public class HandleContactActivity extends BaseActivity implements AdapterView.O
                 }
             }
         });
-        mBottomBar= (RelativeLayout) findViewById(R.id.cotact_handle_bar);
-        mInAnim= AnimationUtils.loadAnimation(this,R.anim.float_down_in);
-        mOutAnim=AnimationUtils.loadAnimation(this,R.anim.float_down_in);
+        mBottomBar = (RelativeLayout) findViewById(R.id.cotact_handle_bar);
+        mDeleteBT = (TextView) findViewById(R.id.contact_handle_delete);
+        mDeleteBT.setOnClickListener(this);
+        mDeepDeleteBT= (TextView) findViewById(R.id.contact_handle_deep_delete);
+        mDeepDeleteBT.setOnClickListener(this);
+        mInAnim = AnimationUtils.loadAnimation(this, R.anim.float_down_in);
+        mOutAnim = AnimationUtils.loadAnimation(this, R.anim.float_down_in);
+
     }
 
     /**
      * 显示底部操作栏
-     * @param isShow
      */
-    private void showBottomBar(boolean isShow){
-        if(isShow){
-            if(mBottomBar.getVisibility()==View.GONE) {
+    private void showBottomBar(boolean isShow) {
+        if (isShow) {
+            if (mBottomBar.getVisibility() == View.GONE) {
                 mBottomBar.startAnimation(mInAnim);
                 mBottomBar.setVisibility(View.VISIBLE);
             }
-        }else{
-            if(mBottomBar.getVisibility()==View.VISIBLE) {
-//                mBottomBar.startAnimation(mOutAnim);
+        } else {
+            if (mBottomBar.getVisibility() == View.VISIBLE) {
+                //不加动画了
                 mBottomBar.setVisibility(View.GONE);
             }
         }
     }
+
     private void initAdd() {
         mHeadView.setTitle("添加联系人");
         setResult(ADD_RESQUEST_CODE);
@@ -190,7 +216,7 @@ public class HandleContactActivity extends BaseActivity implements AdapterView.O
         if (action.equals(ContactProxy.GET_GROUP_CONTACT_LIST_SUCCESS)) {
             mContactData.clear();
             mContactData.addAll((List<Contacts>) proxyEntity.data);
-            for (int i=0;i<mContactData.size();i++) {
+            for (int i = 0; i < mContactData.size(); i++) {
                 isChecks.add(false);
             }
             mAdapter.notifyDataSetChanged();
@@ -198,10 +224,24 @@ public class HandleContactActivity extends BaseActivity implements AdapterView.O
         } else if (action.equals(ContactProxy.GET_GROUP_CONTACT_LIST_FAILED)) {
             AddDailog.showMsg(this, "出错了啊-》-");
             setOnBusy(false);
-        }else if(action.equals(ContactProxy.ADD_USER_CONTACT_SUCCESS)){
+        } else if (action.equals(ContactProxy.ADD_USER_CONTACT_SUCCESS)) {
             mProxy.getContactForGroup(mGid);
-        }else if(action.equals(ContactProxy.ADD_USER_CONTACT_FAILED)){
-            Toast.makeText(this,"失败，",Toast.LENGTH_SHORT).show();
+        } else if (action.equals(ContactProxy.ADD_USER_CONTACT_FAILED)) {
+            Toast.makeText(this, "失败，", Toast.LENGTH_SHORT).show();
+            setOnBusy(false);
+        } else if (action.equals(ContactProxy.DELETE_CONTACT_SUCCESS)) {
+            mAdapter.notifyDataSetChanged();
+            showBottomBar(false);
+            setOnBusy(false);
+        } else if (action.equals(ContactProxy.DELETE_CONTACT_FAILED)) {
+            Toast.makeText(this, "失败，", Toast.LENGTH_SHORT).show();
+            setOnBusy(false);
+        }else if (action.equals(ContactProxy.DELETE_DEEP_CONTACT_SUCCESS)) {
+            mAdapter.notifyDataSetChanged();
+            showBottomBar(false);
+            setOnBusy(false);
+        }else  if(action.equals(ContactProxy.DELETE_DEEP_CONTACT_FAILED)){
+            Toast.makeText(this, "失败，", Toast.LENGTH_SHORT).show();
             setOnBusy(false);
         }
     }
@@ -223,16 +263,58 @@ public class HandleContactActivity extends BaseActivity implements AdapterView.O
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        AnimateCheckBox checkBox= (AnimateCheckBox) view.findViewById(R.id.contact_item_checkbox);
+        AnimateCheckBox checkBox = (AnimateCheckBox) view.findViewById(R.id.contact_item_checkbox);
         Log.d("isCheck1", checkBox.isChecked() + "");
         isChecks.set(position, !checkBox.isChecked());
         checkBox.setChecked(!checkBox.isChecked());
         Log.d("isCheck2", checkBox.isChecked() + "");
-        boolean flag=false;
-       for(int i=0;i<isChecks.size();i++){
-           flag=flag||isChecks.get(i);
-       }
-        Log.d("isCheck item",flag+"");
-       showBottomBar(flag);
+        boolean flag = false;
+        for (int i = 0; i < isChecks.size(); i++) {
+            flag = flag || isChecks.get(i);
+        }
+        Log.d("isCheck item", flag + "");
+        showBottomBar(flag);
+    }
+
+    @Override
+    public void onClick(View v) {
+        final ArrayList<Long> arrayList = new ArrayList<>();
+        switch (v.getId()) {
+
+            case R.id.contact_handle_delete:
+                for (int i = 0; i < isChecks.size(); i++) {
+                    if (isChecks.get(i)) {
+                        arrayList.add(mContactData.get(i).getId());
+                        mContactData.remove(i);
+                    }
+                }
+                if (arrayList.size() == 0) {
+                    Toast.makeText(HandleContactActivity.this, "为空", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                mProxy.deleteContactForGroup(arrayList,mGid);
+                setOnBusy(true);
+                break;
+            case R.id.contact_handle_deep_delete:
+                AddDailog.showMsgWithCancle(HandleContactActivity.this, "此操作将会彻底删除联系人，确定要执行吗", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        for (int i = 0; i < isChecks.size(); i++) {
+                            if (isChecks.get(i)) {
+                                arrayList.add(mContactData.get(i).getId());
+                                mContactData.remove(i);
+                            }
+                        }
+                        if (arrayList.size() == 0) {
+                            Toast.makeText(HandleContactActivity.this, "为空", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        mProxy.deleteContactDeppForGroup(arrayList,mGid);
+                        setOnBusy(true);
+                    }
+                });
+            default:
+                break;
+        }
     }
 }

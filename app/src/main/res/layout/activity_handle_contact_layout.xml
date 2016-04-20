@@ -33,13 +33,30 @@
             <RelativeLayout android:layout_width="match_parent" android:layout_height="50dp"
                             android:background="#fff"
                             android:id="@+id/cotact_handle_bar"
-                            android:visibility="visible"
+                            android:visibility="gone"
                             android:layout_gravity="bottom">
                 <View android:layout_width="match_parent"
                       android:layout_alignParentTop="true"
                       android:layout_height="0.5dp" android:background="#aaa"/>
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                          android:text="删除"/>
+                         android:id="@+id/contact_handle_delete"
+                          android:drawableLeft="@drawable/delete"
+                          android:drawablePadding="10dp"
+                          android:text="移除"
+                          android:textSize="18sp"
+                          android:textColor="@color/text_press_color"
+                          android:layout_marginLeft="50dp"
+                          android:layout_centerVertical="true"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                          android:text="彻底删除"
+                          android:id="@+id/contact_handle_deep_delete"
+                          android:drawablePadding="10dp"
+                          android:textSize="18sp"
+                          android:drawableLeft="@drawable/delete_deep"
+                          android:textColor="@color/text_press_color"
+                          android:layout_alignParentRight="true"
+                          android:layout_marginRight="30dp"
+                          android:layout_centerVertical="true"/>
 
             </RelativeLayout>
         </LinearLayout>
