@@ -25,6 +25,7 @@ import com.wang.masssms.adapter.ContactListAdapter;
 import com.wang.masssms.adapter.GroupListAdapter;
 import com.wang.masssms.model.orm.Contacts;
 import com.wang.masssms.proxy.ContactProxy;
+import com.wang.masssms.proxy.GroupListProxy;
 import com.wang.masssms.proxy.ProxyEntity;
 import com.wang.masssms.uiview.AddDailog;
 import com.wang.masssms.uiview.IMHeadView;
@@ -142,6 +143,7 @@ public class HandleContactActivity extends BaseActivity implements AdapterView.O
                 return true;
             }
         });
+        mHeadView.setTitle(getIntent().getStringExtra("title"));
         mContactView = (ListView) findViewById(R.id.activity_contact_listview);
         mContactData = new ArrayList<Contacts>();
         isChecks = new ArrayList<Boolean>();
@@ -198,13 +200,11 @@ public class HandleContactActivity extends BaseActivity implements AdapterView.O
     }
 
     private void initAdd() {
-        mHeadView.setTitle("添加联系人");
         setResult(Activity.RESULT_OK);
         mMenuOverlay.show();
     }
 
     private void initDelete() {
-        mHeadView.setTitle("删除联系人");
         setResult(Activity.RESULT_OK);
 
     }
@@ -262,6 +262,10 @@ public class HandleContactActivity extends BaseActivity implements AdapterView.O
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==Activity.RESULT_OK){
+            mProxy.getContactForGroup(mGid);
+            setOnBusy(true);
+        }
     }
 
 

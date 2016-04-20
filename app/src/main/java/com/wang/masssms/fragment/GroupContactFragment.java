@@ -73,6 +73,7 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
                 Intent intent = new Intent(getActivity(), HandleContactActivity.class);
                 intent.putExtra("type", HandleContactActivity.ADD_TO_GROUP);
                 intent.putExtra("gid", item.getId());
+                intent.putExtra("title", item.getName());
                 startActivityForResult(intent, HandleContactActivity.ADD_RESQUEST_CODE);
             }
         });
@@ -82,6 +83,7 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
                 Intent intent = new Intent(getActivity(), HandleContactActivity.class);
                 intent.putExtra("type", HandleContactActivity.DELETE_FROM_GROUP);
                 intent.putExtra("gid", item.getId());
+                intent.putExtra("title", item.getName());
                 startActivityForResult(intent, HandleContactActivity.DELETE_REQUEST_CODE);
             }
         });
@@ -110,7 +112,7 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
             TempData = (ArrayList<ContactGroup>) proxyEntity.data;
             contactProxy.getContactForAllGroup(TempData);
         } else if (action.equals(GroupListProxy.GET_GROUP_LIST_FAILED)) {
-            AddDailog.showMsg(getActivity(),"刷新出错了啊");
+            AddDailog.showMsg(getActivity(), "刷新出错了啊");
             setOnBusy(false);
         } else if (action.equals(GroupListProxy.ADD_GROUP_NAME_FAILED)) {
             setOnBusy(false);
