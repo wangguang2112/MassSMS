@@ -1,5 +1,6 @@
 package com.wang.masssms.activity;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -198,13 +199,13 @@ public class HandleContactActivity extends BaseActivity implements AdapterView.O
 
     private void initAdd() {
         mHeadView.setTitle("添加联系人");
-        setResult(ADD_RESQUEST_CODE);
+        setResult(Activity.RESULT_OK);
         mMenuOverlay.show();
     }
 
     private void initDelete() {
         mHeadView.setTitle("删除联系人");
-        setResult(DELETE_REQUEST_CODE);
+        setResult(Activity.RESULT_OK);
 
     }
 
@@ -226,13 +227,15 @@ public class HandleContactActivity extends BaseActivity implements AdapterView.O
             setOnBusy(false);
         } else if (action.equals(ContactProxy.ADD_USER_CONTACT_SUCCESS)) {
             mProxy.getContactForGroup(mGid);
+            setResult(Activity.RESULT_OK);
         } else if (action.equals(ContactProxy.ADD_USER_CONTACT_FAILED)) {
-            Toast.makeText(this, "失败，", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "失败，可能已存在该联系人，请选择从手机导入，", Toast.LENGTH_SHORT).show();
             setOnBusy(false);
         } else if (action.equals(ContactProxy.DELETE_CONTACT_SUCCESS)) {
             mAdapter.notifyDataSetChanged();
             showBottomBar(false);
             setOnBusy(false);
+            setResult(Activity.RESULT_OK);
         } else if (action.equals(ContactProxy.DELETE_CONTACT_FAILED)) {
             Toast.makeText(this, "失败，", Toast.LENGTH_SHORT).show();
             setOnBusy(false);
@@ -240,6 +243,7 @@ public class HandleContactActivity extends BaseActivity implements AdapterView.O
             mAdapter.notifyDataSetChanged();
             showBottomBar(false);
             setOnBusy(false);
+            setResult(Activity.RESULT_OK);
         }else  if(action.equals(ContactProxy.DELETE_DEEP_CONTACT_FAILED)){
             Toast.makeText(this, "失败，", Toast.LENGTH_SHORT).show();
             setOnBusy(false);

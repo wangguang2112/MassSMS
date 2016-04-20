@@ -18,37 +18,48 @@ import java.util.List;
 /**
  * Created by wangguang on 2016/4/18.
  */
-public class ContactProxy extends BaseProxy{
-    public static String GET_ALL_CONTACT_LIST_SUCCESS="get_all_contact_list_success";
-    public static String GET_ALL_CONTACT_LIST_FAILED="get_all_contact_list_failed";
+public class ContactProxy extends BaseProxy {
 
-    public static String GET_GROUP_CONTACT_LIST_SUCCESS="get_group_contact_list_success";
-    public static String GET_GROUP_CONTACT_LIST_FAILED="get_group_contact_list_failed";
+    public static String GET_ALL_CONTACT_LIST_SUCCESS = "get_all_contact_list_success";
 
-    public static String GET_ALL_GROUP_CONTACT_LIST_SUCCESS="get_group_contact_list_success";
-    public static String GET_ALL_GROUP_CONTACT_LIST_FAILED="get_group_contact_list_failed";
+    public static String GET_ALL_CONTACT_LIST_FAILED = "get_all_contact_list_failed";
 
-    public static String ADD_USER_CONTACT_SUCCESS="add_user_contact_success";
-    public static String ADD_USER_CONTACT_FAILED="add_user_contact_failed";
+    public static String GET_GROUP_CONTACT_LIST_SUCCESS = "get_group_contact_list_success";
 
-    public static String DELETE_CONTACT_SUCCESS="delete_contact_success";
-    public static String DELETE_CONTACT_FAILED="delete_contact_failed";
-    public static String DELETE_DEEP_CONTACT_SUCCESS="delete_deep_contact_success";
-    public static String DELETE_DEEP_CONTACT_FAILED="delete_deep_contact_failed";
+    public static String GET_GROUP_CONTACT_LIST_FAILED = "get_group_contact_list_failed";
+
+    public static String GET_ALL_GROUP_CONTACT_LIST_SUCCESS = "get_group_contact_list_success";
+
+    public static String GET_ALL_GROUP_CONTACT_LIST_FAILED = "get_group_contact_list_failed";
+
+    public static String ADD_USER_CONTACT_SUCCESS = "add_user_contact_success";
+
+    public static String ADD_USER_CONTACT_FAILED = "add_user_contact_failed";
+
+    public static String DELETE_CONTACT_SUCCESS = "delete_contact_success";
+
+    public static String DELETE_CONTACT_FAILED = "delete_contact_failed";
+
+    public static String DELETE_DEEP_CONTACT_SUCCESS = "delete_deep_contact_success";
+
+    public static String DELETE_DEEP_CONTACT_FAILED = "delete_deep_contact_failed";
+
     ContactsDao mContactsDao;
+
     ContactToGroupDao mContactToGroupDao;
+
     /**
      * 构造函数
      *
-     * @param context
      * @param proxyCallbackHandler activity的handler传过来，用于交互
      */
     public ContactProxy(Context context, Handler proxyCallbackHandler) {
         super(context, proxyCallbackHandler);
-        mContactsDao= App.getDaoSession(mContext).getContactsDao();
-        mContactToGroupDao=App.getDaoSession(mContext).getContactToGroupDao();
+        mContactsDao = App.getDaoSession(mContext).getContactsDao();
+        mContactToGroupDao = App.getDaoSession(mContext).getContactToGroupDao();
     }
-    public void getALLContactList(){
+
+    public void getALLContactList() {
         cachedThreadPool.execute(new Runnable() {
             @Override
             public void run() {
@@ -61,16 +72,15 @@ public class ContactProxy extends BaseProxy{
 
     /**
      * 加载属于租的成员
-     * @param gid
      */
-    public void getContactForGroup(final long gid){
+    public void getContactForGroup(final long gid) {
         Runnable runnable = new Runnable() {
             public void run() {
-                ProxyEntity entity=new ProxyEntity();
-                entity.action=GET_GROUP_CONTACT_LIST_SUCCESS;
-                if(gid==-1){
-                    entity.action=GET_GROUP_CONTACT_LIST_FAILED;
-                }else {
+                ProxyEntity entity = new ProxyEntity();
+                entity.action = GET_GROUP_CONTACT_LIST_SUCCESS;
+                if (gid == -1) {
+                    entity.action = GET_GROUP_CONTACT_LIST_FAILED;
+                } else {
                     List<ContactToGroup> ctglist = mContactToGroupDao._queryContactGroup_Gid(gid);
                     ArrayList<Contacts> data = new ArrayList<Contacts>(ctglist.size());
                     for (int i = 0; i < ctglist.size(); i++) {
@@ -86,34 +96,33 @@ public class ContactProxy extends BaseProxy{
 
     /**
      * 夹杂所给组的成员
-     * @param groups
      */
-    public void getContactForAllGroup(final ArrayList<ContactGroup> groups){
+    public void getContactForAllGroup(final ArrayList<ContactGroup> groups) {
         Runnable runnable = new Runnable() {
             public void run() {
-                ProxyEntity entity=new ProxyEntity();
-                entity.action=GET_ALL_GROUP_CONTACT_LIST_SUCCESS;
+                ProxyEntity entity = new ProxyEntity();
+                entity.action = GET_ALL_GROUP_CONTACT_LIST_SUCCESS;
                 ArrayList<String> names = new ArrayList<String>();
-                StringBuilder builder=new StringBuilder();
+                StringBuilder builder = new StringBuilder();
                 List<ContactToGroup> ctglist;
-                int index=-1;
-                for(int i=0;i<groups.size();i++) {
-                   builder.delete(0, builder.length());
+                int index = -1;
+                for (int i = 0; i < groups.size(); i++) {
+                    builder.delete(0, builder.length());
                     ctglist = groups.get(i).getGid();//gid是相应的to 写的不好
                     for (int j = 0; j < ctglist.size(); j++) {
-                        if(ctglist.get(j).getContacts()==null){
+                        if (ctglist.get(j).getContacts() == null) {
                             mContactToGroupDao.delete(ctglist.get(j));//处理脏数据
-                        }else {
+                        } else {
                             builder.append(ctglist.get(j).getContacts().getName() + ",");
                         }
                     }
-                    index=builder.lastIndexOf(",");
-                    if(index>=0) {
+                    index = builder.lastIndexOf(",");
+                    if (index >= 0) {
                         builder.deleteCharAt(index);
                     }
                     names.add(builder.toString());
                 }
-                entity.data=names;
+                entity.data = names;
                 callback(entity);
             }
         };
@@ -122,27 +131,25 @@ public class ContactProxy extends BaseProxy{
 
     /**
      * 添加联系人
-     * @param data
-     * @param gid
      */
-    public void addUserContactForGroup(final String[] data, final Long gid){
+    public void addUserContactForGroup(final String[] data, final Long gid) {
         cachedThreadPool.execute(new Runnable() {
             @Override
             public void run() {
-                ProxyEntity entity=new ProxyEntity();
-                if(data!=null&&!data[0].equals("")&&!data[1].equals("")) {
-                    entity.action=ADD_USER_CONTACT_SUCCESS;
+                ProxyEntity entity = new ProxyEntity();
+                if (data != null && !data[0].equals("") && !data[1].equals("")) {
+                    entity.action = ADD_USER_CONTACT_SUCCESS;
                     Contacts contacts = new Contacts();
                     contacts.setId(null);
                     contacts.setCreattime(new Date(System.currentTimeMillis()));
                     contacts.setLastmodify(new Date(System.currentTimeMillis()));
                     contacts.setName(data[0]);
                     contacts.setPhonenumber(data[1]);
-                    if(mContactsDao.insertOrReplace(contacts)==-1){
-                        entity.action=ADD_USER_CONTACT_FAILED;
-                    }else {
-                        List<Contacts> cids=mContactsDao.queryBuilder().where(ContactsDao.Properties.Name.eq(data[0])).list();
-                        for(Contacts c:cids) {
+                    if (mContactsDao.queryBuilder().where(ContactsDao.Properties.Name.eq(data[0])).list().size() > 0 || mContactsDao.insertOrReplace(contacts) == -1) {
+                        entity.action = ADD_USER_CONTACT_FAILED;
+                    } else {
+                        List<Contacts> cids = mContactsDao.queryBuilder().where(ContactsDao.Properties.Name.eq(data[0])).list();
+                        for (Contacts c : cids) {
                             ContactToGroup ctg = new ContactToGroup();
                             ctg.setId(null);
                             ctg.setCid(c.getId());
@@ -151,8 +158,8 @@ public class ContactProxy extends BaseProxy{
                         }
                         callback(entity);
                     }
-                }else {
-                    entity.action=ADD_USER_CONTACT_FAILED;
+                } else {
+                    entity.action = ADD_USER_CONTACT_FAILED;
                 }
                 callback(entity);
             }
@@ -161,19 +168,18 @@ public class ContactProxy extends BaseProxy{
 
     /**
      * 彻底删除
-     * @param cids
      */
-    public void deleteContactDeppForGroup(final ArrayList<Long> cids,final Long gid){
+    public void deleteContactDeppForGroup(final ArrayList<Long> cids, final Long gid) {
         cachedThreadPool.execute(new Runnable() {
             @Override
             public void run() {
-                ProxyEntity entity=new ProxyEntity();
-                entity.action=DELETE_DEEP_CONTACT_SUCCESS;
-               mContactsDao.deleteByKeyInTx(cids);
-                List<ContactToGroup> ctg=mContactToGroupDao._queryContactGroup_Gid(gid);
-                for (int j=0;j<ctg.size();j++){
-                    for(int i=0;i<cids.size();i++){
-                        if(ctg.get(j).getCid()==cids.get(i)){
+                ProxyEntity entity = new ProxyEntity();
+                entity.action = DELETE_DEEP_CONTACT_SUCCESS;
+                mContactsDao.deleteByKeyInTx(cids);
+                List<ContactToGroup> ctg = mContactToGroupDao._queryContactGroup_Gid(gid);
+                for (int j = 0; j < ctg.size(); j++) {
+                    for (int i = 0; i < cids.size(); i++) {
+                        if (ctg.get(j).getCid() == cids.get(i)) {
                             mContactToGroupDao.delete(ctg.get(i));
                         }
                     }
@@ -185,23 +191,21 @@ public class ContactProxy extends BaseProxy{
 
     /**
      * 删除
-     * @param cids
-     * @param gid
      */
-    public void deleteContactForGroup(final ArrayList<Long> cids, final Long gid){
+    public void deleteContactForGroup(final ArrayList<Long> cids, final Long gid) {
         cachedThreadPool.execute(new Runnable() {
             @Override
             public void run() {
-                ProxyEntity entity=new ProxyEntity();
-                entity.action=DELETE_CONTACT_SUCCESS;
-                List<ContactToGroup> ctg=mContactToGroupDao._queryContactGroup_Gid(gid);
+                ProxyEntity entity = new ProxyEntity();
+                entity.action = DELETE_CONTACT_SUCCESS;
+                List<ContactToGroup> ctg = mContactToGroupDao._queryContactGroup_Gid(gid);
 
-                  for (int j=0;j<ctg.size();j++){
-                      for(int i=0;i<cids.size();i++){
-                      if(ctg.get(j).getCid()==cids.get(i)){
-                          mContactToGroupDao.delete(ctg.get(i));
-                      }
-                  }
+                for (int j = 0; j < ctg.size(); j++) {
+                    for (int i = 0; i < cids.size(); i++) {
+                        if (ctg.get(j).getCid() == cids.get(i)) {
+                            mContactToGroupDao.delete(ctg.get(i));
+                        }
+                    }
                 }
                 callback(entity);
             }

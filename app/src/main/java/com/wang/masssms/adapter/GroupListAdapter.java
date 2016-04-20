@@ -3,6 +3,7 @@ package com.wang.masssms.adapter;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,11 +25,17 @@ import java.util.Map;
  * Created by wangguang on 2016/4/5.
  */
 public class GroupListAdapter extends BaseAdapter {
+
     private ArrayList<ContactGroup> data;
+
     private ArrayList<String> contacts;
+
     private Context mContext;
+
     private LayoutInflater mLayoutInflate;
+
     private OnAddButtonClickListener mAddListener;
+
     private OnDeleteButtonClickListener mDeleteListener;
 
     public GroupListAdapter(Context context, ArrayList<ContactGroup> groups, ArrayList<String> contacts) {
@@ -57,14 +64,14 @@ public class GroupListAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            Log.d("Adapter data",data.size()+"");
-            Log.d("Adapter contact",contacts.size()+"");
+            Log.d("Adapter data", data.size() + "");
+            Log.d("Adapter contact", contacts.size() + "");
             convertView = mLayoutInflate.inflate(R.layout.group_item_layout, null);
             holder = new ViewHolder();
             holder.tv = (TextView) convertView.findViewById(R.id.group_item_name);
             holder.tv.setText(data.get(position).getName());
             holder.mtv = (TextView) convertView.findViewById(R.id.group_contact_names);
-            holder.mtv.setText("联系人:"+(contacts.get(position)==null?"暂无联系人":contacts.get(position)));
+            holder.mtv.setText(Html.fromHtml("联系人: " + "<font color='#54aa00'>" + (contacts.get(position) == null ? "暂无联系人" : contacts.get(position)) + "</font>"));
             convertView.setTag(holder);
             final ImageView openView = (ImageView) convertView.findViewById(R.id.more_item_open_bt);
             final LinearLayout moreItemLayout = (LinearLayout) convertView.findViewById(R.id.more_item_layout);
@@ -94,7 +101,6 @@ public class GroupListAdapter extends BaseAdapter {
                 }
             });
 
-
             holder.mDeletetv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -117,7 +123,6 @@ public class GroupListAdapter extends BaseAdapter {
                 }
             });
 
-
             holder.mDeletetv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -132,14 +137,18 @@ public class GroupListAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
+
         TextView tv;
+
         TextView mtv;
+
         TextView mAddtv;
+
         TextView mDeletetv;
     }
 
-    private void createAndShowRotationAnimator(final View v,boolean isVisable) {
-        ValueAnimator rotaBT =isVisable?ValueAnimator.ofFloat(0, 180):ValueAnimator.ofFloat(180,360);
+    private void createAndShowRotationAnimator(final View v, boolean isVisable) {
+        ValueAnimator rotaBT = isVisable ? ValueAnimator.ofFloat(0, 180) : ValueAnimator.ofFloat(180, 360);
         rotaBT.setDuration(360);
         rotaBT.setTarget(v);
         rotaBT.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -161,10 +170,12 @@ public class GroupListAdapter extends BaseAdapter {
     }
 
     public interface OnAddButtonClickListener {
+
         public void onItemClick(int position, ContactGroup item);
     }
 
     public interface OnDeleteButtonClickListener {
+
         public void onItemClick(int position, ContactGroup item);
     }
 }
