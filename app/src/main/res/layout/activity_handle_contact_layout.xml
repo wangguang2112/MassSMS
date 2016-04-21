@@ -40,7 +40,7 @@
                       android:layout_height="0.5dp" android:background="#aaa"/>
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                          android:id="@+id/contact_handle_delete"
-                          android:drawableLeft="@drawable/delete"
+                          android:drawableLeft="@drawable/disable"
                           android:drawablePadding="10dp"
                           android:text="移除"
                           android:textSize="18sp"

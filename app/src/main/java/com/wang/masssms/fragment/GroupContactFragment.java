@@ -65,6 +65,7 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
         });
         mGroupListView = (ListView) view.findViewById(R.id.fragment_groupcontact_listview);
         mData = new ArrayList<>();
+        TempData =new ArrayList<>();
         mContactName = new ArrayList<>();
         mAdapter = new GroupListAdapter(getActivity(), mData, mContactName);
         mAdapter.setOnAddButtonClickListener(new GroupListAdapter.OnAddButtonClickListener() {
@@ -109,7 +110,7 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
         super.onResponse(proxyEntity);
         String action = proxyEntity.action;
         if (action.equals(GroupListProxy.GET_GROUP_LIST_SUCCESS)) {
-            TempData = (ArrayList<ContactGroup>) proxyEntity.data;
+            TempData.addAll((List<ContactGroup>) proxyEntity.data);
             contactProxy.getContactForAllGroup(TempData);
         } else if (action.equals(GroupListProxy.GET_GROUP_LIST_FAILED)) {
             AddDailog.showMsg(getActivity(), "刷新出错了啊");

@@ -9,6 +9,7 @@ import com.wang.masssms.fragment.GroupContactFragment;
 import com.wang.masssms.model.orm.ContactGroup;
 import com.wang.masssms.model.orm.ContactGroupDao;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -51,6 +52,9 @@ public class GroupListProxy extends BaseProxy {
                 entity.action = GET_GROUP_LIST_SUCCESS;
                 QueryBuilder<ContactGroup> qb = mContactGroupDao.queryBuilder();
                 entity.data = qb.list();
+                if(entity.data==null){
+                    entity.data=new ArrayList<>();
+                }
                 callback(entity);
             }
         };

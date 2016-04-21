@@ -12,6 +12,7 @@ import com.wang.masssms.model.orm.Contacts;
 import com.wang.masssms.model.orm.ContactsDao;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -44,6 +45,13 @@ public class ContactProxy extends BaseProxy {
 
     public static String DELETE_DEEP_CONTACT_FAILED = "delete_deep_contact_failed";
 
+    public static String EDIT_CONTACT_SUCCESS = "edit_contact_success";
+
+    public static String EDIT_CONTACT_FAILED = "edit_contact_failed";
+
+    public static String IMPORT_CONTACT_TO_GROUP_SUCCESS = "import_contact_to_group_success";
+    public static String IMPORT_CONTACT_TO_GROUP_FAILED = "import_contact_to_group_failed";
+
     ContactsDao mContactsDao;
 
     ContactToGroupDao mContactToGroupDao;
@@ -65,6 +73,8 @@ public class ContactProxy extends BaseProxy {
             public void run() {
                 ProxyEntity entity = new ProxyEntity();
                 entity.action = GET_ALL_CONTACT_LIST_SUCCESS;
+                List<Contacts> data=mContactsDao.queryBuilder().list();
+                entity.data=data;
                 callback(entity);
             }
         });
@@ -108,7 +118,7 @@ public class ContactProxy extends BaseProxy {
                 int index = -1;
                 for (int i = 0; i < groups.size(); i++) {
                     builder.delete(0, builder.length());
-                    ctglist=mContactToGroupDao._queryContactGroup_Gid(groups.get(i).getId());
+                    ctglist = mContactToGroupDao._queryContactGroup_Gid(groups.get(i).getId());
 //                    ctglist = groups.get(i).getGid();//gid是相应的to 写的不好 这个方法是读取缓存的 最好别用
                     for (int j = 0; j < ctglist.size(); j++) {
                         if (ctglist.get(j).getContacts() == null) {
@@ -131,7 +141,7 @@ public class ContactProxy extends BaseProxy {
     }
 
     /**
-     * 添加联系人
+     * 添加联系人 组内添加
      */
     public void addUserContactForGroup(final String[] data, final Long gid) {
         cachedThreadPool.execute(new Runnable() {
@@ -191,6 +201,43 @@ public class ContactProxy extends BaseProxy {
     }
 
     /**
+     * 批量删除联系人
+     * @param cids
+     */
+    public void deleteContacts(final ArrayList<Long> cids) {
+        cachedThreadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+                ProxyEntity entity = new ProxyEntity();
+                entity.action = DELETE_DEEP_CONTACT_SUCCESS;
+                List<ContactToGroup> ctgs = new ArrayList<ContactToGroup>();
+                for (int i = 0; i < cids.size(); i++) {
+                    ctgs.addAll(mContactToGroupDao._queryContacts_Cid(cids.get(i)));
+                }
+                mContactToGroupDao.deleteInTx(ctgs);
+                mContactsDao.deleteByKeyInTx(cids);
+                callback(entity);
+            }
+        });
+    }
+
+    /**
+     * 删除联系人
+     * @param cid
+     */
+    public void deleteContact(final Long cid) {
+        cachedThreadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+                ProxyEntity entity = new ProxyEntity();
+                entity.action = DELETE_DEEP_CONTACT_SUCCESS;
+                mContactToGroupDao.deleteInTx(mContactToGroupDao._queryContacts_Cid(cid));
+                mContactsDao.deleteByKeyInTx(cid);
+                callback(entity);
+            }
+        });
+    }
+    /**
      * 删除
      */
     public void deleteContactForGroup(final ArrayList<Long> cids, final Long gid) {
@@ -208,6 +255,47 @@ public class ContactProxy extends BaseProxy {
                         }
                     }
                 }
+                callback(entity);
+            }
+        });
+    }
+
+    /**
+     *编辑联系人
+     * @param contacts
+     */
+    public void editContact(final Contacts contacts){
+        cachedThreadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+                ProxyEntity entity = new ProxyEntity();
+                entity.action = EDIT_CONTACT_SUCCESS;
+                mContactsDao.update(contacts);
+                callback(entity);
+            }
+        });
+    }
+
+    public void importContactToGroup(final ArrayList<Long> cids,final Long gid){
+        cachedThreadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+                ProxyEntity entity = new ProxyEntity();
+                entity.action =IMPORT_CONTACT_TO_GROUP_SUCCESS;
+                ArrayList<ContactToGroup> ctgs=new ArrayList<ContactToGroup>();
+               List<ContactToGroup> isHave=mContactToGroupDao._queryContactGroup_Gid(gid);
+                Collections.sort(cids);
+                for(ContactToGroup c:isHave){
+                    int index=cids.indexOf(c.getCid());
+                    if(index!=-1){
+                        cids.remove(index);//去重
+                    }
+                }
+                for(Long cid:cids){
+                    ContactToGroup ctg=new ContactToGroup(null,cid,gid);
+                    ctgs.add(ctg);
+                }
+                mContactToGroupDao.insertOrReplaceInTx(ctgs);
                 callback(entity);
             }
         });

@@ -1,10 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:layout_height="match_parent"
+              android:orientation="vertical"
     tools:context="com.wang.masssms.activity.AllContactActivity">
-
-</RelativeLayout>
+    <com.wang.masssms.uiview.IMHeadView xmlns:headbar="http://schemas.android.com/apk/res-auto"
+                                        android:id="@+id/activity_all_contact_headbar"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="45dp"
+                                        android:background="#FFF"
+                                        headbar:headtitle="所有联系人"
+                                        headbar:returnvisiable="true"
+                                        headbar:rightsrc="@drawable/more_icon"
+                                        headbar:rightvisiable="true"/>
+    <com.baoyz.swipemenulistview.SwipeMenuListView
+            android:background="@color/background"
+            android:id="@+id/activity_all_contact_listview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:divider="#cccccc"
+            android:descendantFocusability="beforeDescendants"
+            android:dividerHeight="0.5dp"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:scrollbars="none"/>
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="40dp"
+                    android:background="@drawable/add_button_background"
+                    android:id="@+id/cotact_all_handle_bar"
+                    android:visibility="visible"
+                    android:layout_gravity="bottom">
+        <View android:layout_width="match_parent"
+              android:layout_alignParentTop="true"
+              android:layout_height="0.5dp" android:background="#aaa"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:id="@+id/contact_all_import"
+                  android:drawableLeft="@drawable/import_ic"
+                  android:drawablePadding="10dp"
+                  android:text="导入"
+                  android:textSize="18sp"
+                  android:textColor="@color/text_press_color_white"
+                  android:layout_centerInParent="true"
+                  android:layout_centerVertical="true"/>
+    </RelativeLayout>
+</LinearLayout>

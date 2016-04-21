@@ -158,7 +158,9 @@ public class HandleContactActivity extends BaseActivity implements AdapterView.O
                     case LEFT:
                         // do stuff and dismiss
                         Intent intent = new Intent(HandleContactActivity.this, AllContactActivity.class);
-                        startActivity(intent);
+                        intent.putExtra("type",AllContactActivity.IMPORT_FOR_DATA_TYPE);
+                        intent.putExtra("gid",mGid);
+                        startActivityForResult(intent,0);
                         mMenuOverlay.getButtonMenu().toggle();//收起按钮
                         break;
                     case RIGHT:
@@ -265,6 +267,7 @@ public class HandleContactActivity extends BaseActivity implements AdapterView.O
         if(resultCode==Activity.RESULT_OK){
             mProxy.getContactForGroup(mGid);
             setOnBusy(true);
+            Toast.makeText(HandleContactActivity.this, "导入成功", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -294,6 +297,7 @@ public class HandleContactActivity extends BaseActivity implements AdapterView.O
                     if (isChecks.get(i)) {
                         arrayList.add(mContactData.get(i).getId());
                         mContactData.remove(i);
+                        isChecks.remove(i);
                     }
                 }
                 if (arrayList.size() == 0) {
@@ -311,6 +315,7 @@ public class HandleContactActivity extends BaseActivity implements AdapterView.O
                             if (isChecks.get(i)) {
                                 arrayList.add(mContactData.get(i).getId());
                                 mContactData.remove(i);
+                                isChecks.remove(i);
                             }
                         }
                         if (arrayList.size() == 0) {

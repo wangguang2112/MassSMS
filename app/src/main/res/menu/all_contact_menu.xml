@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/all_contact_refresh" android:title="刷新"></item>
+    <item android:id="@+id/all_contact_all_select" android:title="全选"></item>
+    <item android:id="@+id/all_contact_other_select" android:title="反选"></item>
+</menu>
