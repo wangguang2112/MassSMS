@@ -1,55 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/background"
+              android:orientation="vertical">
 
     <com.wang.masssms.uiview.IMHeadView
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        xmlns:headbar="http://schemas.android.com/apk/res-auto"
-        headbar:headtitle="设置"
-        android:background="#FFF">
+            xmlns:headbar="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            headbar:headtitle="我"
+            android:background="#FFF">
 
     </com.wang.masssms.uiview.IMHeadView>
+    <ScrollView android:layout_width="match_parent" android:layout_height="match_parent"
+                android:scrollbars="none">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+            <TextView android:layout_width="match_parent" android:layout_height="40dp"
 
-    <FrameLayout
-
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:id="@+id/common_chat_pre_question_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@null"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:background="@color/white"
-                android:gravity="center"
-                android:text="text"
-                android:textSize="24sp" />
-
-            <ImageView
-                android:id="@+id/common_chat_pre_question_close"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_gravity="center_horizontal"
-                android:background="@null"
-                android:src="@drawable/back_icon" />
+                      android:id="@+id/view_all_contact" android:text="123"
+                      android:gravity="center_vertical"
+                      android:textSize="20sp"/>
+            <View android:layout_width="match_parent" android:layout_height="10dp"
+                  android:background="#ddd"/>
+            <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+                <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent"/>
+                <com.wang.masssms.uiview.togglebutton.IMToggleButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        />
+            </LinearLayout>
         </LinearLayout>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/openbt"
-            android:layout_gravity="bottom|center_horizontal"
-            android:text="open" />
-    </FrameLayout>
+
+    </ScrollView>
 
 
 </LinearLayout>
