@@ -1,55 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/background"
+              android:orientation="vertical">
 
     <com.wang.masssms.uiview.IMHeadView
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        xmlns:headbar="http://schemas.android.com/apk/res-auto"
-        headbar:headtitle="设置"
-        android:background="#FFF">
+            xmlns:headbar="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            headbar:headtitle="我"
+            android:background="#FFF">
 
     </com.wang.masssms.uiview.IMHeadView>
-
-    <FrameLayout
-
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:id="@+id/common_chat_pre_question_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@null"
-            android:orientation="vertical">
-
+    <ScrollView android:layout_width="match_parent" android:layout_height="match_parent"
+                android:scrollbars="none">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+            <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                <com.wang.masssms.uiview.viewpager.AutoScrollViewPager android:id="@+id/setting_viewpager"
+                                                                       android:layout_width="match_parent"
+                                                                       android:layout_height="100dp"/>
+                <com.wuba.bangbang.uicomponents.IMCirclePageIndicator xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                                      android:id="@+id/setting_viewpager_indicator"
+                                                                      android:layout_width="match_parent"
+                                                                      android:layout_height="wrap_content"
+                                                                      android:layout_alignParentBottom="true"
+                                                                      android:layout_gravity="bottom"
+                                                                      android:layout_marginBottom="10dp"
+                                                                      app:fillColor="@color/colorPrimaryDark"
+                                                                      app:pageColor="#999999"
+                                                                      app:radius="3dp"
+                                                                      app:strokeColor="#00000000"/>
+            </FrameLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="45dp" android:orientation="horizontal"
+                          android:background="@drawable/add_button_background">
+                <ImageView android:layout_width="20dp" android:layout_height="20dp"
+                           android:layout_gravity="center_vertical"
+                           android:layout_marginLeft="10dp"
+                           android:scaleType="fitCenter"
+                           android:src="@drawable/people_head"
+                        />
+                <TextView android:layout_width="0dp" android:layout_height="40dp"
+                          android:layout_weight="1"
+                          style="@style/setting_text_style"
+                          android:id="@+id/view_all_contact" android:text="联系人"
+                          android:gravity="center_vertical"
+                        />
+                <ImageView android:layout_width="10dp" android:layout_height="wrap_content"
+                           android:layout_gravity="center_vertical"
+                           android:layout_marginRight="20dp" android:src="@drawable/right_arrow"/>
+            </LinearLayout>
+            <View
+                    android:layout_width="match_parent" android:layout_height="10dp"
+                    android:background="#ddd"/>
+            <LinearLayout android:orientation="horizontal"
+                          android:background="@color/white" android:layout_width="match_parent" android:layout_height="45dp">
+                <ImageView android:layout_width="20dp" android:layout_height="20dp"
+                           android:layout_gravity="center_vertical"
+                           android:layout_marginLeft="10dp"
+                           android:scaleType="fitCenter"
+                           android:src="@drawable/import_ic"
+                        />
+                <TextView
+                        style="@style/setting_text_style" android:layout_width="0dp" android:layout_weight="1" android:layout_height="40dp"
+                        android:text="自动从手机通讯录导入"/>
+                <com.wang.masssms.uiview.togglebutton.IMToggleButton
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="10dp"
+                        android:background="@color/white" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        />
+            </LinearLayout>
+            <View android:layout_marginLeft="15dp"
+                  android:layout_width="match_parent" android:layout_height="0.5dp"
+                  android:background="#ddd"/>
+            <LinearLayout android:orientation="horizontal"
+                          android:background="@color/white"
+                          android:visibility="visible"
+                          android:layout_width="match_parent" android:layout_height="45dp">
+                <ImageView android:layout_width="20dp" android:layout_height="20dp"
+                           android:layout_gravity="center_vertical"
+                           android:layout_marginLeft="10dp"
+                           android:scaleType="fitCenter"
+                           android:src="@drawable/import_ic"
+                        />
+                <TextView
+                        style="@style/setting_text_style" android:layout_width="0dp" android:layout_weight="1" android:layout_height="40dp"
+                        android:text="乱七八糟"/>
+                <com.wang.masssms.uiview.togglebutton.IMToggleButton
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="10dp"
+                        android:background="@color/white" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        />
+            </LinearLayout>
+            <View
+                    android:layout_width="match_parent" android:layout_height="10dp"
+                    android:background="#ddd"/>
             <TextView
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:background="@color/white"
-                android:gravity="center"
-                android:text="text"
-                android:textSize="24sp" />
-
-            <ImageView
-                android:id="@+id/common_chat_pre_question_close"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_gravity="center_horizontal"
-                android:background="@null"
-                android:src="@drawable/back_icon" />
+                    android:background="@drawable/add_button_background"
+                    android:layout_width="match_parent" android:layout_height="45dp"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="18sp"
+                    android:textColor="#000"
+                    android:gravity="center"
+                    android:text="退出"/>
+            <View
+                    android:layout_width="match_parent" android:layout_height="10dp"
+                    android:background="#ddd"/>
         </LinearLayout>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/openbt"
-            android:layout_gravity="bottom|center_horizontal"
-            android:text="open" />
-    </FrameLayout>
+
+    </ScrollView>
 
 
 </LinearLayout>

@@ -79,6 +79,20 @@ public class AddDailog {
     }
 
     /**
+     * 带取消按钮的dialog
+     * @param context
+     * @param msg
+     * @param onClickListener
+     */
+    public static void showMsgWithCancle(Context context,String msg,DialogInterface.OnClickListener onClickListener){
+        final AddDailog addDialog=new AddDailog(context,false);
+        addDialog.setmMsg(msg);
+        addDialog.setmTitle("提示");
+        addDialog.setmPsitive("确定", onClickListener);
+        addDialog.setmNegative("取消",null);
+        addDialog.creatAndShow();
+    }
+    /**
      *
      */
     public void creatAndShow(){

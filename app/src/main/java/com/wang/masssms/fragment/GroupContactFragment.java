@@ -65,6 +65,7 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
         });
         mGroupListView = (ListView) view.findViewById(R.id.fragment_groupcontact_listview);
         mData = new ArrayList<>();
+        TempData =new ArrayList<>();
         mContactName = new ArrayList<>();
         mAdapter = new GroupListAdapter(getActivity(), mData, mContactName);
         mAdapter.setOnAddButtonClickListener(new GroupListAdapter.OnAddButtonClickListener() {
@@ -73,6 +74,7 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
                 Intent intent = new Intent(getActivity(), HandleContactActivity.class);
                 intent.putExtra("type", HandleContactActivity.ADD_TO_GROUP);
                 intent.putExtra("gid", item.getId());
+                intent.putExtra("title", item.getName());
                 startActivityForResult(intent, HandleContactActivity.ADD_RESQUEST_CODE);
             }
         });
@@ -82,6 +84,7 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
                 Intent intent = new Intent(getActivity(), HandleContactActivity.class);
                 intent.putExtra("type", HandleContactActivity.DELETE_FROM_GROUP);
                 intent.putExtra("gid", item.getId());
+                intent.putExtra("title", item.getName());
                 startActivityForResult(intent, HandleContactActivity.DELETE_REQUEST_CODE);
             }
         });
@@ -107,9 +110,10 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
         super.onResponse(proxyEntity);
         String action = proxyEntity.action;
         if (action.equals(GroupListProxy.GET_GROUP_LIST_SUCCESS)) {
-            TempData = (ArrayList<ContactGroup>) proxyEntity.data;
+            TempData.addAll((List<ContactGroup>) proxyEntity.data);
             contactProxy.getContactForAllGroup(TempData);
         } else if (action.equals(GroupListProxy.GET_GROUP_LIST_FAILED)) {
+            AddDailog.showMsg(getActivity(), "刷新出错了啊");
             setOnBusy(false);
         } else if (action.equals(GroupListProxy.ADD_GROUP_NAME_FAILED)) {
             setOnBusy(false);
@@ -119,6 +123,7 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
         } else if (action.equals(ContactProxy.GET_ALL_GROUP_CONTACT_LIST_SUCCESS)) {
             mData.clear();
             mData.addAll(TempData);
+            mContactName.clear();
             mContactName.addAll((List<String>) proxyEntity.data);
             mAdapter.notifyDataSetChanged();
             setOnBusy(false);

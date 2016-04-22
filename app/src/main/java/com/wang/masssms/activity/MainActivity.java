@@ -149,4 +149,9 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
         super.onFragmentCallback(intent);
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

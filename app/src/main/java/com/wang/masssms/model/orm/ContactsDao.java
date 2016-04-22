@@ -48,7 +48,7 @@ public class ContactsDao extends AbstractDao<Contacts, Long> {
         db.execSQL("CREATE TABLE " + constraint + "\"CONTACTS\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "\"PHONENUMBER\" TEXT," + // 1: phonenumber
-                "\"NAME\" TEXT," + // 2: name
+                "\"NAME\" TEXT UNIQUE ," + // 2: name
                 "\"CREATTIME\" INTEGER," + // 3: creattime
                 "\"LASTMODIFY\" INTEGER);"); // 4: lastmodify
     }
