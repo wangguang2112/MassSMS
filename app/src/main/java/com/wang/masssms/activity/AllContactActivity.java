@@ -25,6 +25,7 @@ import com.hanks.library.AnimateCheckBox;
 import com.wang.masssms.R;
 import com.wang.masssms.adapter.ContactListAdapter;
 import com.wang.masssms.model.orm.Contacts;
+import com.wang.masssms.model.util.SharedPreferencesUtil;
 import com.wang.masssms.proxy.ContactProxy;
 import com.wang.masssms.proxy.ProxyEntity;
 import com.wang.masssms.uiview.AddDailog;
@@ -99,7 +100,11 @@ public class AllContactActivity extends BaseActivity implements SwipeMenuListVie
         mOutAnim = AnimationUtils.loadAnimation(this, R.anim.float_down_in);
         initViewData();
         mProxy = new ContactProxy(this, getCallbackHandler());
-        mProxy.getALLContactList();
+        if(SharedPreferencesUtil.getInstance().getBoolean(SharedPreferencesUtil.AUTO_IMPORT_FROM_PHONE_FLAG,false)){
+            mProxy.viewAllContactFromPhone();
+        }else {
+            mProxy.getALLContactList();
+        }
         setOnBusy(true);
     }
 
@@ -184,6 +189,8 @@ public class AllContactActivity extends BaseActivity implements SwipeMenuListVie
             setOnBusy(false);
             setResult(Activity.RESULT_OK);
             this.finish();
+        }else if(action.equals(ContactProxy.VIEW_ALL_CONTACT_SUCCESS)){
+            mProxy.getALLContactList();
         }
     }
 
@@ -308,7 +315,9 @@ public class AllContactActivity extends BaseActivity implements SwipeMenuListVie
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.all_contact_refresh:
-                AddDailog.showMsg(this, "未添加");
+//                AddDailog.showMsg(this, "未添加");
+                mProxy.viewAllContactFromPhone();
+                setOnBusy(true);
                 break;
             case R.id.all_contact_all_select:
                 boolean all_flag = false;

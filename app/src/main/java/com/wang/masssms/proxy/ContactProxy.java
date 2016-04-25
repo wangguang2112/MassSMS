@@ -10,11 +10,13 @@ import com.wang.masssms.model.orm.ContactToGroup;
 import com.wang.masssms.model.orm.ContactToGroupDao;
 import com.wang.masssms.model.orm.Contacts;
 import com.wang.masssms.model.orm.ContactsDao;
+import com.wang.masssms.model.util.PhoneContactUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by wangguang on 2016/4/18.
@@ -51,6 +53,8 @@ public class ContactProxy extends BaseProxy {
 
     public static String IMPORT_CONTACT_TO_GROUP_SUCCESS = "import_contact_to_group_success";
     public static String IMPORT_CONTACT_TO_GROUP_FAILED = "import_contact_to_group_failed";
+
+    public static String VIEW_ALL_CONTACT_SUCCESS="VIEW_ALL_CONTACT_SUCCESS";
 
     ContactsDao mContactsDao;
 
@@ -296,6 +300,18 @@ public class ContactProxy extends BaseProxy {
                     ctgs.add(ctg);
                 }
                 mContactToGroupDao.insertOrReplaceInTx(ctgs);
+                callback(entity);
+            }
+        });
+    }
+    public void viewAllContactFromPhone(){
+        cachedThreadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+                ProxyEntity entity=new ProxyEntity();
+                entity.action=VIEW_ALL_CONTACT_SUCCESS;
+                List<Contacts> contacts=PhoneContactUtil.readContacts(mContext);
+                mContactsDao.insertOrReplaceInTx(contacts);
                 callback(entity);
             }
         });

@@ -1,5 +1,7 @@
 package com.wang.masssms.model.util;
 
+import com.wang.masssms.model.orm.Contacts;
+
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
@@ -15,22 +17,22 @@ import java.util.Map;
  */
 public class PhoneContactUtil {
     public static String TAG="PhoneContactUtil";
-    public  ArrayList<Map<String,String>>  readContacts(Context context){
-        ArrayList<Map<String,String>> contacts=new ArrayList<>();
+    public static ArrayList<Contacts>  readContacts(Context context){
+        ArrayList<Contacts> contacts=new ArrayList<>();
         ContentResolver cr = context.getContentResolver();
 
         // select * from contacts
         Cursor cursor = cr.query(ContactsContract.Contacts.CONTENT_URI,
                 null, null, null, null);
         while(cursor.moveToNext()){
-            Map<String,String> map=new HashMap<String,String>();
+           Contacts map=new Contacts();
             String id = cursor.getString(
                     cursor.getColumnIndex(ContactsContract.Contacts._ID));
             String name = cursor.getString(
                     cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
             int iHasPhoneNum = Integer.parseInt(cursor.getString(
                     cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)));
-            map.put("name",name);
+            map.setName(name);
             if(iHasPhoneNum > 0){
                 Cursor numCursor = cr.query(
                         ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
@@ -40,7 +42,7 @@ public class PhoneContactUtil {
                 while(numCursor.moveToNext()){
                     String number = numCursor.getString(
                             numCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                    map.put("number",number);
+                    map.setPhonenumber(number);
                 }
                 numCursor.close();
             }
