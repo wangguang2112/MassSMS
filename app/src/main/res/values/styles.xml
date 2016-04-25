@@ -13,7 +13,7 @@
     </style>
     <style name="setting_text_style">
         <item name="android:background">@color/transparency</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:paddingLeft">10dp</item>

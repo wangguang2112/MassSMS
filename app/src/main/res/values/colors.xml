@@ -11,4 +11,5 @@
     <color name="yellow_button_down_e_background">#D8FFb2b2</color>
     <color name="normal_text_color">#333333</color>
     <color name="background">#f6f6f6</color>
+    <color name="pagerinditer">#EAEBEB</color>
 </resources>

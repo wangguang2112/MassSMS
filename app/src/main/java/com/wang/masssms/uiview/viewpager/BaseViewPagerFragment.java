@@ -1,6 +1,6 @@
 package com.wang.masssms.uiview.viewpager;
 
-import com.wuba.peipei.common.view.fragment.BaseFragment;
+import com.wang.masssms.fragment.BaseFragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

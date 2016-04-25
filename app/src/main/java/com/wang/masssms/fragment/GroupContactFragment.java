@@ -110,6 +110,7 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
         super.onResponse(proxyEntity);
         String action = proxyEntity.action;
         if (action.equals(GroupListProxy.GET_GROUP_LIST_SUCCESS)) {
+            TempData.clear();
             TempData.addAll((List<ContactGroup>) proxyEntity.data);
             contactProxy.getContactForAllGroup(TempData);
         } else if (action.equals(GroupListProxy.GET_GROUP_LIST_FAILED)) {

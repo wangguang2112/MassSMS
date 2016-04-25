@@ -72,7 +72,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
     }
 
     public CirclePageIndicator(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.vpiCirclePageIndicatorStyle);
+        this(context, attrs,-1);
     }
 
     @SuppressWarnings("deprecation")

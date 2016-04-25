@@ -9,8 +9,8 @@
     </declare-styleable>
 
     <declare-styleable name="CirclePageIndicator">
-        <!-- Whether or not the indicators should be centered. -->
-        <attr name="centered"/>
+        <attr name="centered" format="boolean"/>
+        <attr name="strokeWidth" format="dimension"/>
         <!-- Color of the filled circle that represents the current page. -->
         <attr name="fillColor" format="color"/>
         <!-- Color of the filled circles that represents pages. -->
@@ -24,8 +24,22 @@
         <!-- Color of the open circles. -->
         <attr name="strokeColor" format="color"/>
         <!-- Width of the stroke used to draw the circles. -->
-        <attr name="strokeWidth"/>
-        <!-- View background -->
         <attr name="android:background"/>
+    </declare-styleable>
+
+
+    <declare-styleable name="PagerSlidingTabStrip">
+    <attr name="pstsIndicatorColor" format="color" />
+    <attr name="pstsUnderlineColor" format="color" />
+    <attr name="pstsDividerColor" format="color" />
+    <attr name="pstsTextColor" format="color" />
+    <attr name="pstsTextSelectedColor" format="color" />
+    <attr name="pstsIndicatorHeight" format="dimension" />
+    <attr name="pstsUnderlineHeight" format="dimension" />
+    <attr name="pstsDividerPadding" format="dimension" />
+    <attr name="pstsTabPaddingLeftRight" format="dimension" />
+    <attr name="pstsScrollOffset" format="dimension" />
+    <attr name="pstsTextSize" format="dimension" />
+    <attr name="pstsTabBackground" format="reference" />
     </declare-styleable>
 </resources>

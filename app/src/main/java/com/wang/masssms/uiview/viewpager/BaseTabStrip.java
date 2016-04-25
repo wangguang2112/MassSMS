@@ -1,6 +1,7 @@
 package com.wang.masssms.uiview.viewpager;
 
-import com.wuba.peipei.R;
+
+import com.wang.masssms.R;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

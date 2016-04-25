@@ -18,21 +18,21 @@
         <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
             <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content">
                 <com.wang.masssms.uiview.viewpager.AutoScrollViewPager android:id="@+id/setting_viewpager"
-                                                                       android:layout_width="match_parent"
-                                                                       android:layout_height="100dp"/>
-                <com.wuba.bangbang.uicomponents.IMCirclePageIndicator xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                                      android:id="@+id/setting_viewpager_indicator"
-                                                                      android:layout_width="match_parent"
-                                                                      android:layout_height="wrap_content"
-                                                                      android:layout_alignParentBottom="true"
-                                                                      android:layout_gravity="bottom"
-                                                                      android:layout_marginBottom="10dp"
-                                                                      app:fillColor="@color/colorPrimaryDark"
-                                                                      app:pageColor="#999999"
-                                                                      app:radius="3dp"
-                                                                      app:strokeColor="#00000000"/>
+                                                                       android:layout_width="match_parent" android:layout_height="130dp"/>
+                <com.wang.masssms.uiview.viewpagerindicator.CirclePageIndicator xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                                                android:id="@+id/setting_viewpager_indicator"
+                                                                                android:layout_width="match_parent"
+                                                                                android:layout_height="wrap_content"
+                                                                                android:layout_alignParentBottom="true"
+                                                                                android:layout_gravity="bottom"
+                                                                                android:layout_marginBottom="10dp"
+                                                                                app:fillColor="@color/colorPrimaryDark"
+                                                                                app:pageColor="#999999"
+                                                                                app:radius="3dp"
+                                                                                app:strokeColor="#00000000"/>
             </FrameLayout>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="45dp" android:orientation="horizontal"
+            <LinearLayout android:id="@+id/setting_view_all_contact"
+                          android:layout_width="match_parent" android:layout_height="45dp" android:orientation="horizontal"
                           android:background="@drawable/add_button_background">
                 <ImageView android:layout_width="20dp" android:layout_height="20dp"
                            android:layout_gravity="center_vertical"
@@ -63,11 +63,12 @@
                         />
                 <TextView
                         style="@style/setting_text_style" android:layout_width="0dp" android:layout_weight="1" android:layout_height="40dp"
-                        android:text="自动从手机通讯录导入"/>
+                        android:text="自动从通讯录导入"/>
                 <com.wang.masssms.uiview.togglebutton.IMToggleButton
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:id="@+id/setting_auto_import_from_phone"
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="10dp"
-                        android:background="@color/white" android:layout_width="wrap_content" android:layout_height="wrap_content"
                         />
             </LinearLayout>
             <View android:layout_marginLeft="15dp"
@@ -88,14 +89,16 @@
                         android:text="乱七八糟"/>
                 <com.wang.masssms.uiview.togglebutton.IMToggleButton
                         android:layout_gravity="center_vertical"
+                        android:id="@+id/setting_other1"
                         android:layout_marginRight="10dp"
-                        android:background="@color/white" android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        />
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      />
             </LinearLayout>
             <View
                     android:layout_width="match_parent" android:layout_height="10dp"
                     android:background="#ddd"/>
             <TextView
+                    android:id="@+id/setting_logout"
                     android:background="@drawable/add_button_background"
                     android:layout_width="match_parent" android:layout_height="45dp"
                     android:layout_gravity="center_horizontal"
