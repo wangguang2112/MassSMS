@@ -3,6 +3,6 @@
     <string-array name="main_tab_title">
         <item>"分组"</item>
         <item>"短信"</item>
-        <item>"设置"</item>
+        <item>"我"</item>
     </string-array>
 </resources>
