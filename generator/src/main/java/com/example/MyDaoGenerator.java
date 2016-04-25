@@ -15,7 +15,7 @@ public class MyDaoGenerator {
     public static void main(String[] args)throws Exception{
         Schema schema=new Schema(1,"com.wang.masssms.model.orm");
         addEntity(schema);
-        new DaoGenerator().generateAll(schema,"../app/src/main/java");
+        new DaoGenerator().generateAll(schema,"./app/src/main/java");
     }
     public static void addEntity(Schema schema){
 //        private int id;
@@ -65,6 +65,15 @@ public class MyDaoGenerator {
         contactToMessage.addToOne(message, mid);
         contacts.addToMany(contactToMessage, mcid).setName("cmid");
         message.addToMany(contactToMessage, mid).setName("mid");
+
+        Entity groupToMessage=schema.addEntity("GroupToMessage");
+        groupToMessage.addIdProperty().primaryKey().autoincrement();
+        Property mgid=groupToMessage.addLongProperty("gid").getProperty();
+        Property mmid=groupToMessage.addLongProperty("mid").getProperty();
+        groupToMessage.addToOne(contacts, mgid);
+        groupToMessage.addToOne(message, mmid);
+        contacts.addToMany(groupToMessage, mgid);
+        message.addToMany(groupToMessage, mmid);
 
     }
 

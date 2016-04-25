@@ -22,6 +22,7 @@ public class Message {
     private transient MessageDao myDao;
 
     private List<ContactToMessage> mid;
+    private List<GroupToMessage> groupToMessageList;
 
     public Message() {
     }
@@ -95,6 +96,28 @@ public class Message {
     /** Resets a to-many relationship, making the next get call to query for a fresh result. */
     public synchronized void resetMid() {
         mid = null;
+    }
+
+    /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
+    public List<GroupToMessage> getGroupToMessageList() {
+        if (groupToMessageList == null) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            GroupToMessageDao targetDao = daoSession.getGroupToMessageDao();
+            List<GroupToMessage> groupToMessageListNew = targetDao._queryMessage_GroupToMessageList(id);
+            synchronized (this) {
+                if(groupToMessageList == null) {
+                    groupToMessageList = groupToMessageListNew;
+                }
+            }
+        }
+        return groupToMessageList;
+    }
+
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    public synchronized void resetGroupToMessageList() {
+        groupToMessageList = null;
     }
 
     /** Convenient call for {@link AbstractDao#delete(Object)}. Entity must attached to an entity context. */
