@@ -44,6 +44,11 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
     private int imageid[] = {R.drawable.image1, R.drawable.image2, R.drawable.image3};
 
     private LinearLayout mAllContactView;
+    private LinearLayout mMySendView;
+    private LinearLayout mCollectionView;
+    public CirclePageIndicator getIndicator() {
+        return mIndicator;
+    }
 
     private IMToggleButton mAutoImportBT;
 
@@ -58,6 +63,10 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
         mViewPager = (AutoScrollViewPager) view.findViewById(R.id.setting_viewpager);
         mAllContactView = (LinearLayout) view.findViewById(R.id.setting_view_all_contact);
         mAllContactView.setOnClickListener(this);
+        mMySendView= (LinearLayout) view.findViewById(R.id.settint_my_send);
+        mMySendView.setOnClickListener(this);
+        mCollectionView= (LinearLayout) view.findViewById(R.id.setting_collection);
+        mCollectionView.setOnClickListener(this);
         mAutoImportBT = (IMToggleButton) view.findViewById(R.id.setting_auto_import_from_phone);
         mAutoImportBT.setToggleState(SharedPreferencesUtil.getInstance().getBoolean(SharedPreferencesUtil.AUTO_IMPORT_FROM_PHONE_FLAG, false));
         mAutoImportBT.setIOnToggleStateChangeListener(new IOnToggleStateChangeListener() {
@@ -92,11 +101,18 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
             case R.id.setting_logout:
                 getActivity().finish();
                 break;
-            case R.id.setting_view_all_contact:
+            case R.id.settint_my_send:
                 Intent intent = new Intent(getActivity(), AllContactActivity.class);
                 intent.putExtra("type", AllContactActivity.VIEW_ALL_DATA_TYPE);
                 startActivity(intent);
                 break;
+            case R.id.setting_view_all_contact:
+                Intent intent2 = new Intent(getActivity(), AllContactActivity.class);
+                intent2.putExtra("type", AllContactActivity.MY_SEND_DATA_TYPE);
+                startActivity(intent2);
+                break;
+            case R.id.setting_collection:
+
             default:
                 break;
         }

@@ -40,6 +40,8 @@ public class AllContactActivity extends BaseActivity implements SwipeMenuListVie
 
     public static final int VIEW_ALL_DATA_TYPE = 1;
 
+    public static final int MY_SEND_DATA_TYPE = 2;
+
     private IMHeadView mHeadView;
 
     private SwipeMenuListView mSwipeMenuListView;
@@ -100,9 +102,9 @@ public class AllContactActivity extends BaseActivity implements SwipeMenuListVie
         mOutAnim = AnimationUtils.loadAnimation(this, R.anim.float_down_in);
         initViewData();
         mProxy = new ContactProxy(this, getCallbackHandler());
-        if(SharedPreferencesUtil.getInstance().getBoolean(SharedPreferencesUtil.AUTO_IMPORT_FROM_PHONE_FLAG,false)){
+        if (SharedPreferencesUtil.getInstance().getBoolean(SharedPreferencesUtil.AUTO_IMPORT_FROM_PHONE_FLAG, false)) {
             mProxy.viewAllContactFromPhone();
-        }else {
+        } else {
             mProxy.getALLContactList();
         }
         setOnBusy(true);
@@ -132,9 +134,12 @@ public class AllContactActivity extends BaseActivity implements SwipeMenuListVie
                     });
                 }
                 break;
+            case MY_SEND_DATA_TYPE:
+
+                break;
             case VIEW_ALL_DATA_TYPE:
             default:
-                Drawable drawable= getResources().getDrawable(R.drawable.delete_deep);
+                Drawable drawable = getResources().getDrawable(R.drawable.delete_deep);
                 drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
                 mHandleBT.setCompoundDrawablePadding(20);
                 mHandleBT.setCompoundDrawables(drawable, null, null, null);
@@ -185,11 +190,11 @@ public class AllContactActivity extends BaseActivity implements SwipeMenuListVie
         } else if (action.equals(ContactProxy.EDIT_CONTACT_SUCCESS)) {
             setResult(Activity.RESULT_OK);
             setOnBusy(false);
-        }else if(action.equals(ContactProxy.IMPORT_CONTACT_TO_GROUP_SUCCESS)){
+        } else if (action.equals(ContactProxy.IMPORT_CONTACT_TO_GROUP_SUCCESS)) {
             setOnBusy(false);
             setResult(Activity.RESULT_OK);
             this.finish();
-        }else if(action.equals(ContactProxy.VIEW_ALL_CONTACT_SUCCESS)){
+        } else if (action.equals(ContactProxy.VIEW_ALL_CONTACT_SUCCESS)) {
             mProxy.getALLContactList();
         }
     }
