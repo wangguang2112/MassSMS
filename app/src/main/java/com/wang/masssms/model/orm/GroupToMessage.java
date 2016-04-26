@@ -19,8 +19,8 @@ public class GroupToMessage {
     /** Used for active entity operations. */
     private transient GroupToMessageDao myDao;
 
-    private Contacts contacts;
-    private Long contacts__resolvedKey;
+    private ContactGroup contactGroup;
+    private Long contactGroup__resolvedKey;
 
     private Message message;
     private Long message__resolvedKey;
@@ -70,27 +70,27 @@ public class GroupToMessage {
     }
 
     /** To-one relationship, resolved on first access. */
-    public Contacts getContacts() {
+    public ContactGroup getContactGroup() {
         Long __key = this.gid;
-        if (contacts__resolvedKey == null || !contacts__resolvedKey.equals(__key)) {
+        if (contactGroup__resolvedKey == null || !contactGroup__resolvedKey.equals(__key)) {
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
-            ContactsDao targetDao = daoSession.getContactsDao();
-            Contacts contactsNew = targetDao.load(__key);
+            ContactGroupDao targetDao = daoSession.getContactGroupDao();
+            ContactGroup contactGroupNew = targetDao.load(__key);
             synchronized (this) {
-                contacts = contactsNew;
-            	contacts__resolvedKey = __key;
+                contactGroup = contactGroupNew;
+            	contactGroup__resolvedKey = __key;
             }
         }
-        return contacts;
+        return contactGroup;
     }
 
-    public void setContacts(Contacts contacts) {
+    public void setContactGroup(ContactGroup contactGroup) {
         synchronized (this) {
-            this.contacts = contacts;
-            gid = contacts == null ? null : contacts.getId();
-            contacts__resolvedKey = gid;
+            this.contactGroup = contactGroup;
+            gid = contactGroup == null ? null : contactGroup.getId();
+            contactGroup__resolvedKey = gid;
         }
     }
 

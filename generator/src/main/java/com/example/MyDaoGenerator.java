@@ -71,9 +71,9 @@ public class MyDaoGenerator {
         groupToMessage.addIdProperty().primaryKey().autoincrement();
         Property mgid=groupToMessage.addLongProperty("gid").getProperty();
         Property mmid=groupToMessage.addLongProperty("mid").getProperty();
-        groupToMessage.addToOne(contacts, mgid);
+        groupToMessage.addToOne(contactGroup, mgid);
         groupToMessage.addToOne(message, mmid);
-        contacts.addToMany(groupToMessage, mgid);
+        contactGroup.addToMany(groupToMessage, mgid);
         message.addToMany(groupToMessage, mmid);
 
     }

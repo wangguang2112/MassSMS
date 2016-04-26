@@ -1,5 +1,6 @@
 package com.wang.masssms.fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -21,6 +22,8 @@ import com.wang.masssms.adapter.MessageListAdapter;
 import com.wang.masssms.model.orm.Message;
 import com.wang.masssms.proxy.MessageProxy;
 import com.wang.masssms.proxy.ProxyEntity;
+import com.wang.masssms.uiview.AddDailog;
+import com.wang.masssms.uiview.IMHeadView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +44,10 @@ public class MessageFragment extends BaseFragment implements SwipeMenuListView.O
 
     private List<Message> mMessageData;
 
+    private List<String> mMessageNames;
     private MessageProxy mProxy;
-
+    private List<Message> tempData;
+    private IMHeadView mHeadView;
     //swipemenu 创建类
     SwipeMenuCreator mCreater = new SwipeMenuCreator() {
         @Override
@@ -72,20 +77,33 @@ public class MessageFragment extends BaseFragment implements SwipeMenuListView.O
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mProxy = new MessageProxy(getActivity(), getCallbackHandler());
+        //测试用 可去掉
+//        addMessage();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_message, container, false);
-
+        mHeadView= (IMHeadView) view.findViewById(R.id.fragment_message_headbar);
+        mHeadView.setOnRightButtonClickListener(new IMHeadView.OnRightButtonClickListener() {
+            @Override
+            public void onRightClick(View view) {
+                Intent intent=new Intent(getActivity(),SendMsgActivity.class);
+                intent.putExtra("type",SendMsgActivity.FROM_MY_SEND_TYPE);
+                startActivity(intent);
+            }
+        });
         mMessageData = new ArrayList<>();
-        mAdapter = new MessageListAdapter(getActivity(), mMessageData, new MessageListAdapter.OnItemCheckListener() {
+        mMessageNames=new ArrayList<>();
+        tempData=new ArrayList<>();
+        mAdapter = new MessageListAdapter(getActivity(), mMessageData,mMessageNames, new MessageListAdapter.OnItemCheckListener() {
             @Override
             public void onItemCheck(int position, boolean isCheck) {
                 mProxy.updataCollection(mMessageData.get(position));
             }
         });
         mSwipeMenuListView = (SwipeMenuListView) view.findViewById(R.id.message_swipeMenuListView);
+        mSwipeMenuListView.setAdapter(mAdapter);
         mSwipeMenuListView.setMenuCreator(mCreater);
         mSwipeMenuListView.setOnMenuItemClickListener(this);
         //向左划
@@ -95,9 +113,8 @@ public class MessageFragment extends BaseFragment implements SwipeMenuListView.O
         setOnBusy(true);
         return view;
     }
-
     @Override
-    public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+    public boolean onMenuItemClick(final int position, SwipeMenu menu, int index) {
         switch (index) {
             case MENU_MARK_POSITION:
                 mMessageData.get(position).setIscollect(true);
@@ -105,9 +122,20 @@ public class MessageFragment extends BaseFragment implements SwipeMenuListView.O
                 mAdapter.notifyDataSetChanged();
                 break;
             case MENU_DELETE_POSITION:
-                mProxy.deleteMessage(mMessageData.get(position));
-                mMessageData.remove(position);
-                mAdapter.notifyDataSetChanged();
+                if( mMessageData.get(position).getIscollect()){
+                    AddDailog.showMsgWithCancle(getActivity(), "此条短信已被收藏，确定要删除吗", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mProxy.deleteMessage(mMessageData.get(position));
+                            mMessageData.remove(position);
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
+                }else {
+                    mProxy.deleteMessage(mMessageData.get(position));
+                    mMessageData.remove(position);
+                    mAdapter.notifyDataSetChanged();
+                }
                 break;
         }
         return true;
@@ -118,11 +146,19 @@ public class MessageFragment extends BaseFragment implements SwipeMenuListView.O
         super.onResponse(proxyEntity);
         String action = proxyEntity.action;
         if (action.equals(MessageProxy.GET_ALL_HAVE_SEND_MESSAGE_SUCCESS)) {
-            mMessageData.clear();
-            mMessageData.addAll((List<Message>) proxyEntity.data);
-            mAdapter.notifyDataSetChanged();
-            setOnBusy(false);
+            tempData.clear();
+            tempData.addAll((List<Message>) proxyEntity.data);
+            mProxy.getAllHaveSendMessageNames(tempData);
         } else if (action.equals(MessageProxy.INSERT_DRAFT_MESSAGE_SUCCESS)) {
+//            mProxy.getAllHaveSendMessage();
+//            setOnBusy(true);
+            Toast.makeText(getActivity(),"ok",Toast.LENGTH_SHORT).show();
+        }else if(action.equals(MessageProxy.GET_ALL_HAVE_SEND_MESSAGE_NAME_SUCCESS)){
+            mMessageData.clear();
+            mMessageData.addAll(tempData);
+            mMessageNames.clear();
+            mMessageNames.addAll((List<String>)proxyEntity.data);
+            mAdapter.notifyDataSetChanged();
             setOnBusy(false);
         }
     }
@@ -132,5 +168,18 @@ public class MessageFragment extends BaseFragment implements SwipeMenuListView.O
         Intent intent=new Intent(getActivity(), SendMsgActivity.class);
         intent.putExtra("mid",id);
         startActivity(intent);
+    }
+
+    /**
+     * 测试数据集
+     */
+    public void addMessage(){
+       mProxy.insertDraftMsg("12312412324 werf asdfasdf asdfas sdfas fas fas fasdfsdf");
+        mProxy.insertDraftMsg("12312412324 werf asdfasdf asdfas sdfas fas fas fasdfsdf");
+        mProxy.insertDraftMsg("12312412324 werf asdfasdf asdfas sdfas fas fas fasdfsdf");
+        mProxy.insertDraftMsg("12312412324 werf asdfasdf asdfas sdfas fas fas fasdfsdf");
+        mProxy.insertMsgFromGroup("sldfkjaskldfjasklfjakl; s", (long) 1);
+        mProxy.insertMsgFromGroup("sldfkjaskldfjasklfjakl; s",(long)2);
+        mProxy.insertMsgFromGroup("sldfkjaskldfjasklfjakl; s",(long)1);
     }
 }

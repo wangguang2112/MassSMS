@@ -25,12 +25,16 @@ import java.util.List;
  */
 public class MessageListAdapter extends BaseAdapter{
     List<Message> data;
+    List<String> names;
     Context mContext;
+    LayoutInflater mLayoutInflater;
     OnItemCheckListener mOnItemCheckListener;
-    public MessageListAdapter(Context context,List<Message> data,OnItemCheckListener listener){
+    public MessageListAdapter(Context context,List<Message> data,List<String> names,OnItemCheckListener listener){
         this.mContext=context;
         this.data=data;
+        this.names=names;
         mOnItemCheckListener=listener;
+        mLayoutInflater=LayoutInflater.from(mContext);
     }
     @Override
     public int getCount() {
@@ -52,13 +56,14 @@ public class MessageListAdapter extends BaseAdapter{
         final MyHolder myHolder;
         final Message msg=data.get(position);
         if(convertView==null){
-            convertView= LayoutInflater.from(mContext).inflate(R.layout.message_item_layout,null);
+            convertView= mLayoutInflater.inflate(R.layout.message_item_layout,null);
             myHolder=new MyHolder();
             myHolder.nv= (TextView) convertView.findViewById(R.id.message_item_name);
             myHolder.tv= (TextView) convertView.findViewById(R.id.message_item_time);
             myHolder.mv= (TextView) convertView.findViewById(R.id.message_item_message);
             myHolder.civ= (ToggleButton) convertView.findViewById(R.id.message_item_collection);
 
+            myHolder.nv.setText(names.get(position));
             myHolder.tv.setText(simpleTime(msg.getSendtime()));
             myHolder.mv.setText(msg.getText());
             myHolder.civ.setChecked(msg.getIscollect());
@@ -74,6 +79,7 @@ public class MessageListAdapter extends BaseAdapter{
             convertView.setTag(myHolder);
         }else{
             myHolder= (MyHolder) convertView.getTag();
+            myHolder.nv.setText(names.get(position));
             myHolder.tv.setText(simpleTime(msg.getSendtime()));
             myHolder.mv.setText(msg.getText());
             myHolder.civ.setChecked(msg.getIscollect());
@@ -96,7 +102,7 @@ public class MessageListAdapter extends BaseAdapter{
         ToggleButton civ;
     }
     private String simpleTime(Date date){
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("mm月dd日 hh:MM");
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("MM月dd日 hh:mm");
         return simpleDateFormat.format(date);
     }
     public interface  OnItemCheckListener{

@@ -35,7 +35,7 @@ public class GroupToMessageDao extends AbstractDao<GroupToMessage, Long> {
 
     private DaoSession daoSession;
 
-    private Query<GroupToMessage> contacts_GroupToMessageListQuery;
+    private Query<GroupToMessage> contactGroup_GroupToMessageListQuery;
     private Query<GroupToMessage> message_GroupToMessageListQuery;
 
     public GroupToMessageDao(DaoConfig config) {
@@ -137,16 +137,16 @@ public class GroupToMessageDao extends AbstractDao<GroupToMessage, Long> {
         return true;
     }
     
-    /** Internal query to resolve the "groupToMessageList" to-many relationship of Contacts. */
-    public List<GroupToMessage> _queryContacts_GroupToMessageList(Long gid) {
+    /** Internal query to resolve the "groupToMessageList" to-many relationship of ContactGroup. */
+    public List<GroupToMessage> _queryContactGroup_GroupToMessageList(Long gid) {
         synchronized (this) {
-            if (contacts_GroupToMessageListQuery == null) {
+            if (contactGroup_GroupToMessageListQuery == null) {
                 QueryBuilder<GroupToMessage> queryBuilder = queryBuilder();
                 queryBuilder.where(Properties.Gid.eq(null));
-                contacts_GroupToMessageListQuery = queryBuilder.build();
+                contactGroup_GroupToMessageListQuery = queryBuilder.build();
             }
         }
-        Query<GroupToMessage> query = contacts_GroupToMessageListQuery.forCurrentThread();
+        Query<GroupToMessage> query = contactGroup_GroupToMessageListQuery.forCurrentThread();
         query.setParameter(0, gid);
         return query.list();
     }
@@ -172,11 +172,11 @@ public class GroupToMessageDao extends AbstractDao<GroupToMessage, Long> {
             StringBuilder builder = new StringBuilder("SELECT ");
             SqlUtils.appendColumns(builder, "T", getAllColumns());
             builder.append(',');
-            SqlUtils.appendColumns(builder, "T0", daoSession.getContactsDao().getAllColumns());
+            SqlUtils.appendColumns(builder, "T0", daoSession.getContactGroupDao().getAllColumns());
             builder.append(',');
             SqlUtils.appendColumns(builder, "T1", daoSession.getMessageDao().getAllColumns());
             builder.append(" FROM GROUP_TO_MESSAGE T");
-            builder.append(" LEFT JOIN CONTACTS T0 ON T.\"GID\"=T0.\"_id\"");
+            builder.append(" LEFT JOIN CONTACT_GROUP T0 ON T.\"GID\"=T0.\"_id\"");
             builder.append(" LEFT JOIN MESSAGE T1 ON T.\"MID\"=T1.\"_id\"");
             builder.append(' ');
             selectDeep = builder.toString();
@@ -188,9 +188,9 @@ public class GroupToMessageDao extends AbstractDao<GroupToMessage, Long> {
         GroupToMessage entity = loadCurrent(cursor, 0, lock);
         int offset = getAllColumns().length;
 
-        Contacts contacts = loadCurrentOther(daoSession.getContactsDao(), cursor, offset);
-        entity.setContacts(contacts);
-        offset += daoSession.getContactsDao().getAllColumns().length;
+        ContactGroup contactGroup = loadCurrentOther(daoSession.getContactGroupDao(), cursor, offset);
+        entity.setContactGroup(contactGroup);
+        offset += daoSession.getContactGroupDao().getAllColumns().length;
 
         Message message = loadCurrentOther(daoSession.getMessageDao(), cursor, offset);
         entity.setMessage(message);
