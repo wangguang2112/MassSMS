@@ -46,10 +46,18 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
     private int imageid[] = {R.drawable.image1, R.drawable.image2, R.drawable.image3};
 
     private LinearLayout mAllContactView;
+
     private LinearLayout mMySendView;
+
     private LinearLayout mCollectionView;
+
     private LinearLayout mDraftView;
-   private LinearLayout mTimeSendListView;
+
+    private LinearLayout mTimeSendListView;
+
+    private LinearLayout mImportView;
+
+    private LinearLayout mExportView;
 
     private IMToggleButton mAutoImportBT;
 
@@ -64,14 +72,18 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
         mViewPager = (AutoScrollViewPager) view.findViewById(R.id.setting_viewpager);
         mAllContactView = (LinearLayout) view.findViewById(R.id.setting_view_all_contact);
         mAllContactView.setOnClickListener(this);
-        mMySendView= (LinearLayout) view.findViewById(R.id.settint_my_send);
+        mMySendView = (LinearLayout) view.findViewById(R.id.settint_my_send);
         mMySendView.setOnClickListener(this);
-        mCollectionView= (LinearLayout) view.findViewById(R.id.setting_collection);
+        mCollectionView = (LinearLayout) view.findViewById(R.id.setting_collection);
         mCollectionView.setOnClickListener(this);
-        mDraftView= (LinearLayout) view.findViewById(R.id.setting_draft);
+        mDraftView = (LinearLayout) view.findViewById(R.id.setting_draft);
         mDraftView.setOnClickListener(this);
-        mTimeSendListView= (LinearLayout) view.findViewById(R.id.setting_time_send_list);
+        mTimeSendListView = (LinearLayout) view.findViewById(R.id.setting_time_send_list);
         mTimeSendListView.setOnClickListener(this);
+        mExportView = (LinearLayout) view.findViewById(R.id.setting_export);
+        mExportView.setOnClickListener(this);
+        mImportView = (LinearLayout) view.findViewById(R.id.setting_import);
+        mImportView.setOnClickListener(this);
         mAutoImportBT = (IMToggleButton) view.findViewById(R.id.setting_auto_import_from_phone);
         mAutoImportBT.setToggleState(SharedPreferencesUtil.getInstance().getBoolean(SharedPreferencesUtil.AUTO_IMPORT_FROM_PHONE_FLAG, false));
         mAutoImportBT.setIOnToggleStateChangeListener(new IOnToggleStateChangeListener() {
@@ -81,7 +93,7 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
             }
         });
         mTimeSendSwitch = (IMToggleButton) view.findViewById(R.id.setting_time_send_switch);
-        mTimeSendSwitch.setToggleState(SharedPreferencesUtil.getInstance().getBoolean(SharedPreferencesUtil.AUTO_TIME_SEND_SWITCH_FLAG,false));
+        mTimeSendSwitch.setToggleState(SharedPreferencesUtil.getInstance().getBoolean(SharedPreferencesUtil.AUTO_TIME_SEND_SWITCH_FLAG, false));
         mTimeSendSwitch.setIOnToggleStateChangeListener(new IOnToggleStateChangeListener() {
             @Override
             public void onToggleStateChange(View view, boolean state) {
@@ -124,15 +136,20 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
                 startActivity(intent1);
                 break;
             case R.id.setting_collection:
-                Intent intent2=new Intent(getActivity(),CollectionActivity.class);
+                Intent intent2 = new Intent(getActivity(), CollectionActivity.class);
                 startActivity(intent2);
                 break;
             case R.id.setting_draft:
-                Intent intent3=new Intent(getActivity(),DraftActivity.class);
+                Intent intent3 = new Intent(getActivity(), DraftActivity.class);
                 startActivity(intent3);
                 break;
             case R.id.setting_time_send_list:
                 //TODO
+                break;
+            case R.id.setting_export:
+                break;
+            case R.id.setting_import:
+                break;
             default:
                 break;
         }

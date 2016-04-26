@@ -187,7 +187,50 @@
                         android:layout_marginRight="10dp"
                         />
             </LinearLayout>
-
+            <View
+                    android:layout_width="match_parent" android:layout_height="10dp"
+                    android:background="#ddd"/>
+            <LinearLayout android:id="@+id/setting_import"
+                          android:layout_width="match_parent" android:layout_height="45dp" android:orientation="horizontal"
+                          android:background="@drawable/add_button_background">
+                <ImageView android:layout_width="20dp" android:layout_height="20dp"
+                           android:layout_gravity="center_vertical"
+                           android:layout_marginLeft="10dp"
+                           android:scaleType="fitCenter"
+                           android:src="@drawable/import_from_file"
+                        />
+                <TextView android:layout_width="0dp" android:layout_height="40dp"
+                          android:layout_weight="1"
+                          style="@style/setting_text_style"
+                          android:text="导入数据"
+                          android:gravity="center_vertical"
+                        />
+                <ImageView android:layout_width="8dp" android:layout_height="wrap_content"
+                           android:layout_gravity="center_vertical"
+                           android:layout_marginRight="20dp" android:src="@drawable/right_arrow"/>
+            </LinearLayout>
+            <View android:layout_marginLeft="15dp"
+                  android:layout_width="match_parent" android:layout_height="0.5dp"
+                  android:background="#ddd"/>
+            <LinearLayout android:id="@+id/setting_export"
+                          android:layout_width="match_parent" android:layout_height="45dp" android:orientation="horizontal"
+                          android:background="@drawable/add_button_background">
+                <ImageView android:layout_width="20dp" android:layout_height="20dp"
+                           android:layout_gravity="center_vertical"
+                           android:layout_marginLeft="10dp"
+                           android:scaleType="fitCenter"
+                           android:src="@drawable/export_to_file"
+                        />
+                <TextView android:layout_width="0dp" android:layout_height="40dp"
+                          android:layout_weight="1"
+                          style="@style/setting_text_style"
+                          android:text="导出数据"
+                          android:gravity="center_vertical"
+                        />
+                <ImageView android:layout_width="8dp" android:layout_height="wrap_content"
+                           android:layout_gravity="center_vertical"
+                           android:layout_marginRight="20dp" android:src="@drawable/right_arrow"/>
+            </LinearLayout>
             <View
                     android:layout_width="match_parent" android:layout_height="10dp"
                     android:background="#ddd"/>
@@ -203,6 +246,8 @@
             <View
                     android:layout_width="match_parent" android:layout_height="10dp"
                     android:background="#ddd"/>
+
+
         </LinearLayout>
 
     </ScrollView>

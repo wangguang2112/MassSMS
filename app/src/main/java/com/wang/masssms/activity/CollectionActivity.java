@@ -22,5 +22,6 @@ public class CollectionActivity extends BaseActivity{
                 CollectionActivity.this.finish();
             }
         });
+        //TODO
     }
 }

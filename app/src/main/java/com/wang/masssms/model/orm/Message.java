@@ -12,8 +12,9 @@ public class Message {
 
     private Long id;
     private java.util.Date sendtime;
-    private Integer gid;
     private String text;
+    private Boolean iscollect;
+    private Boolean isdraft;
 
     /** Used to resolve relations */
     private transient DaoSession daoSession;
@@ -31,11 +32,12 @@ public class Message {
         this.id = id;
     }
 
-    public Message(Long id, java.util.Date sendtime, Integer gid, String text) {
+    public Message(Long id, java.util.Date sendtime, String text, Boolean iscollect, Boolean isdraft) {
         this.id = id;
         this.sendtime = sendtime;
-        this.gid = gid;
         this.text = text;
+        this.iscollect = iscollect;
+        this.isdraft = isdraft;
     }
 
     /** called by internal mechanisms, do not call yourself. */
@@ -60,20 +62,28 @@ public class Message {
         this.sendtime = sendtime;
     }
 
-    public Integer getGid() {
-        return gid;
-    }
-
-    public void setGid(Integer gid) {
-        this.gid = gid;
-    }
-
     public String getText() {
         return text;
     }
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public Boolean getIscollect() {
+        return iscollect;
+    }
+
+    public void setIscollect(Boolean iscollect) {
+        this.iscollect = iscollect;
+    }
+
+    public Boolean getIsdraft() {
+        return isdraft;
+    }
+
+    public void setIsdraft(Boolean isdraft) {
+        this.isdraft = isdraft;
     }
 
     /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */

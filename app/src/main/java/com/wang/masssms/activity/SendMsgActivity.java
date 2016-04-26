@@ -25,5 +25,6 @@ public class SendMsgActivity  extends BaseActivity{
                 SendMsgActivity.this.finish();
             }
         });
+        //TODO
     }
 }

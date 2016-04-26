@@ -19,5 +19,6 @@ public class DraftActivity extends BaseActivity {
                 DraftActivity.this.finish();
             }
         });
+        //TODO
     }
 }

@@ -45,8 +45,9 @@ public class MyDaoGenerator {
         Entity message=schema.addEntity("Message");
         message.addIdProperty().primaryKey().autoincrement();
         message.addDateProperty("sendtime");
-        message.addIntProperty("gid");
         message.addStringProperty("text");
+        message.addBooleanProperty("iscollect");
+        message.addBooleanProperty("isdraft");
 
         Entity contactToGroup=schema.addEntity("ContactToGroup");
         contactToGroup.addIdProperty().autoincrement().primaryKey();

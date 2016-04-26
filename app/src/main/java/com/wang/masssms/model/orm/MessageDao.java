@@ -25,8 +25,9 @@ public class MessageDao extends AbstractDao<Message, Long> {
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Sendtime = new Property(1, java.util.Date.class, "sendtime", false, "SENDTIME");
-        public final static Property Gid = new Property(2, Integer.class, "gid", false, "GID");
-        public final static Property Text = new Property(3, String.class, "text", false, "TEXT");
+        public final static Property Text = new Property(2, String.class, "text", false, "TEXT");
+        public final static Property Iscollect = new Property(3, Boolean.class, "iscollect", false, "ISCOLLECT");
+        public final static Property Isdraft = new Property(4, Boolean.class, "isdraft", false, "ISDRAFT");
     };
 
     private DaoSession daoSession;
@@ -47,8 +48,9 @@ public class MessageDao extends AbstractDao<Message, Long> {
         db.execSQL("CREATE TABLE " + constraint + "\"MESSAGE\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "\"SENDTIME\" INTEGER," + // 1: sendtime
-                "\"GID\" INTEGER," + // 2: gid
-                "\"TEXT\" TEXT);"); // 3: text
+                "\"TEXT\" TEXT," + // 2: text
+                "\"ISCOLLECT\" INTEGER," + // 3: iscollect
+                "\"ISDRAFT\" INTEGER);"); // 4: isdraft
     }
 
     /** Drops the underlying database table. */
@@ -72,14 +74,19 @@ public class MessageDao extends AbstractDao<Message, Long> {
             stmt.bindLong(2, sendtime.getTime());
         }
  
-        Integer gid = entity.getGid();
-        if (gid != null) {
-            stmt.bindLong(3, gid);
-        }
- 
         String text = entity.getText();
         if (text != null) {
-            stmt.bindString(4, text);
+            stmt.bindString(3, text);
+        }
+ 
+        Boolean iscollect = entity.getIscollect();
+        if (iscollect != null) {
+            stmt.bindLong(4, iscollect ? 1L: 0L);
+        }
+ 
+        Boolean isdraft = entity.getIsdraft();
+        if (isdraft != null) {
+            stmt.bindLong(5, isdraft ? 1L: 0L);
         }
     }
 
@@ -101,8 +108,9 @@ public class MessageDao extends AbstractDao<Message, Long> {
         Message entity = new Message( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : new java.util.Date(cursor.getLong(offset + 1)), // sendtime
-            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // gid
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3) // text
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // text
+            cursor.isNull(offset + 3) ? null : cursor.getShort(offset + 3) != 0, // iscollect
+            cursor.isNull(offset + 4) ? null : cursor.getShort(offset + 4) != 0 // isdraft
         );
         return entity;
     }
@@ -112,8 +120,9 @@ public class MessageDao extends AbstractDao<Message, Long> {
     public void readEntity(Cursor cursor, Message entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setSendtime(cursor.isNull(offset + 1) ? null : new java.util.Date(cursor.getLong(offset + 1)));
-        entity.setGid(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
-        entity.setText(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setText(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setIscollect(cursor.isNull(offset + 3) ? null : cursor.getShort(offset + 3) != 0);
+        entity.setIsdraft(cursor.isNull(offset + 4) ? null : cursor.getShort(offset + 4) != 0);
      }
     
     /** @inheritdoc */
