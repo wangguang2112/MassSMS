@@ -23,7 +23,7 @@
             android:layout_centerVertical="true"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/contact_ic"/>
+            android:src="@drawable/default_contact_icon"/>
     <TextView
         android:layout_marginTop="5dp"
         android:id="@+id/contact_item_name"

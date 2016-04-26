@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import com.wang.masssms.R;
 import com.wang.masssms.activity.AllContactActivity;
+import com.wang.masssms.activity.CollectionActivity;
+import com.wang.masssms.activity.DraftActivity;
 import com.wang.masssms.adapter.SettingPagerAdapter;
 import com.wang.masssms.model.util.SharedPreferencesUtil;
 import com.wang.masssms.uiview.togglebutton.IMToggleButton;
@@ -46,13 +48,12 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
     private LinearLayout mAllContactView;
     private LinearLayout mMySendView;
     private LinearLayout mCollectionView;
-    public CirclePageIndicator getIndicator() {
-        return mIndicator;
-    }
+    private LinearLayout mDraftView;
+   private LinearLayout mTimeSendListView;
 
     private IMToggleButton mAutoImportBT;
 
-    private IMToggleButton mOtherImportBT;
+    private IMToggleButton mTimeSendSwitch;
 
     private TextView mLogoutTV;
 
@@ -67,6 +68,10 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
         mMySendView.setOnClickListener(this);
         mCollectionView= (LinearLayout) view.findViewById(R.id.setting_collection);
         mCollectionView.setOnClickListener(this);
+        mDraftView= (LinearLayout) view.findViewById(R.id.setting_draft);
+        mDraftView.setOnClickListener(this);
+        mTimeSendListView= (LinearLayout) view.findViewById(R.id.setting_time_send_list);
+        mTimeSendListView.setOnClickListener(this);
         mAutoImportBT = (IMToggleButton) view.findViewById(R.id.setting_auto_import_from_phone);
         mAutoImportBT.setToggleState(SharedPreferencesUtil.getInstance().getBoolean(SharedPreferencesUtil.AUTO_IMPORT_FROM_PHONE_FLAG, false));
         mAutoImportBT.setIOnToggleStateChangeListener(new IOnToggleStateChangeListener() {
@@ -75,7 +80,14 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
                 SharedPreferencesUtil.getInstance(getActivity()).setBoolean(SharedPreferencesUtil.AUTO_IMPORT_FROM_PHONE_FLAG, state);
             }
         });
-        mOtherImportBT = (IMToggleButton) view.findViewById(R.id.setting_other1);
+        mTimeSendSwitch = (IMToggleButton) view.findViewById(R.id.setting_time_send_switch);
+        mTimeSendSwitch.setToggleState(SharedPreferencesUtil.getInstance().getBoolean(SharedPreferencesUtil.AUTO_TIME_SEND_SWITCH_FLAG,false));
+        mTimeSendSwitch.setIOnToggleStateChangeListener(new IOnToggleStateChangeListener() {
+            @Override
+            public void onToggleStateChange(View view, boolean state) {
+                SharedPreferencesUtil.getInstance(getActivity()).setBoolean(SharedPreferencesUtil.AUTO_TIME_SEND_SWITCH_FLAG, state);
+            }
+        });
         mLogoutTV = (TextView) view.findViewById(R.id.setting_logout);
         mLogoutTV.setOnClickListener(this);
         mViewData = new ArrayList<ViewPagerVo>();
@@ -103,16 +115,24 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
                 break;
             case R.id.settint_my_send:
                 Intent intent = new Intent(getActivity(), AllContactActivity.class);
-                intent.putExtra("type", AllContactActivity.VIEW_ALL_DATA_TYPE);
+                intent.putExtra("type", AllContactActivity.MY_SEND_DATA_TYPE);
                 startActivity(intent);
                 break;
             case R.id.setting_view_all_contact:
-                Intent intent2 = new Intent(getActivity(), AllContactActivity.class);
-                intent2.putExtra("type", AllContactActivity.MY_SEND_DATA_TYPE);
-                startActivity(intent2);
+                Intent intent1 = new Intent(getActivity(), AllContactActivity.class);
+                intent1.putExtra("type", AllContactActivity.VIEW_ALL_DATA_TYPE);
+                startActivity(intent1);
                 break;
             case R.id.setting_collection:
-
+                Intent intent2=new Intent(getActivity(),CollectionActivity.class);
+                startActivity(intent2);
+                break;
+            case R.id.setting_draft:
+                Intent intent3=new Intent(getActivity(),DraftActivity.class);
+                startActivity(intent3);
+                break;
+            case R.id.setting_time_send_list:
+                //TODO
             default:
                 break;
         }

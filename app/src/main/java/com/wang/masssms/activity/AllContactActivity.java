@@ -2,6 +2,7 @@ package com.wang.masssms.activity;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -135,7 +136,26 @@ public class AllContactActivity extends BaseActivity implements SwipeMenuListVie
                 }
                 break;
             case MY_SEND_DATA_TYPE:
-
+                Drawable drawable1 = getResources().getDrawable(R.drawable.my_send_small);
+                drawable1.setBounds(0, 0, drawable1.getMinimumWidth(), drawable1.getMinimumHeight());
+                mHandleBT.setCompoundDrawablePadding(20);
+                mHandleBT.setCompoundDrawables(drawable1, null, null, null);
+                mHandleBT.setText("发送");
+                mBottomBar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ArrayList<Long> arrayList = new ArrayList<Long>();
+                        for (int i = 0; i < isChecks.size(); i++) {
+                            if (isChecks.get(i)) {
+                                arrayList.add(mAllContactData.get(i).getId());
+                            }
+                        }
+                        Intent intent=new Intent(AllContactActivity.this,SendMsgActivity.class);
+                        intent.putExtra("type",SendMsgActivity.FROM_MY_SEND_TYPE);
+                        intent.putExtra("contactids",arrayList);
+                        startActivity(intent);
+                    }
+                });
                 break;
             case VIEW_ALL_DATA_TYPE:
             default:

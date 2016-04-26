@@ -75,6 +75,29 @@
                            android:layout_gravity="center_vertical"
                            android:layout_marginRight="20dp" android:src="@drawable/right_arrow"/>
             </LinearLayout>
+
+            <View android:layout_marginLeft="15dp"
+                  android:layout_width="match_parent" android:layout_height="0.5dp"
+                  android:background="#ddd"/>
+            <LinearLayout android:id="@+id/setting_draft"
+                          android:layout_width="match_parent" android:layout_height="45dp" android:orientation="horizontal"
+                          android:background="@drawable/add_button_background">
+                <ImageView android:layout_width="20dp" android:layout_height="20dp"
+                           android:layout_gravity="center_vertical"
+                           android:layout_marginLeft="10dp"
+                           android:scaleType="fitCenter"
+                           android:src="@drawable/draft_ic"
+                        />
+                <TextView android:layout_width="0dp" android:layout_height="40dp"
+                          android:layout_weight="1"
+                          style="@style/setting_text_style"
+                          android:text="草稿箱"
+                          android:gravity="center_vertical"
+                        />
+                <ImageView android:layout_width="8dp" android:layout_height="wrap_content"
+                           android:layout_gravity="center_vertical"
+                           android:layout_marginRight="20dp" android:src="@drawable/right_arrow"/>
+            </LinearLayout>
             <View android:layout_marginLeft="15dp"
                   android:layout_width="match_parent" android:layout_height="0.5dp"
                   android:background="#ddd"/>
@@ -101,6 +124,52 @@
                     android:layout_width="match_parent" android:layout_height="10dp"
                     android:background="#ddd"/>
             <LinearLayout android:orientation="horizontal"
+                          android:background="@color/white"
+                          android:visibility="visible"
+                          android:layout_width="match_parent" android:layout_height="45dp">
+                <ImageView android:layout_width="20dp" android:layout_height="20dp"
+                           android:layout_gravity="center_vertical"
+                           android:layout_marginLeft="10dp"
+                           android:scaleType="fitCenter"
+                           android:src="@drawable/alarm_switch"
+                        />
+                <TextView
+                        style="@style/setting_text_style" android:layout_width="0dp" android:layout_weight="1" android:layout_height="40dp"
+                        android:text="定时发送"/>
+                <com.wang.masssms.uiview.togglebutton.IMToggleButton
+                        android:layout_gravity="center_vertical"
+                        android:id="@+id/setting_time_send_switch"
+                        android:layout_marginRight="10dp"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        />
+            </LinearLayout>
+            <View android:layout_marginLeft="15dp"
+                  android:layout_width="match_parent" android:layout_height="0.5dp"
+                  android:background="#ddd"/>
+            <LinearLayout android:id="@+id/setting_time_send_list"
+                          android:layout_width="match_parent" android:layout_height="45dp" android:orientation="horizontal"
+                          android:background="@drawable/add_button_background">
+                <ImageView android:layout_width="20dp" android:layout_height="20dp"
+                           android:layout_gravity="center_vertical"
+                           android:layout_marginLeft="10dp"
+                           android:scaleType="fitCenter"
+                           android:src="@drawable/alarm_list"
+                        />
+                <TextView android:layout_width="0dp" android:layout_height="40dp"
+                          android:layout_weight="1"
+                          style="@style/setting_text_style"
+                          android:text="按时发送名单"
+                          android:gravity="center_vertical"
+                        />
+                <ImageView android:layout_width="8dp" android:layout_height="wrap_content"
+                           android:layout_gravity="center_vertical"
+                           android:layout_marginRight="20dp" android:src="@drawable/right_arrow"/>
+            </LinearLayout>
+
+            <View
+                    android:layout_width="match_parent" android:layout_height="10dp"
+                    android:background="#ddd"/>
+            <LinearLayout android:orientation="horizontal"
                           android:background="@color/white" android:layout_width="match_parent" android:layout_height="45dp">
                 <ImageView android:layout_width="20dp" android:layout_height="20dp"
                            android:layout_gravity="center_vertical"
@@ -118,29 +187,7 @@
                         android:layout_marginRight="10dp"
                         />
             </LinearLayout>
-            <View android:layout_marginLeft="15dp"
-                  android:layout_width="match_parent" android:layout_height="0.5dp"
-                  android:background="#ddd"/>
-            <LinearLayout android:orientation="horizontal"
-                          android:background="@color/white"
-                          android:visibility="visible"
-                          android:layout_width="match_parent" android:layout_height="45dp">
-                <ImageView android:layout_width="20dp" android:layout_height="20dp"
-                           android:layout_gravity="center_vertical"
-                           android:layout_marginLeft="10dp"
-                           android:scaleType="fitCenter"
-                           android:src="@drawable/import_ic"
-                        />
-                <TextView
-                        style="@style/setting_text_style" android:layout_width="0dp" android:layout_weight="1" android:layout_height="40dp"
-                        android:text="乱七八糟"/>
-                <com.wang.masssms.uiview.togglebutton.IMToggleButton
-                        android:layout_gravity="center_vertical"
-                        android:id="@+id/setting_other1"
-                        android:layout_marginRight="10dp"
-                        android:layout_width="wrap_content" android:layout_height="wrap_content"
-                      />
-            </LinearLayout>
+
             <View
                     android:layout_width="match_parent" android:layout_height="10dp"
                     android:background="#ddd"/>

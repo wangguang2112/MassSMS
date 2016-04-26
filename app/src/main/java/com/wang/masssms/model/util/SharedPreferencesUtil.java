@@ -19,13 +19,24 @@ import java.util.HashMap;
  * Created by wangguang on 2016/4/25.
  */
 public class SharedPreferencesUtil {
+
+    //文件名
     private static final String sharedPreferencesInfo = "masssms.shareInfo";
+
     private static final String SHAREDPREFERENCES_HEADER = "masssms.header";
 
-    public static final String AUTO_IMPORT_FROM_PHONE_FLAG="auto_import_from_phone_flag";
+    //自动从手机导入字段
+    public static final String AUTO_IMPORT_FROM_PHONE_FLAG = "auto_import_from_phone_flag";
+
+    //按时发送开关
+    public static final String AUTO_TIME_SEND_SWITCH_FLAG = "auto_time_send_switch_flag";
+
     private static Context myContext;
+
     private static SharedPreferences mPreferences;
+
     private static SharedPreferences.Editor mEditor;
+
     private static SharedPreferencesUtil mSharedInstance = new SharedPreferencesUtil();
 
     private SharedPreferencesUtil() {
@@ -34,9 +45,6 @@ public class SharedPreferencesUtil {
 
     /**
      * 单例模式获得对象实例
-     *
-     * @param context
-     * @return
      */
     public static SharedPreferencesUtil getInstance(Context context) {
         myContext = App.getApp();
@@ -54,9 +62,6 @@ public class SharedPreferencesUtil {
 
     /**
      * 是否有键
-     *
-     * @param key
-     * @return
      */
     public boolean isContainKey(String key) {
         return mPreferences.contains(key);
@@ -64,9 +69,6 @@ public class SharedPreferencesUtil {
 
     /**
      * 删除指定键的值item
-     *
-     * @param key
-     * @return
      */
     public boolean clearItem(String key) {
         mEditor.remove(key);
@@ -75,12 +77,10 @@ public class SharedPreferencesUtil {
 
     /**
      * 获得所有保存对象
-     *
-     * @return
      */
     @SuppressWarnings("unchecked")
     public HashMap<String, ?> getAll() {
-        if(mPreferences.getAll() instanceof  HashMap) {
+        if (mPreferences.getAll() instanceof HashMap) {
             return (HashMap<String, ?>) mPreferences.getAll();
         }
         return null;
@@ -88,10 +88,6 @@ public class SharedPreferencesUtil {
 
     /**
      * 给指定键设置String值
-     *
-     * @param key
-     * @param value
-     * @return
      */
     public boolean setString(String key, String value) {
         if (mPreferences.contains(key)) {
@@ -104,9 +100,7 @@ public class SharedPreferencesUtil {
     /**
      * 获得指定键的String类型值
      *
-     * @param key
-     *            键
-     * @return
+     * @param key 键
      */
     public String getString(String key) {
         return mPreferences.getString(key, "");
@@ -115,11 +109,8 @@ public class SharedPreferencesUtil {
     /**
      * 获得指定键的String类型值，带有默认值的
      *
-     * @param key
-     *            键
-     * @param defValue
-     *            默认值
-     * @return
+     * @param key      键
+     * @param defValue 默认值
      */
     public String getString(String key, String defValue) {
         return mPreferences.getString(key, defValue);
@@ -127,10 +118,6 @@ public class SharedPreferencesUtil {
 
     /**
      * 给指定键设置int值
-     *
-     * @param key
-     * @param value
-     * @return
      */
     public boolean setInt(String key, int value) {
         if (mPreferences.contains(key)) {
@@ -142,9 +129,6 @@ public class SharedPreferencesUtil {
 
     /**
      * 获得int类型数据
-     *
-     * @param key
-     * @return
      */
     public int getInt(String key) {
         return mPreferences.getInt(key, 0);
@@ -152,10 +136,6 @@ public class SharedPreferencesUtil {
 
     /**
      * 获得int类型数据，带有默认值的
-     *
-     * @param key
-     * @param defValue
-     * @return
      */
     public int getInt(String key, int defValue) {
         return mPreferences.getInt(key, defValue);
@@ -163,10 +143,6 @@ public class SharedPreferencesUtil {
 
     /**
      * 设置float类型数据
-     *
-     * @param key
-     * @param value
-     * @return
      */
     public boolean setFloat(String key, float value) {
         if (mPreferences.contains(key)) {
@@ -178,9 +154,6 @@ public class SharedPreferencesUtil {
 
     /**
      * 获得float类型数据
-     *
-     * @param key
-     * @return
      */
     public float getFloat(String key) {
         return mPreferences.getFloat(key, 0);
@@ -188,10 +161,6 @@ public class SharedPreferencesUtil {
 
     /**
      * 获得float类型数据，带有默认值的
-     *
-     * @param key
-     * @param defValue
-     * @return
      */
     public float getFloat(String key, float defValue) {
         return mPreferences.getFloat(key, defValue);
@@ -199,10 +168,6 @@ public class SharedPreferencesUtil {
 
     /**
      * 设置long类型数据，带有默认值的
-     *
-     * @param key
-     * @param value
-     * @return
      */
     public boolean setBoolean(String key, boolean value) {
         if (mPreferences.contains(key)) {
@@ -214,10 +179,6 @@ public class SharedPreferencesUtil {
 
     /**
      * 获得boolean类型数据
-     *
-     * @param key
-     * @param defValue
-     * @return
      */
     public boolean getBoolean(String key, boolean defValue) {
         return mPreferences.getBoolean(key, defValue);
@@ -225,10 +186,6 @@ public class SharedPreferencesUtil {
 
     /**
      * 设置long类型数据
-     *
-     * @param key
-     * @param value
-     * @return
      */
     public boolean setLong(String key, long value) {
         if (mPreferences.contains(key)) {
@@ -240,9 +197,6 @@ public class SharedPreferencesUtil {
 
     /**
      * 获得long类型数据
-     *
-     * @param key
-     * @return
      */
     public long getLong(String key) {
         return mPreferences.getLong(key, 0);
@@ -250,10 +204,6 @@ public class SharedPreferencesUtil {
 
     /**
      * 获得long类型数据，带有默认值的
-     *
-     * @param key
-     * @param defValue
-     * @return
      */
     public long getLong(String key, long defValue) {
         return mPreferences.getLong(key, defValue);
@@ -261,6 +211,7 @@ public class SharedPreferencesUtil {
 
     /**
      * 存储对象类型到share preferences
+     *
      * @param key
      * @param object  待存储对象
      */
@@ -294,9 +245,9 @@ public class SharedPreferencesUtil {
             }
         }
     }
+
     /**
      * 获取share preferences中的对象
-     * @param key
      */
     public static <T> T getObject(String key) {
         SharedPreferences sp = App.getApp().getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
@@ -335,10 +286,8 @@ public class SharedPreferencesUtil {
     /**
      * 程序第一次运行之后设置
      *
-     * @param context
-     *            上下文
-     * @param uid
-     *            uid
+     * @param context 上下文
+     * @param uid     uid
      * @author 黄宏宇
      */
     public static void setAppIsFirstInit(Context context, long uid) {
@@ -352,10 +301,8 @@ public class SharedPreferencesUtil {
     /**
      * 程序是否第一次运行
      *
-     * @param context
-     *            上下文
-     * @param uid
-     *            uid
+     * @param context 上下文
+     * @param uid     uid
      * @return boolean
      * @author 黄宏宇
      */
@@ -367,9 +314,6 @@ public class SharedPreferencesUtil {
 
     /**
      * 单例模式获得记录加载头像的对象实例
-     *
-     * @param context
-     * @return
      */
     public static SharedPreferencesUtil getHeaderInstance(Context context) {
         myContext = App.getApp();
