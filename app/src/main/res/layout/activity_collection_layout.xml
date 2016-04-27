@@ -11,4 +11,9 @@
                                         headbar:headtitle="收藏"
                                         headbar:returnvisiable="true"
                                         headbar:rightvisiable="false"/>
+    <ListView
+            android:id="@+id/collection_listview"
+            android:layout_width="match_parent"
+            android:descendantFocusability="afterDescendants"
+            android:layout_height="match_parent"></ListView>
 </LinearLayout>

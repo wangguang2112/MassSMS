@@ -6,6 +6,7 @@ import com.wang.masssms.model.orm.Message;
 import org.w3c.dom.Text;
 
 import android.content.Context;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,19 +24,28 @@ import java.util.List;
 /**
  * Created by wangguang on 2016/4/26.
  */
-public class MessageListAdapter extends BaseAdapter{
+public class MessageListAdapter extends BaseAdapter {
+
     List<Message> data;
+
     List<String> names;
+
     Context mContext;
+
     LayoutInflater mLayoutInflater;
+
     OnItemCheckListener mOnItemCheckListener;
-    public MessageListAdapter(Context context,List<Message> data,List<String> names,OnItemCheckListener listener){
-        this.mContext=context;
-        this.data=data;
-        this.names=names;
-        mOnItemCheckListener=listener;
-        mLayoutInflater=LayoutInflater.from(mContext);
+
+    SimpleDateFormat simpleDateFormat;
+    public MessageListAdapter(Context context, List<Message> data, List<String> names, OnItemCheckListener listener) {
+        this.mContext = context;
+        this.data = data;
+        this.names = names;
+        mOnItemCheckListener = listener;
+        mLayoutInflater = LayoutInflater.from(mContext);
+        simpleDateFormat = new SimpleDateFormat("MM月dd日");
     }
+
     @Override
     public int getCount() {
         return data.size();
@@ -54,15 +64,17 @@ public class MessageListAdapter extends BaseAdapter{
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final MyHolder myHolder;
-        final Message msg=data.get(position);
-        if(convertView==null){
-            convertView= mLayoutInflater.inflate(R.layout.message_item_layout,null);
-            myHolder=new MyHolder();
-            myHolder.nv= (TextView) convertView.findViewById(R.id.message_item_name);
-            myHolder.tv= (TextView) convertView.findViewById(R.id.message_item_time);
-            myHolder.mv= (TextView) convertView.findViewById(R.id.message_item_message);
-            myHolder.civ= (ToggleButton) convertView.findViewById(R.id.message_item_collection);
+        final Message msg = data.get(position);
+        if (convertView == null) {
+            convertView = mLayoutInflater.inflate(R.layout.message_item_layout, null);
+            myHolder = new MyHolder();
+            myHolder.iv = (ImageView) convertView.findViewById(R.id.message_item_icon);
+            myHolder.nv = (TextView) convertView.findViewById(R.id.message_item_name);
+            myHolder.tv = (TextView) convertView.findViewById(R.id.message_item_time);
+            myHolder.mv = (TextView) convertView.findViewById(R.id.message_item_message);
+            myHolder.civ = (ToggleButton) convertView.findViewById(R.id.message_item_collection);
 
+            myHolder.iv.setImageResource(msg.getIsdraft() ? R.drawable.message_draft : R.drawable.message_complete);
             myHolder.nv.setText(names.get(position));
             myHolder.tv.setText(simpleTime(msg.getSendtime()));
             myHolder.mv.setText(msg.getText());
@@ -70,15 +82,16 @@ public class MessageListAdapter extends BaseAdapter{
             myHolder.civ.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if(mOnItemCheckListener!=null){
+                    if (mOnItemCheckListener != null) {
                         msg.setIscollect(isChecked);
-                        mOnItemCheckListener.onItemCheck(position,isChecked);
+                        mOnItemCheckListener.onItemCheck(position, isChecked);
                     }
                 }
             });
             convertView.setTag(myHolder);
-        }else{
-            myHolder= (MyHolder) convertView.getTag();
+        } else {
+            myHolder = (MyHolder) convertView.getTag();
+            myHolder.iv.setImageResource(msg.getIsdraft() ? R.drawable.message_draft : R.drawable.message_complete);
             myHolder.nv.setText(names.get(position));
             myHolder.tv.setText(simpleTime(msg.getSendtime()));
             myHolder.mv.setText(msg.getText());
@@ -95,18 +108,36 @@ public class MessageListAdapter extends BaseAdapter{
         }
         return convertView;
     }
-    class MyHolder{
+
+    class MyHolder {
+
+        ImageView iv;
+
         TextView nv;
+
         TextView tv;
+
         TextView mv;
+
         ToggleButton civ;
     }
-    private String simpleTime(Date date){
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("MM月dd日 hh:mm");
+
+    private String simpleTime(Date date) {
+
+        int today=new Date(System.currentTimeMillis()).getDay();
+        if(date.getDay()==today){
+            simpleDateFormat.applyPattern("今天 hh:mm");
+        }else if (today-date.getDay()==1){
+            simpleDateFormat.applyPattern("昨天 hh:mm");
+        }else {
+            simpleDateFormat.applyPattern("MM月dd日");
+        }
         return simpleDateFormat.format(date);
     }
-    public interface  OnItemCheckListener{
-        public void onItemCheck(int position,boolean isCheck);
+
+    public interface OnItemCheckListener {
+
+        public void onItemCheck(int position, boolean isCheck);
     }
 
 }

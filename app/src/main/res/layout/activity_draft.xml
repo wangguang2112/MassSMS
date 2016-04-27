@@ -14,4 +14,9 @@
                                             headbar:headtitle="草稿箱"
                                             headbar:returnvisiable="true"
                                             headbar:rightvisiable="false"/>
+    <com.baoyz.swipemenulistview.SwipeMenuListView
+            android:id="@+id/draft_listview"
+            android:layout_width="match_parent"
+            android:divider="#0000"
+            android:layout_height="match_parent"/>
 </LinearLayout>

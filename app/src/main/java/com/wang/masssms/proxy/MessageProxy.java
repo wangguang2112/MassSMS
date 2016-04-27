@@ -30,6 +30,8 @@ public class MessageProxy extends BaseProxy{
     public static final String INSERT_DRAFT_MESSAGE_SUCCESS="insert_draft_message_success";
     public static final String GET_ALL_HAVE_SEND_MESSAGE_SUCCESS="get_all_have_send_message_success";
     public static final String GET_ALL_HAVE_SEND_MESSAGE_NAME_SUCCESS="get_all_have_send_message_name_success";
+    public static final String GET_ALL_COLLECTION_MESSAGE_SUCCESS="get_all_collection_message_success";
+    public static final String GET_ALL_DRAFT_MESSAGE_SUCCESS="get_all_draft_message_success";
     /**
      * 构造函数
      *
@@ -50,6 +52,39 @@ public class MessageProxy extends BaseProxy{
                 entity.action=GET_ALL_HAVE_SEND_MESSAGE_SUCCESS;
                 QueryBuilder builder=mMessageDao.queryBuilder();
                 builder.where(MessageDao.Properties.Isdraft.eq(false));
+                builder.orderDesc(MessageDao.Properties.Sendtime);
+                entity.data=builder.list();
+                callback(entity);
+            }
+        });
+
+    }
+    public void getAllCollectionMessage(){
+        cachedThreadPool.execute(new Runnable() {
+
+            @Override
+            public void run() {
+                ProxyEntity entity=new ProxyEntity();
+                entity.action=GET_ALL_COLLECTION_MESSAGE_SUCCESS;
+                QueryBuilder builder=mMessageDao.queryBuilder();
+                builder.where(MessageDao.Properties.Iscollect.eq(true));
+                builder.orderDesc(MessageDao.Properties.Sendtime);
+                entity.data=builder.list();
+                callback(entity);
+            }
+        });
+
+    }
+
+    public void getAllDraftMessage(){
+        cachedThreadPool.execute(new Runnable() {
+
+            @Override
+            public void run() {
+                ProxyEntity entity=new ProxyEntity();
+                entity.action=GET_ALL_DRAFT_MESSAGE_SUCCESS;
+                QueryBuilder builder=mMessageDao.queryBuilder();
+                builder.where(MessageDao.Properties.Isdraft.eq(true));
                 builder.orderDesc(MessageDao.Properties.Sendtime);
                 entity.data=builder.list();
                 callback(entity);
