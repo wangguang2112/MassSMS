@@ -3,6 +3,4 @@
 *.iml
 .DS_Store
 /build
-/.idea
-.idea/
 /captures
