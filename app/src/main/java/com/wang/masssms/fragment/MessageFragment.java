@@ -105,7 +105,7 @@ public class MessageFragment extends BaseFragment implements SwipeMenuListView.O
         mSwipeMenuListView.setMenuCreator(mCreater);
         mSwipeMenuListView.setOnMenuItemClickListener(this);
         mSwipeMenuListView.setAdapter(mAdapter);
-        //向左划 容易出问题
+        //向左划
         mSwipeMenuListView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
         mSwipeMenuListView.setOnItemClickListener(this);
         mProxy.getAllHaveSendMessage();
