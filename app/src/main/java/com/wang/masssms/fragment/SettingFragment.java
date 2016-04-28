@@ -144,11 +144,13 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
                 startActivity(intent3);
                 break;
             case R.id.setting_time_send_list:
-                //TODO
+                //TODO 2.0
                 break;
             case R.id.setting_export:
+                //TODO 2.0
                 break;
             case R.id.setting_import:
+                //TODO 2.0
                 break;
             default:
                 break;

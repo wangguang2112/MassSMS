@@ -12,6 +12,8 @@ import com.wang.masssms.uiview.IMHeadView;
 public class SendMsgActivity  extends BaseActivity{
     public static int FROM_MY_SEND_TYPE=0;
     public static int FROM_GROUP_TYPE=1;
+    public static int FROM_DRAFT=2;
+    public static int FROM_HAVA_SEND=3;
     IMHeadView mHeadView;
 
     @Override
