@@ -4,4 +4,6 @@
     <string name="delete">删除</string>
     <string name="add_from_phone">导入</string>
     <string name="add_from_user">添加</string>
+    <string name="sendmsg_group">选择组：</string>
+    <string name="sendmsg_contact">联系人：</string>
 </resources>

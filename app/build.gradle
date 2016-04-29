@@ -40,6 +40,7 @@ dependencies {
     compile 'de.greenrobot:greendao:2.1.0'
     compile 'com.hanks.animatecheckbox:library:0.1'
     compile 'co.lemonlabs:expandable-button-menu:1.0.0'
+    compile 'com.zhy:flowlayout-lib:1.0.3'
     compile project(':SwipeMenulibrary')
     compile project(":PullToRefresh")
 }

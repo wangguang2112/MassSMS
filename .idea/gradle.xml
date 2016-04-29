@@ -12,7 +12,6 @@
             <option value="$PROJECT_DIR$/PullToRefresh" />
             <option value="$PROJECT_DIR$/SwipeMenulibrary" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/generator" />
           </set>
         </option>
       </GradleProjectSettings>

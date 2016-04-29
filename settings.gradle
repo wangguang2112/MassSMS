@@ -1,2 +1,3 @@
-include ':app', ':SwipeMenulibrary', ':generator'
 include ':PullToRefresh'
+include ':SwipeMenulibrary'
+include ':app'
