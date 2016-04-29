@@ -1,18 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:zhy="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:zhy="http://schemas.android.com/apk/res-auto" xmlns:emojicon="http://schemas.android.com/tools"
               android:orientation="vertical" android:layout_width="match_parent"
+              android:background="@color/white"
               android:layout_height="match_parent">
-    <com.wang.masssms.uiview.IMHeadView
-            xmlns:headbar="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/activity_sendmsg_headbar"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:background="#FFF"
-            headbar:returnvisiable="true"
-            headbar:rightvisiable="false"
-            headbar:headtitle="发送短信"
-            headbar:rightsrc="@drawable/add_up"
-            />
+    <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <com.wang.masssms.uiview.IMHeadView
+                xmlns:headbar="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/activity_sendmsg_headbar"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="#FFF"
+                headbar:returnvisiable="true"
+                headbar:rightvisiable="false"
+                headbar:headtitle="发送短信"
+                headbar:rightsrc="@drawable/add_up"
+                />
+        <TextView
+                android:onClick="onSendClick"
+                android:textColor="@color/text_press_color_gray"
+                android:textSize="16sp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:paddingRight="15dp"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/sendmsg"/>
+    </RelativeLayout>
     <!-- 关闭选中状态-->
     <LinearLayout android:layout_width="match_parent"
                   android:orientation="horizontal"
@@ -23,7 +35,7 @@
                   android:layout_marginRight="5dp"
                   android:layout_gravity="center_vertical"
                   android:text="@string/sendmsg_group"
-                  android:textSize="18sp"
+                  android:textSize="17sp"
                   android:textColor="#222"
                 />
         <com.zhy.view.flowlayout.TagFlowLayout
@@ -46,31 +58,63 @@
                 android:src="@drawable/add_group"/>
     </LinearLayout>
     <View android:layout_marginTop="5dp"
-          android:layout_width="match_parent" android:layout_height="0.5dp" android:background="#aaa"/>
-    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
-        <EditText android:layout_width="match_parent" android:layout_height="match_parent"/>
-        <LinearLayout
-                android:orientation="horizontal"
-                android:id="@+id/sendmsg_handle_box"
-                android:layout_gravity="bottom"
-                android:background="@drawable/sendmsg_background"
+          android:layout_width="match_parent" android:layout_height="0.5dp"
+          android:background="#aaa"/>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="0dp"
+                  android:layout_weight="1"
+                  android:orientation="vertical"
+            >
+        <com.rockerhieu.emojicon.EmojiconTextView
+                style="@style/sendmsg_msg"
+                android:visibility="gone"
+                android:id="@+id/sendmsg_message_tv"
+                android:text="I \ue32d emojicon"
+                emojicon:emojiconAlignment="baseline"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            <ImageView style="@style/sendmsg_handle"
-                       android:src="@drawable/my_send"
-                    />
-            <ImageView style="@style/sendmsg_handle"
-                       android:src="@drawable/my_send"
-                    />
-            <ImageView style="@style/sendmsg_handle"
-                       android:src="@drawable/my_send"
-                    />
-            <ImageView style="@style/sendmsg_handle"
-                       android:src="@drawable/my_send"
-                    />
-            <ImageView style="@style/sendmsg_handle"
-                       android:src="@drawable/my_send"
-                    />
-        </LinearLayout>
-    </FrameLayout>
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
+        <com.rockerhieu.emojicon.EmojiconEditText
+                android:background="@null"
+                style="@style/sendmsg_msg"
+                android:id="@+id/sendmsg_message_et"
+                android:text="I \ue32d emojicon"
+                emojicon:emojiconSize="28sp"
+                android:gravity="start"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/sendmsg_handle_box"
+            android:background="@drawable/sendmsg_background"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+        <ImageView style="@style/sendmsg_handle"
+                   android:src="@drawable/my_send"
+                />
+        <ImageView style="@style/sendmsg_handle"
+                   android:src="@drawable/my_send"
+                />
+        <ImageView style="@style/sendmsg_handle"
+                   android:src="@drawable/my_send"
+                />
+        <ImageView style="@style/sendmsg_handle"
+                   android:src="@drawable/my_send"
+                />
+        <ImageView style="@style/sendmsg_handle"
+                   android:src="@drawable/my_send"
+                />
+
+    </LinearLayout>
+
+    <FrameLayout
+            android:visibility="gone"
+            android:id="@+id/sendmsg_handle_more"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            />
 </LinearLayout>

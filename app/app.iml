@@ -71,6 +71,7 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/dependency-cache" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/dex" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/dex-cache" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/Emojiconlibrary-debug/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/co.lemonlabs/expandable-button-menu/1.0.0/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/23.2.0/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.0/jars" />
@@ -103,9 +104,10 @@
     <orderEntry type="library" exported="" name="appcompat-v7-23.2.0" level="project" />
     <orderEntry type="library" exported="" name="flowlayout-lib-1.0.3" level="project" />
     <orderEntry type="library" exported="" name="bugly_1.2.9_release" level="project" />
-    <orderEntry type="library" exported="" name="library-2.4.0" level="project" />
     <orderEntry type="library" exported="" name="greendao-2.1.0" level="project" />
+    <orderEntry type="library" exported="" name="library-2.4.0" level="project" />
     <orderEntry type="library" exported="" name="library-0.1" level="project" />
+    <orderEntry type="library" exported="" name="Emojiconlibrary-debug-" level="project" />
     <orderEntry type="module" module-name="SwipeMenulibrary" exported="" />
     <orderEntry type="module" module-name="PullToRefresh" exported="" />
   </component>

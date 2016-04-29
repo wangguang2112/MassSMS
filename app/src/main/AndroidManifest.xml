@@ -24,7 +24,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.HandleContactActivity" />
-        <activity android:name=".activity.SendMsgActivity" />
+        <activity android:name=".activity.SendMsgActivity"
+                android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity android:name=".activity.AllContactActivity" >
         </activity>
         <activity android:name=".activity.CollectionActivity" >

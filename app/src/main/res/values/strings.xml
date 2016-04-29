@@ -6,4 +6,5 @@
     <string name="add_from_user">添加</string>
     <string name="sendmsg_group">选择组：</string>
     <string name="sendmsg_contact">联系人：</string>
+    <string name="sendmsg">发送</string>
 </resources>

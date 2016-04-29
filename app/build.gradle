@@ -33,7 +33,13 @@ android {
 }
 
 dependencies {
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile(name:'Emojiconlibrary-debug', ext:'aar')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.2.0'
     compile 'com.android.support:support-v4:23.2.0'
@@ -43,4 +49,5 @@ dependencies {
     compile 'com.zhy:flowlayout-lib:1.0.3'
     compile project(':SwipeMenulibrary')
     compile project(":PullToRefresh")
+
 }
