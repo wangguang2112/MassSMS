@@ -101,6 +101,7 @@ public class GroupContactFragment extends BaseFragment implements ListView.OnIte
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         mData.get(position);
         Intent intent = new Intent(getActivity(), SendMsgActivity.class);
+        intent.putExtra("type",SendMsgActivity.FROM_GROUP_TYPE);
         intent.putExtra("gid", id);
         startActivity(intent);
     }

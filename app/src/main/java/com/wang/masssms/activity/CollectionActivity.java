@@ -7,6 +7,7 @@ import com.wang.masssms.proxy.MessageProxy;
 import com.wang.masssms.proxy.ProxyEntity;
 import com.wang.masssms.uiview.IMHeadView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -79,7 +80,9 @@ public class CollectionActivity extends BaseActivity implements AdapterView.OnIt
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//TODO
-        Toast.makeText(this,"ok", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, SendMsgActivity.class);
+        intent.putExtra("type",SendMsgActivity.FROM_HAVA_SEND);
+        intent.putExtra("mid", id);
+        startActivity(intent);
     }
 }

@@ -13,6 +13,7 @@ import com.wang.masssms.uiview.AddDailog;
 import com.wang.masssms.uiview.IMHeadView;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -114,6 +115,10 @@ public class DraftActivity extends BaseActivity implements AdapterView.OnItemCli
     }
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//// TODO: 2016/4/27
+        Intent intent = new Intent(this, SendMsgActivity.class);
+        intent.putExtra("type",SendMsgActivity.FROM_DRAFT);
+        intent.putExtra("mid", id);
+        intent.putExtra("msg",mMessageData.get(position).getText());
+        startActivity(intent);
     }
 }

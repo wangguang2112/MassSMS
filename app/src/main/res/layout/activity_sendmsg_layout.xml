@@ -67,6 +67,7 @@
             >
         <com.rockerhieu.emojicon.EmojiconTextView
                 style="@style/sendmsg_msg"
+                android:ellipsize="marquee"
                 android:visibility="gone"
                 android:id="@+id/sendmsg_message_tv"
                 android:text="I \ue32d emojicon"
@@ -87,29 +88,41 @@
                 android:layout_weight="1"/>
 
     </LinearLayout>
-    <LinearLayout
+    <RadioGroup
             android:orientation="horizontal"
             android:id="@+id/sendmsg_handle_box"
             android:background="@drawable/sendmsg_background"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
-        <ImageView style="@style/sendmsg_handle"
-                   android:src="@drawable/my_send"
+            android:layout_height="45dp">
+        <RadioButton
+                android:layout_marginLeft="15dp"
+                android:id="@+id/handle_face"
+                style="@style/sendmsg_handle"
+                android:button="@drawable/face_icon"
                 />
-        <ImageView style="@style/sendmsg_handle"
-                   android:src="@drawable/my_send"
+        <!--<View android:layout_width="0.5dp" android:layout_height="match_parent"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:layout_marginBottom="5dp"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:background="#AAA" />-->
+        <RadioButton style="@style/sendmsg_handle"
+
                 />
-        <ImageView style="@style/sendmsg_handle"
-                   android:src="@drawable/my_send"
+        <RadioButton style="@style/sendmsg_handle"
+
                 />
-        <ImageView style="@style/sendmsg_handle"
-                   android:src="@drawable/my_send"
+        <RadioButton style="@style/sendmsg_handle"
+                     android:src="@drawable/face_icon"
                 />
-        <ImageView style="@style/sendmsg_handle"
-                   android:src="@drawable/my_send"
+        <RadioButton
+                android:id="@+id/handle_close"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:button="@drawable/sendmsg_close"
                 />
 
-    </LinearLayout>
+    </RadioGroup>
 
     <FrameLayout
             android:visibility="gone"

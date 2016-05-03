@@ -166,7 +166,9 @@ public class MessageFragment extends BaseFragment implements SwipeMenuListView.O
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(getActivity(), SendMsgActivity.class);
+        intent.putExtra("type",SendMsgActivity.FROM_HAVA_SEND);
         intent.putExtra("mid", id);
+        intent.putExtra("msg",mMessageData.get(position).getText());
         startActivity(intent);
     }
 
