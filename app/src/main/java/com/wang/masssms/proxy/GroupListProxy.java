@@ -131,4 +131,7 @@ public class GroupListProxy extends BaseProxy {
         };
         cachedThreadPool.execute(runnable);
     }
+    public ContactGroup getAContactGroup(Long gid){
+        return mContactGroupDao.queryBuilder().where(ContactGroupDao.Properties.Id.eq(gid)).list().get(0);
+    }
 }

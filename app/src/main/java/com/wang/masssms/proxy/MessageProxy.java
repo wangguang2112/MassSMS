@@ -1,6 +1,7 @@
 package com.wang.masssms.proxy;
 
 import com.wang.masssms.App;
+import com.wang.masssms.model.orm.ContactGroup;
 import com.wang.masssms.model.orm.ContactToMessage;
 import com.wang.masssms.model.orm.ContactToMessageDao;
 import com.wang.masssms.model.orm.Contacts;
@@ -119,26 +120,26 @@ public class MessageProxy extends BaseProxy{
         cachedThreadPool.execute(new Runnable() {
             @Override
             public void run() {
-                ProxyEntity entity=new ProxyEntity();
-                entity.action=INSERT_DRAFT_MESSAGE_SUCCESS;
-                Message m=new Message();
+                ProxyEntity entity = new ProxyEntity();
+                entity.action = INSERT_DRAFT_MESSAGE_SUCCESS;
+                Message m = new Message();
                 m.setId(null);
-                Date date=new Date(System.currentTimeMillis());
+                Date date = new Date(System.currentTimeMillis());
                 m.setSendtime(date);
                 m.setIscollect(false);
                 m.setText(message);
                 m.setIsdraft(false);
                 mMessageDao.insertOrReplace(m);
-                for(Long gid:gids) {
+                for (Long gid : gids) {
                     GroupToMessage gtm = new GroupToMessage();
                     gtm.setId(null);
-                    Log.d("id",m.getId()+"");
+                    Log.d("id", m.getId() + "");
                     gtm.setMid(m.getId());
                     gtm.setGid(gid);
                     mGroupToMessageDao.insertOrReplace(gtm);
                 }
 
-                entity.action=INSERT_DRAFT_MESSAGE_SUCCESS;
+                entity.action = INSERT_DRAFT_MESSAGE_SUCCESS;
                 callback(entity);
             }
         });
@@ -202,4 +203,5 @@ public class MessageProxy extends BaseProxy{
             }
         });
     }
+
 }

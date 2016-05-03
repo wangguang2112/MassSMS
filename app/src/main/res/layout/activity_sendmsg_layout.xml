@@ -38,17 +38,16 @@
                   android:textSize="17sp"
                   android:textColor="#222"
                 />
-        <com.zhy.view.flowlayout.TagFlowLayout
+        <com.zhy.view.flowlayout.FlowLayout
                 android:layout_gravity="center_vertical"
                 android:background="@color/white"
                 android:id="@+id/sendmsg_flowtag_layout"
-                zhy:max_select="-1"
                 zhy:auto_select_effect="false"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:padding="20dp">
-        </com.zhy.view.flowlayout.TagFlowLayout>
+                android:padding="5dp">
+        </com.zhy.view.flowlayout.FlowLayout>
         <ImageView
                 android:id="@+id/sendmsg_add_bt"
                 android:layout_width="30dp" android:layout_height="30dp"
@@ -70,7 +69,7 @@
                 android:ellipsize="marquee"
                 android:visibility="gone"
                 android:id="@+id/sendmsg_message_tv"
-                android:text="I \ue32d emojicon"
+                android:text=""
                 emojicon:emojiconAlignment="baseline"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -80,8 +79,8 @@
                 android:background="@null"
                 style="@style/sendmsg_msg"
                 android:id="@+id/sendmsg_message_et"
-                android:text="I \ue32d emojicon"
-                emojicon:emojiconSize="28sp"
+                android:text=""
+                emojicon:emojiconSize="20sp"
                 android:gravity="start"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"

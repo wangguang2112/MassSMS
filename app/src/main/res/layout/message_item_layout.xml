@@ -15,7 +15,7 @@
               android:layout_alignBottom="@+id/message_item_icon"
               android:text="正中"
               android:layout_marginLeft="10dp"
-              android:textColor="#81d741"
+              android:textColor="#01cf97"
               android:textSize="18sp"
               android:lines="1"
               android:ellipsize="end"
