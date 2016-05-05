@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--列表项默认白色背景 -->
+    <item android:state_pressed="false">
+        <shape>
+            <solid android:color="@color/white" />
+        </shape>
+    </item>
+    <!--列表项按下白色背景 -->
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="#EAEBEB" />
+        </shape>
+    </item>
+</selector>

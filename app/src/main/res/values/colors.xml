@@ -12,4 +12,10 @@
     <color name="normal_text_color">#333333</color>
     <color name="background">#f6f6f6</color>
     <color name="pagerinditer">#EAEBEB</color>
+
+    <color name="as_normal">#FFFFFF</color>
+    <color name="as_press">#000000</color>
+    <color name="as_txt_color">#8F8F8F</color>
+    <color name="as_press_background">#EDEFF1</color>
+
 </resources>

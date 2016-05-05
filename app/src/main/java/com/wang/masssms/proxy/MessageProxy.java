@@ -23,16 +23,26 @@ import de.greenrobot.dao.query.QueryBuilder;
 /**
  * Created by wangguang on 2016/4/26.
  */
-public class MessageProxy extends BaseProxy{
+public class MessageProxy extends BaseProxy {
 
     private MessageDao mMessageDao;
+
     private GroupToMessageDao mGroupToMessageDao;
+
     private ContactToMessageDao mContactToMessageDao;
-    public static final String INSERT_DRAFT_MESSAGE_SUCCESS="insert_draft_message_success";
-    public static final String GET_ALL_HAVE_SEND_MESSAGE_SUCCESS="get_all_have_send_message_success";
-    public static final String GET_ALL_HAVE_SEND_MESSAGE_NAME_SUCCESS="get_all_have_send_message_name_success";
-    public static final String GET_ALL_COLLECTION_MESSAGE_SUCCESS="get_all_collection_message_success";
-    public static final String GET_ALL_DRAFT_MESSAGE_SUCCESS="get_all_draft_message_success";
+
+    public static final String INSERT_DRAFT_MESSAGE_SUCCESS = "insert_draft_message_success";
+
+    public static final String GET_ALL_HAVE_SEND_MESSAGE_SUCCESS = "get_all_have_send_message_success";
+
+    public static final String GET_ALL_HAVE_SEND_MESSAGE_NAME_SUCCESS = "get_all_have_send_message_name_success";
+
+    public static final String GET_ALL_COLLECTION_MESSAGE_SUCCESS = "get_all_collection_message_success";
+
+    public static final String GET_ALL_DRAFT_MESSAGE_SUCCESS = "get_all_draft_message_success";
+
+    public static final String GET_MESSAGE_GROUP_SUCCESS = "GET_MESSAGE_GROUP_SUCCESS";
+
     /**
      * 构造函数
      *
@@ -40,83 +50,88 @@ public class MessageProxy extends BaseProxy{
      */
     public MessageProxy(Context context, Handler proxyCallbackHandler) {
         super(context, proxyCallbackHandler);
-        mMessageDao= App.getDaoSession(mContext).getMessageDao();
-        mContactToMessageDao=App.getDaoSession(mContext).getContactToMessageDao();
-        mGroupToMessageDao=App.getDaoSession(mContext).getGroupToMessageDao();
+        mMessageDao = App.getDaoSession(mContext).getMessageDao();
+        mContactToMessageDao = App.getDaoSession(mContext).getContactToMessageDao();
+        mGroupToMessageDao = App.getDaoSession(mContext).getGroupToMessageDao();
     }
-    public void getAllHaveSendMessage(){
+
+    public void getAllHaveSendMessage() {
         cachedThreadPool.execute(new Runnable() {
 
             @Override
             public void run() {
-                ProxyEntity entity=new ProxyEntity();
-                entity.action=GET_ALL_HAVE_SEND_MESSAGE_SUCCESS;
-                QueryBuilder builder=mMessageDao.queryBuilder();
+                ProxyEntity entity = new ProxyEntity();
+                entity.action = GET_ALL_HAVE_SEND_MESSAGE_SUCCESS;
+                QueryBuilder builder = mMessageDao.queryBuilder();
                 builder.where(MessageDao.Properties.Isdraft.eq(false));
                 builder.orderDesc(MessageDao.Properties.Sendtime);
-                entity.data=builder.list();
+                entity.data = builder.list();
                 callback(entity);
             }
         });
 
     }
-    public void getAllCollectionMessage(){
+
+    public void getAllCollectionMessage() {
         cachedThreadPool.execute(new Runnable() {
 
             @Override
             public void run() {
-                ProxyEntity entity=new ProxyEntity();
-                entity.action=GET_ALL_COLLECTION_MESSAGE_SUCCESS;
-                QueryBuilder builder=mMessageDao.queryBuilder();
+                ProxyEntity entity = new ProxyEntity();
+                entity.action = GET_ALL_COLLECTION_MESSAGE_SUCCESS;
+                QueryBuilder builder = mMessageDao.queryBuilder();
                 builder.where(MessageDao.Properties.Iscollect.eq(true));
                 builder.orderDesc(MessageDao.Properties.Sendtime);
-                entity.data=builder.list();
+                entity.data = builder.list();
                 callback(entity);
             }
         });
 
     }
 
-    public void getAllDraftMessage(){
+    public void getAllDraftMessage() {
         cachedThreadPool.execute(new Runnable() {
 
             @Override
             public void run() {
-                ProxyEntity entity=new ProxyEntity();
-                entity.action=GET_ALL_DRAFT_MESSAGE_SUCCESS;
-                QueryBuilder builder=mMessageDao.queryBuilder();
+                ProxyEntity entity = new ProxyEntity();
+                entity.action = GET_ALL_DRAFT_MESSAGE_SUCCESS;
+                QueryBuilder builder = mMessageDao.queryBuilder();
                 builder.where(MessageDao.Properties.Isdraft.eq(true));
                 builder.orderDesc(MessageDao.Properties.Sendtime);
-                entity.data=builder.list();
+                entity.data = builder.list();
                 callback(entity);
             }
         });
 
     }
-    public void insertDraftMsg(final String message){
+
+    public void insertDraftMsg(final String message) {
         cachedThreadPool.execute(new Runnable() {
             @Override
             public void run() {
-                ProxyEntity entity=new ProxyEntity();
-                entity.action=INSERT_DRAFT_MESSAGE_SUCCESS;
-                Message m=new Message();
+                ProxyEntity entity = new ProxyEntity();
+                entity.action = INSERT_DRAFT_MESSAGE_SUCCESS;
+                Message m = new Message();
                 m.setId(null);
                 m.setSendtime(new Date(System.currentTimeMillis()));
                 m.setIscollect(false);
                 m.setText(message);
                 m.setIsdraft(true);
                 mMessageDao.insert(m);
-                entity.action=INSERT_DRAFT_MESSAGE_SUCCESS;
-                callback(entity);
+                entity.action = INSERT_DRAFT_MESSAGE_SUCCESS;
+//                callback(entity);
             }
         });
     }
-    public void insertMsgFromGroup(final String message, final Long gid){
-        ArrayList<Long> gids=new ArrayList<>();
+
+    public void insertMsgFromGroup(final String message, final Long gid) {
+        ArrayList<Long> gids = new ArrayList<>();
         gids.add(gid);
         insertMsgFromGroups(message, gids);
     }
-    public void insertMsgFromGroups(final String message, final ArrayList<Long> gids){
+
+    public void insertMsgFromGroups(final String message, final ArrayList<Long> gids) {
         cachedThreadPool.execute(new Runnable() {
             @Override
             public void run() {
@@ -144,7 +159,8 @@ public class MessageProxy extends BaseProxy{
             }
         });
     }
-    public void updataCollection(final Message message){
+
+    public void updataCollection(final Message message) {
         cachedThreadPool.execute(new Runnable() {
             @Override
             public void run() {
@@ -152,7 +168,8 @@ public class MessageProxy extends BaseProxy{
             }
         });
     }
-    public void deleteMessage(final Message message){
+
+    public void deleteMessage(final Message message) {
         cachedThreadPool.execute(new Runnable() {
             @Override
             public void run() {
@@ -167,30 +184,30 @@ public class MessageProxy extends BaseProxy{
         cachedThreadPool.execute(new Runnable() {
             @Override
             public void run() {
-                ProxyEntity entity=new ProxyEntity();
-                entity.action=GET_ALL_HAVE_SEND_MESSAGE_NAME_SUCCESS;
-                List<String> names=new ArrayList<String>();
-                for(Message m:messageData){
-                    if(m.getIsdraft()){
+                ProxyEntity entity = new ProxyEntity();
+                entity.action = GET_ALL_HAVE_SEND_MESSAGE_NAME_SUCCESS;
+                List<String> names = new ArrayList<String>();
+                for (Message m : messageData) {
+                    if (m.getIsdraft()) {
                         //草稿直接添加草稿
                         names.add("草稿");
-                    }else {
+                    } else {
                         //当有组的时候 添加组名，没有组的时候添加用户名
                         List<GroupToMessage> gtms = m.getGroupToMessageList();
                         if (gtms.size() > 0) {
-                            StringBuilder sb=new StringBuilder();
+                            StringBuilder sb = new StringBuilder();
                             for (GroupToMessage gtm : gtms) {
-                                sb.append(gtm.getContactGroup().getName()+",");
+                                sb.append(gtm.getContactGroup().getName() + ",");
                             }
                             sb.deleteCharAt(sb.lastIndexOf(","));
                             names.add(sb.toString());
-                        }else {
+                        } else {
                             StringBuilder sb = new StringBuilder();
-                            List<ContactToMessage> ctms=m.getMid();
+                            List<ContactToMessage> ctms = m.getMid();
                             for (ContactToMessage ctm : ctms) {
                                 sb.append(ctm.getContacts().getName() + ",");
                             }
-                            if(sb.lastIndexOf(",")!=-1) {
+                            if (sb.lastIndexOf(",") != -1) {
                                 sb.deleteCharAt(sb.lastIndexOf(","));
                             }
                             names.add(sb.toString());
@@ -198,10 +215,38 @@ public class MessageProxy extends BaseProxy{
 
                     }
                 }
-                entity.data=names;
+                entity.data = names;
                 callback(entity);
             }
         });
     }
 
+    public void getMessageGroups(final Long mid) {
+        cachedThreadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+                ProxyEntity entity = new ProxyEntity();
+                entity.action = GET_MESSAGE_GROUP_SUCCESS;
+                Message m = mMessageDao.queryBuilder().where(MessageDao.Properties.Id.eq(mid)).list().get(0);
+                List<GroupToMessage> gtms = m.getGroupToMessageList();
+                List<ContactGroup> cg = new ArrayList<ContactGroup>();
+                for (GroupToMessage gtm : gtms) {
+                    cg.add(gtm.getContactGroup());
+                }
+                entity.data = cg;
+                callback(entity);
+            }
+        });
+    }
+
+    public void updataDraftMsg(final Long mid, final String msg) {
+        cachedThreadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+                Message m=mMessageDao.queryBuilder().where(MessageDao.Properties.Id.eq(mid)).list().get(0);
+                m.setText(msg);
+                mMessageDao.update(m);
+            }
+        });
+    }
 }
