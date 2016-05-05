@@ -265,7 +265,7 @@ public class SendMsgActivity extends BaseActivity
             mChoiceActionSheet.setAdapter(mContactChoiceSelectorAdapter);
             mChoiceActionSheet.setInfoText("选择联系人");
         }
-        mChoiceActionSheet.setChoiceMaxCount(2);
+        mChoiceActionSheet.setChoiceMaxCount(10);//最大选择人数为10人
 
 //        mChoiceActionSheet.setDisplayField(name) 利用反射做的
 

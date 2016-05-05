@@ -6,6 +6,7 @@ import com.wang.masssms.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -30,8 +31,8 @@ public class ViewActionSheet extends BaseActionSheet {
         super(context);
     }
 
-    public ViewActionSheet(Context context,int dialogStyle) {
-        super(context,dialogStyle);
+    public ViewActionSheet(Context context, int dialogStyle) {
+        super(context, dialogStyle);
     }
 
     @Override
@@ -51,9 +52,9 @@ public class ViewActionSheet extends BaseActionSheet {
         });
 
         // 定义Dialog布局和参数
-        mDialog.setContentView(mContentView);
+        mDialog.setContentView(mContentView, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1000));
 
-        mTitleText = (TextView)mContentView.findViewById(R.id.action_sheet_title);
+        mTitleText = (TextView) mContentView.findViewById(R.id.action_sheet_title);
 
         mCompleteButton = (TextView) mContentView.findViewById(R.id.action_sheet_complete);
         mCompleteButton.setOnClickListener(new View.OnClickListener() {
@@ -70,9 +71,6 @@ public class ViewActionSheet extends BaseActionSheet {
 
     /**
      * 添加自定义view
-     *
-     * @param view
-     * @return
      */
     public ViewActionSheet addView(View view) {
         if (view != null) {
@@ -84,7 +82,7 @@ public class ViewActionSheet extends BaseActionSheet {
     public ViewActionSheet showCancelButton(boolean show) {
         if (show) {
             cancelView.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             cancelView.setVisibility(View.GONE);
         }
         return this;
@@ -93,23 +91,24 @@ public class ViewActionSheet extends BaseActionSheet {
     public ViewActionSheet showCompleteButton(boolean show) {
         if (show) {
             mCompleteButton.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mCompleteButton.setVisibility(View.GONE);
         }
         return this;
     }
 
-    public ViewActionSheet setTitle(String title){
+    public ViewActionSheet setTitle(String title) {
         mTitleText.setVisibility(View.VISIBLE);
         mTitleText.setText(title);
         return this;
     }
 
-    public interface OnClickCompleteListener{
+    public interface OnClickCompleteListener {
+
         void onClickComplete(View v);
     }
 
-    public void setOnClickCompleteListener(OnClickCompleteListener list){
+    public void setOnClickCompleteListener(OnClickCompleteListener list) {
         mOnClickCompleteListener = list;
     }
 
