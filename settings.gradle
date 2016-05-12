@@ -1,3 +1,0 @@
-include ':PullToRefresh'
-include ':SwipeMenulibrary'
-include ':app'
