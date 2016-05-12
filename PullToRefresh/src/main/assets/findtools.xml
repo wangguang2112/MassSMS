@@ -1,0 +1,17 @@
+<findtools>
+    <tools>
+        <title>社保查询</title>
+        <iconurl></iconurl>
+        <url>http://shebao.58.com/bj/loginIndex</url>
+    </tools>
+    <tools>
+        <title>社保计算器</title>
+        <iconurl>http://shebao.58.com/smallCalculator/index?os=android</iconurl>
+        <url></url>
+    </tools>
+    <tools>
+        <title>万年历</title>
+        <iconurl>http://yun.rili.cn/wnl/m/index.html?for=58com&os=android</iconurl>
+        <url></url>
+    </tools>
+</findtools>
