@@ -49,5 +49,4 @@ dependencies {
     compile 'com.zhy:flowlayout-lib:1.0.3'
     compile project(':SwipeMenulibrary')
     compile project(":PullToRefresh")
-
 }

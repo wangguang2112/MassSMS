@@ -105,14 +105,12 @@
         <!--android:layout_marginLeft="10dp"-->
         <!--android:background="#AAA" />-->
         <RadioButton style="@style/sendmsg_handle"
-
+                     android:button="@drawable/word_icon"
                 />
         <RadioButton style="@style/sendmsg_handle"
 
                 />
-        <RadioButton style="@style/sendmsg_handle"
-                     android:src="@drawable/face_icon"
-                />
+
         <RadioButton
                 android:id="@+id/handle_close"
                 android:layout_width="32dp"
