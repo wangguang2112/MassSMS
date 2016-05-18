@@ -104,11 +104,12 @@
         <!--android:layout_marginBottom="5dp"-->
         <!--android:layout_marginLeft="10dp"-->
         <!--android:background="#AAA" />-->
-        <RadioButton style="@style/sendmsg_handle"
+        <RadioButton android:id="@+id/handle_word"
+                style="@style/sendmsg_handle"
                      android:button="@drawable/word_icon"
                 />
         <RadioButton style="@style/sendmsg_handle"
-
+                     android:button="@drawable/word_icon"
                 />
 
         <RadioButton

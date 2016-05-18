@@ -33,10 +33,12 @@ import com.rockerhieu.emojicon.emoji.Emojicon;
 import com.wang.masssms.R;
 import com.wang.masssms.adapter.GroupListAdapter;
 import com.wang.masssms.adapter.MessageListAdapter;
+import com.wang.masssms.fragment.WordFragment;
 import com.wang.masssms.model.orm.ContactGroup;
 import com.wang.masssms.model.orm.ContactToGroup;
 import com.wang.masssms.model.orm.Contacts;
 import com.wang.masssms.proxy.ContactProxy;
+import com.wang.masssms.proxy.ErrorCode;
 import com.wang.masssms.proxy.GroupListProxy;
 import com.wang.masssms.proxy.MessageProxy;
 import com.wang.masssms.proxy.ProxyEntity;
@@ -96,8 +98,10 @@ public class SendMsgActivity extends BaseActivity
 
     private FragmentManager mFragmentManager;
 
+//    发送联系人分组数据
     private List<ContactGroup> mGroupList;
 
+//    发送联系人数据
     private List<Contacts> mContactses;
 
     private List<ContactGroup> mAllContactGroups;
@@ -106,8 +110,10 @@ public class SendMsgActivity extends BaseActivity
 
     private EmojiconsFragment mEmojiconsFragment;
 
+    private WordFragment mWordFragment;
     private boolean isMoreLayoutShow = false;
 
+//    判断向联系人发送还是向分组发送
     private boolean isFromGroup = true;
 
     private int type;
@@ -161,6 +167,7 @@ public class SendMsgActivity extends BaseActivity
         mContactses = new ArrayList<>();
         mAllContactGroups = new ArrayList<>();
         mAllContacts = new ArrayList<>();
+
         initData();
     }
 
@@ -277,6 +284,21 @@ public class SendMsgActivity extends BaseActivity
         mMsgTV.setVisibility(View.VISIBLE);
         mMsgET.setVisibility(View.GONE);
         mMsgTV.setText(mMsgET.getText().toString());
+        if(isFromGroup){
+            if(mGroupList.size()==0){
+                AddDailog.showMsg(this,"你还没选择联系人分组呢!");
+            }else {
+                mProxy.sendMsgForGroups(mGroupList);
+                setOnBusy(true);
+            }
+        }else {
+            if (mContactses.size() == 0) {
+                AddDailog.showMsg(this, "你还没选择联系人呢!");
+            } else {
+                mProxy.sendMsgForContacts(mContactses);
+                setOnBusy(true);
+            }
+        }
     }
 
     @Override
@@ -336,6 +358,26 @@ public class SendMsgActivity extends BaseActivity
             mGroupList.addAll((List<ContactGroup>) proxyEntity.data);
             addTag();
             setOnBusy(false);
+        }else if(action.equals(SendMsgProxy.SEND_MSG_CONTACT)){
+            setOnBusy(false);
+            if(proxyEntity.errorCode== ErrorCode.RESULT_OK){
+                AddDailog.showMsg(this, "发送完成", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SendMsgActivity.this.finish();
+                    }
+                });
+            }
+        }else if(action.equals(SendMsgProxy.SEND_MSG_GROUP)){
+            setOnBusy(false);
+            if(proxyEntity.errorCode==ErrorCode.RESULT_ERROR){
+                AddDailog.showMsg(this, "发送完成", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SendMsgActivity.this.finish();
+                    }
+                });
+            }
         }
     }
 
@@ -349,6 +391,15 @@ public class SendMsgActivity extends BaseActivity
                 }
                 mFragmentManager.beginTransaction()
                         .replace(R.id.sendmsg_handle_more, mEmojiconsFragment)
+                        .commitAllowingStateLoss();
+                displayMore(true);
+                break;
+            case R.id.handle_word:
+                if (mWordFragment == null) {
+                    mWordFragment = new WordFragment();
+                }
+                mFragmentManager.beginTransaction()
+                        .replace(R.id.sendmsg_handle_more, mWordFragment)
                         .commitAllowingStateLoss();
                 displayMore(true);
                 break;
@@ -479,5 +530,16 @@ public class SendMsgActivity extends BaseActivity
         }
     }
 
+    @Override
+    public void onFragmentCallback(Intent intent) {
+        super.onFragmentCallback(intent);
+        if(intent.getAction().equals(WordFragment.WORD_FRAGMENT_CALLBACK)){
+            String text=intent.getStringExtra("text");
+            if(text!=null){
+                mMsgET.append(text);
+            }
+
+        }
+    }
 }
 

@@ -77,9 +77,6 @@ public class BaseFragment  extends Fragment {
         mApp=App.getApp();
         mActivity=(BaseActivity)getActivity();
         mContext=mApp.getApplicationContext();
-        if(mActivity!=null){
-            mFragmentCallbackListener=(BaseActivity)mActivity;
-        }
     }
 
     public void onResponse(ProxyEntity proxyEntity) {
@@ -139,5 +136,8 @@ public class BaseFragment  extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mActivity=  activity;
+        if(mActivity!=null){
+            mFragmentCallbackListener=(BaseActivity)mActivity;
+        }
     }
 }

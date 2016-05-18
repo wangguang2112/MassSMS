@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:background="@drawable/word_item_background"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:gravity="center_horizontal"
+              android:layout_height="80dp">
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:text="#名字#"
+              android:layout_marginTop="20dp"
+              android:textColor="#333333"
+              android:textSize="16sp"
+              android:id="@+id/word_item_text"/>
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:textSize="14sp"
+              android:layout_marginTop="10dp"
+              android:text="替换为联系人名字"
+            android:id="@+id/word_item_descrition"/>
+</LinearLayout>
