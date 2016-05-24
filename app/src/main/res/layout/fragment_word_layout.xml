@@ -4,13 +4,13 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
     <GridView
+            android:layout_marginTop="10dp"
             android:id="@+id/fragment_word_gridview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:numColumns="auto_fit"
+            android:numColumns="2"
             android:verticalSpacing="10dp"
             android:horizontalSpacing="10dp"
-            android:columnWidth="90dp"
             android:stretchMode="columnWidth"
             android:gravity="center" >
     </GridView>

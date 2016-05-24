@@ -12,8 +12,10 @@ import com.wang.masssms.proxy.ProxyEntity;
 import com.wang.masssms.uiview.IMLoadingDialog;
 
 import java.lang.ref.WeakReference;
+import java.util.Observable;
+import java.util.Observer;
 
-public class BaseActivity extends FragmentActivity implements IFragmentCallbackListener{
+public class BaseActivity extends FragmentActivity implements IFragmentCallbackListener,Observer{
 
     //Activity是否被销毁
     protected boolean isDestroyed;
@@ -33,6 +35,11 @@ public class BaseActivity extends FragmentActivity implements IFragmentCallbackL
      */
     @Override
     public void onFragmentCallback(Intent intent) {
+
+    }
+
+    @Override
+    public void update(Observable observable, Object data) {
 
     }
 

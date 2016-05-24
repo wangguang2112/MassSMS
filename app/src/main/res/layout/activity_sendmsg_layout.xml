@@ -19,6 +19,7 @@
                 android:onClick="onSendClick"
                 android:textColor="@color/text_press_color_gray"
                 android:textSize="16sp"
+                android:clickable="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:paddingRight="15dp"

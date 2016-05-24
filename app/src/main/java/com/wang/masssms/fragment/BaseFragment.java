@@ -14,11 +14,13 @@ import com.wang.masssms.proxy.ProxyEntity;
 import com.wang.masssms.uiview.IMLoadingDialog;
 
 import java.lang.ref.WeakReference;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by 58 on 2016/3/8.
  */
-public class BaseFragment  extends Fragment {
+public class BaseFragment  extends Fragment implements Observer{
 
     protected IFragmentCallbackListener mFragmentCallbackListener;
     protected Activity mActivity;
@@ -35,6 +37,11 @@ public class BaseFragment  extends Fragment {
 
     //绑定好的handler
     protected Handler mHandler = new MyHandler(this);
+
+    @Override
+    public void update(Observable observable, Object data) {
+
+    }
 
     class MyHandler extends Handler {
         WeakReference<BaseFragment> mFragment;
@@ -140,4 +147,5 @@ public class BaseFragment  extends Fragment {
             mFragmentCallbackListener=(BaseActivity)mActivity;
         }
     }
+
 }

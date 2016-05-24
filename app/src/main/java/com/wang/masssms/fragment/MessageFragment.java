@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,9 @@ import com.wang.masssms.R;
 import com.wang.masssms.activity.MainActivity;
 import com.wang.masssms.activity.SendMsgActivity;
 import com.wang.masssms.adapter.MessageListAdapter;
+import com.wang.masssms.model.notify.Notify;
+import com.wang.masssms.model.notify.NotifyAction;
+import com.wang.masssms.model.notify.NotifyData;
 import com.wang.masssms.model.orm.Message;
 import com.wang.masssms.proxy.MessageProxy;
 import com.wang.masssms.proxy.ProxyEntity;
@@ -27,6 +31,7 @@ import com.wang.masssms.uiview.IMHeadView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 /**
  * Created by 58 on 2016/3/9.
@@ -76,6 +81,7 @@ public class MessageFragment extends BaseFragment implements SwipeMenuListView.O
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mProxy = new MessageProxy(getActivity(), getCallbackHandler());
+        Notify.getInstence().registerNotify(this);
         //测试用 可去掉
 //        addMessage();
     }
@@ -170,6 +176,37 @@ public class MessageFragment extends BaseFragment implements SwipeMenuListView.O
         intent.putExtra("mid", id);
         intent.putExtra("msg",mMessageData.get(position).getText());
         startActivity(intent);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Notify.getInstence().unRegisterNotify(this);
+    }
+
+    @Override
+    public void update(Observable observable, Object data) {
+        super.update(observable, data);
+        Log.d("wangguang", "Notify SEND_MSG_OK");
+        if(data!=null){
+            if(((NotifyData)data).getAction().equals(NotifyAction.SEND_MSG_OK)){
+                mProxy.getAllHaveSendMessage();
+                setOnBusy(true);
+                Log.d(getTag(),"notify SEND_MSG_OK");
+            }
+        }
     }
 
     /**

@@ -34,6 +34,9 @@ import com.wang.masssms.R;
 import com.wang.masssms.adapter.GroupListAdapter;
 import com.wang.masssms.adapter.MessageListAdapter;
 import com.wang.masssms.fragment.WordFragment;
+import com.wang.masssms.model.notify.Notify;
+import com.wang.masssms.model.notify.NotifyAction;
+import com.wang.masssms.model.notify.NotifyData;
 import com.wang.masssms.model.orm.ContactGroup;
 import com.wang.masssms.model.orm.ContactToGroup;
 import com.wang.masssms.model.orm.Contacts;
@@ -98,10 +101,10 @@ public class SendMsgActivity extends BaseActivity
 
     private FragmentManager mFragmentManager;
 
-//    发送联系人分组数据
+    //    发送联系人分组数据
     private List<ContactGroup> mGroupList;
 
-//    发送联系人数据
+    //    发送联系人数据
     private List<Contacts> mContactses;
 
     private List<ContactGroup> mAllContactGroups;
@@ -111,9 +114,10 @@ public class SendMsgActivity extends BaseActivity
     private EmojiconsFragment mEmojiconsFragment;
 
     private WordFragment mWordFragment;
+
     private boolean isMoreLayoutShow = false;
 
-//    判断向联系人发送还是向分组发送
+    //    判断向联系人发送还是向分组发送
     private boolean isFromGroup = true;
 
     private int type;
@@ -125,7 +129,10 @@ public class SendMsgActivity extends BaseActivity
     private MultipleChoiceSelectorAdapter<Contacts> mContactChoiceSelectorAdapter;
 
     private String mMsg;
+
     private Long mid;
+
+    private Notify mNotify;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,7 +182,7 @@ public class SendMsgActivity extends BaseActivity
         switch (type) {
             //发送完成后自动添加组
             case FROM_MY_SEND_TYPE:
-                mMsg="";
+                mMsg = "";
                 mAddBT.setImageResource(R.drawable.add_contact);
                 mMsgET.setVisibility(View.VISIBLE);
                 mMsgTV.setVisibility(View.GONE);
@@ -183,7 +190,7 @@ public class SendMsgActivity extends BaseActivity
                 isFromGroup = false;
                 break;
             case FROM_GROUP_TYPE:
-                mMsg="";
+                mMsg = "";
                 mAddBT.setImageResource(R.drawable.add_group);
                 mMsgET.setVisibility(View.VISIBLE);
                 mMsgTV.setVisibility(View.GONE);
@@ -192,8 +199,8 @@ public class SendMsgActivity extends BaseActivity
                 isFromGroup = true;
                 break;
             case FROM_DRAFT:
-                mid=getIntent().getLongExtra("mid",-1);
-                mMsg=getIntent().getStringExtra("msg");
+                mid = getIntent().getLongExtra("mid", -1);
+                mMsg = getIntent().getStringExtra("msg");
                 mAddBT.setImageResource(R.drawable.add_group);
                 mMsgET.setVisibility(View.GONE);
                 mMsgTV.setVisibility(View.VISIBLE);
@@ -203,8 +210,8 @@ public class SendMsgActivity extends BaseActivity
                 isFromGroup = true;
                 break;
             case FROM_HAVA_SEND:
-                mid=getIntent().getLongExtra("mid",-1);
-                mMsg=getIntent().getStringExtra("msg");
+                mid = getIntent().getLongExtra("mid", -1);
+                mMsg = getIntent().getStringExtra("msg");
                 mAddBT.setImageResource(R.drawable.add_group);
                 mMsgET.setVisibility(View.GONE);
                 mMsgTV.setVisibility(View.VISIBLE);
@@ -221,6 +228,7 @@ public class SendMsgActivity extends BaseActivity
         }
         addTag();
         createActionSheet();
+        mNotify = Notify.getInstence();
     }
 
     private void createActionSheet() {
@@ -278,24 +286,35 @@ public class SendMsgActivity extends BaseActivity
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
     public void onSendClick(View view) {
         Toast.makeText(SendMsgActivity.this, "123", Toast.LENGTH_SHORT).show();
         //TODO
         mMsgTV.setVisibility(View.VISIBLE);
         mMsgET.setVisibility(View.GONE);
-        mMsgTV.setText(mMsgET.getText().toString());
-        if(isFromGroup){
-            if(mGroupList.size()==0){
-                AddDailog.showMsg(this,"你还没选择联系人分组呢!");
-            }else {
-                mProxy.sendMsgForGroups(mGroupList);
+        String text=mMsgET.getText().toString();
+        mMsgTV.setText(text);
+        if (isFromGroup) {
+            if (mGroupList.size() == 0) {
+                AddDailog.showMsg(this, "你还没选择联系人分组呢!");
+            } else {
+                mProxy.sendMsgForGroups(mGroupList,text);
                 setOnBusy(true);
             }
-        }else {
+        } else {
             if (mContactses.size() == 0) {
                 AddDailog.showMsg(this, "你还没选择联系人呢!");
             } else {
-                mProxy.sendMsgForContacts(mContactses);
+                mProxy.sendMsgForContacts(mContactses,text);
                 setOnBusy(true);
             }
         }
@@ -358,25 +377,32 @@ public class SendMsgActivity extends BaseActivity
             mGroupList.addAll((List<ContactGroup>) proxyEntity.data);
             addTag();
             setOnBusy(false);
-        }else if(action.equals(SendMsgProxy.SEND_MSG_CONTACT)){
+        } else if (action.equals(SendMsgProxy.SEND_MSG_CONTACT)) {
             setOnBusy(false);
-            if(proxyEntity.errorCode== ErrorCode.RESULT_OK){
+            if (proxyEntity.errorCode == ErrorCode.RESULT_OK) {
                 AddDailog.showMsg(this, "发送完成", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         SendMsgActivity.this.finish();
+
                     }
                 });
+                mNotify.notifyObservers(new NotifyData(NotifyAction.SEND_MSG_OK, null));
             }
-        }else if(action.equals(SendMsgProxy.SEND_MSG_GROUP)){
+        } else if (action.equals(SendMsgProxy.SEND_MSG_GROUP)) {
             setOnBusy(false);
-            if(proxyEntity.errorCode==ErrorCode.RESULT_ERROR){
+            if (proxyEntity.errorCode == ErrorCode.RESULT_OK) {
+
                 AddDailog.showMsg(this, "发送完成", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         SendMsgActivity.this.finish();
                     }
                 });
+//                mNotify.notifyObservers(new NotifyData(NotifyAction.SEND_MSG_OK, null));
+                mNotify.notifyObservers();
+                Log.d("wangguang","SEND_MSG_OK "+mNotify.countObservers());
+
             }
         }
     }
@@ -395,6 +421,7 @@ public class SendMsgActivity extends BaseActivity
                 displayMore(true);
                 break;
             case R.id.handle_word:
+                hideSoftKeyboard();
                 if (mWordFragment == null) {
                     mWordFragment = new WordFragment();
                 }
@@ -502,18 +529,18 @@ public class SendMsgActivity extends BaseActivity
         if (msg.equals(mMsg)) {
             return false;
         } else {
-            String dc="是否添加草稿";
-            if(type==FROM_DRAFT){
-                dc="是否保存到草稿";
-            }else{
-                dc="是否添加草稿";
+            String dc = "是否添加草稿";
+            if (type == FROM_DRAFT) {
+                dc = "是否保存到草稿";
+            } else {
+                dc = "是否添加草稿";
             }
-            AddDailog.showMsgWithCancleListener(this,dc, new DialogInterface.OnClickListener() {
+            AddDailog.showMsgWithCancleListener(this, dc, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    if(type==FROM_DRAFT){
-                        mMessageProxy.updataDraftMsg(mid,msg);
-                    }else {
+                    if (type == FROM_DRAFT) {
+                        mMessageProxy.updataDraftMsg(mid, msg);
+                    } else {
                         mMessageProxy.insertDraftMsg(msg);
                     }
                     hideSoftKeyboard();
@@ -533,9 +560,9 @@ public class SendMsgActivity extends BaseActivity
     @Override
     public void onFragmentCallback(Intent intent) {
         super.onFragmentCallback(intent);
-        if(intent.getAction().equals(WordFragment.WORD_FRAGMENT_CALLBACK)){
-            String text=intent.getStringExtra("text");
-            if(text!=null){
+        if (intent.getAction().equals(WordFragment.WORD_FRAGMENT_CALLBACK)) {
+            String text = intent.getStringExtra("text");
+            if (text != null) {
                 mMsgET.append(text);
             }
 
