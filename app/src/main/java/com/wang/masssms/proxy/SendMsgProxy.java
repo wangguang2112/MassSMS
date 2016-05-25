@@ -44,7 +44,7 @@ public class SendMsgProxy extends BaseProxy{
                 SmsManager manager = SmsManager.getDefault();
                 for (int i = 0; i < contacts.size(); i++) {
 //                    Intent intent=new Intent(SEND_MSG_SUCCESS_ACTION);
-                    manager.sendTextMessage(contacts.get(i).getPhonenumber(), null, text, null, null);
+                    manager.sendTextMessage(contacts.get(i).getPhonenumber(), null, handleMsgBody(contacts.get(i),text), null, null);
                 }
                 callback(entity);
             }
