@@ -11,6 +11,19 @@ import java.util.Observer;
  * Description:观察者模式
  */
 public class Notify extends Observable {
+
+    @Override
+    public void notifyObservers(Object data) {
+        super.setChanged();
+        super.notifyObservers(data);
+    }
+
+    @Override
+    public void notifyObservers() {
+        super.setChanged();
+        super.notifyObservers();
+    }
+
     public static Notify mNotify;
     public static Notify getInstence(){
         if(mNotify==null){
@@ -27,4 +40,6 @@ public class Notify extends Observable {
         deleteObserver(observer);
         Log.d("Notify", observer + " unregister");
     }
+
+
 }

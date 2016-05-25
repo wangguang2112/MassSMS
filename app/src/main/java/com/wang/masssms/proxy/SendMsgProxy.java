@@ -1,7 +1,17 @@
 package com.wang.masssms.proxy;
 
+import com.wang.masssms.App;
 import com.wang.masssms.model.orm.ContactGroup;
+import com.wang.masssms.model.orm.ContactGroupDao;
+import com.wang.masssms.model.orm.ContactToGroup;
+import com.wang.masssms.model.orm.ContactToGroupDao;
+import com.wang.masssms.model.orm.ContactToMessage;
+import com.wang.masssms.model.orm.ContactToMessageDao;
 import com.wang.masssms.model.orm.Contacts;
+import com.wang.masssms.model.orm.GroupToMessage;
+import com.wang.masssms.model.orm.GroupToMessageDao;
+import com.wang.masssms.model.orm.Message;
+import com.wang.masssms.model.orm.MessageDao;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -21,10 +31,15 @@ import java.util.regex.Pattern;
  */
 public class SendMsgProxy extends BaseProxy{
 
+
     public static final String SEND_MSG_SUCCESS_ACTION="SEND_MSG_SUCCESS_ACTION";
     public static final String SEND_MSG_CONTACT="SEND_MSG_CONTACT";
     public static final String SEND_MSG_GROUP="SEND_MSG_GROUP";
-
+    private ContactToGroupDao mContactToGroupDao;
+    private MessageDao mMessageDao;
+    private GroupToMessageDao mGroupToMessageDao;
+    private ContactToMessageDao mContactToMessageDao;
+    SmsManager manager;
     /**
      * 构造函数
      *
@@ -32,6 +47,11 @@ public class SendMsgProxy extends BaseProxy{
      */
     public SendMsgProxy(Context context, Handler proxyCallbackHandler) {
         super(context, proxyCallbackHandler);
+        mContactToGroupDao= App.getDaoSession(context).getContactToGroupDao();
+        mMessageDao=App.getDaoSession(context).getMessageDao();
+        mContactToMessageDao=App.getDaoSession(context).getContactToMessageDao();
+        mGroupToMessageDao=App.getDaoSession(context).getGroupToMessageDao();
+        manager = SmsManager.getDefault();
     }
     public void sendMsgForContacts(final List<Contacts> contacts, final String text){
         cachedThreadPool.execute(new Runnable() {
@@ -41,23 +61,42 @@ public class SendMsgProxy extends BaseProxy{
                 entity.action = SEND_MSG_CONTACT;
                 entity.errorCode = ErrorCode.RESULT_OK;
                 ArrayList<PendingIntent> intents = new ArrayList<PendingIntent>();
-                SmsManager manager = SmsManager.getDefault();
+                Message message=new Message(null,new Date(System.currentTimeMillis()),text,false,false);
+                mMessageDao.insert(message);
+                Long mid=message.getId();
                 for (int i = 0; i < contacts.size(); i++) {
 //                    Intent intent=new Intent(SEND_MSG_SUCCESS_ACTION);
-                    manager.sendTextMessage(contacts.get(i).getPhonenumber(), null, handleMsgBody(contacts.get(i),text), null, null);
+                    manager.sendTextMessage(contacts.get(i).getPhonenumber(), null, handleMsgBody(contacts.get(i), text), null, null);
+                    contacts.get(i);
+                    ContactToMessage ctg=new ContactToMessage(null,contacts.get(i).getId(),mid);
+                    mContactToMessageDao.insertOrReplace(ctg);
                 }
+
                 callback(entity);
             }
         });
 
     }
-    public void sendMsgForGroups(List<ContactGroup> groups,String text){
+    public void sendMsgForGroups(final List<ContactGroup> groups, final String text){
         cachedThreadPool.execute(new Runnable() {
             @Override
             public void run() {
                 ProxyEntity entity=new ProxyEntity();
                 entity.action=SEND_MSG_GROUP;
                 entity.errorCode=ErrorCode.RESULT_OK;
+                Message message=new Message(null,new Date(System.currentTimeMillis()),text,false,false);
+                mMessageDao.insert(message);
+                Long mid=message.getId();
+                for (int i = 0; i < groups.size(); i++) {
+                    List<ContactToGroup> contactsList=mContactToGroupDao._queryContactGroup_Gid(groups.get(i).getId());
+                    for(ContactToGroup ctg:contactsList) {
+                        manager.sendTextMessage(ctg.getContacts().getPhonenumber(), null, handleMsgBody(ctg.getContacts(), text), null, null);
+                    }
+                    if(contactsList.size()>0) {
+                        GroupToMessage gtm = new GroupToMessage(null, groups.get(i).getId(), mid);
+                        mGroupToMessageDao.insertOrReplace(gtm);
+                    }
+                }
                 callback(entity);
             }
         });

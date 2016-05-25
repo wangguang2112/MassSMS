@@ -297,8 +297,7 @@ public class SendMsgActivity extends BaseActivity
     }
 
     public void onSendClick(View view) {
-        Toast.makeText(SendMsgActivity.this, "123", Toast.LENGTH_SHORT).show();
-        //TODO
+//        Toast.makeText(SendMsgActivity.this, "123", Toast.LENGTH_SHORT).show();
         mMsgTV.setVisibility(View.VISIBLE);
         mMsgET.setVisibility(View.GONE);
         String text=mMsgET.getText().toString();
@@ -397,10 +396,9 @@ public class SendMsgActivity extends BaseActivity
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         SendMsgActivity.this.finish();
+                        mNotify.notifyObservers(new NotifyData(NotifyAction.SEND_MSG_OK, null));
                     }
                 });
-//                mNotify.notifyObservers(new NotifyData(NotifyAction.SEND_MSG_OK, null));
-                mNotify.notifyObservers();
                 Log.d("wangguang","SEND_MSG_OK "+mNotify.countObservers());
 
             }
