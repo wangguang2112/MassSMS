@@ -8,9 +8,13 @@
     <string-array name="word_text">
         <item>"#名字#"</item>
         <item>"#时间#"</item>
+        <item>"#日期#"</item>
+        <item>"#名称#"</item>
     </string-array>
     <string-array name="word_description">
         <item>"填充联系人姓名"</item>
         <item>"填充时间"</item>
+        <item>"填充日期"</item>
+        <item>"填充姓加先生"</item>
     </string-array>
 </resources>
