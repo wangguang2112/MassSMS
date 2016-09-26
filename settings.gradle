@@ -1,1 +1,1 @@
-include ':app', ':generator', ':PullToRefresh', "SwipeMenulibrary"
+include ':app', ':generator', ':PullToRefresh', ':filelib', "SwipeMenulibrary"

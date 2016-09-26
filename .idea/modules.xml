@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/PullToRefresh/PullToRefresh.iml" filepath="$PROJECT_DIR$/PullToRefresh/PullToRefresh.iml" />
       <module fileurl="file://$PROJECT_DIR$/SwipeMenulibrary/SwipeMenulibrary.iml" filepath="$PROJECT_DIR$/SwipeMenulibrary/SwipeMenulibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/filelib/filelib.iml" filepath="$PROJECT_DIR$/filelib/filelib.iml" />
       <module fileurl="file://$PROJECT_DIR$/generator/generator.iml" filepath="$PROJECT_DIR$/generator/generator.iml" />
     </modules>
   </component>
